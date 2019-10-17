@@ -1,0 +1,146 @@
+.grid-container {
+    display: grid;
+  
+    grid-row-gap: 5px;
+    grid-column-gap: 5px;
+    background-color: #E6E6FA	 !important;
+    padding: 5px;
+    
+  }
+
+
+  .card-title {
+   margin-bottom: 0.75rem !important;
+  background-color:#7C849C !important;
+  text-align: center !important;
+  color: white !important;
+}
+
+
+  .grid-container > div {
+    background-color:#E6E6FA	!important;
+    text-align: left;
+    padding: 10px 0;
+    font-size: 20px;
+    text-transform: capitalize;
+  }
+  #mapid { 
+    height: 500px; 
+  };
+  /* #map{ 
+    height: 400px; 
+  }; */
+.drop{
+  display: none;
+}
+
+#findbox {
+  background: #eee;
+  border-radius:.125em;
+  border:2px solid #1978cf;
+  box-shadow: 0 0 8px #999;	
+  margin-bottom: 10px;
+  padding: 2px 0;
+  width: 100px;
+  height: 26px;
+}
+.search-tooltip {
+  width: 200px;
+}
+.leaflet-control-search .search-cancel {
+  position: static;
+  float: left;
+  margin-left: -22px;
+}
+li {
+  list-style-type: none;
+}
+/* #districtDropdown{
+  line-height: 1;
+    padding: 0;
+  background:red;
+  border: 1px solid;
+  border-radius: 6px;
+} */
+#schooldetails{
+  height: 500px;
+}
+#districtDetails{
+  height: 500px;
+}
+#regiondetails{
+  height: 500px;
+}
+#schooldetails > ul {
+  list-style: none;
+  padding: 0;
+}
+#schooldetails > li {
+  padding: 5px 10px;
+  background-color: #EEEEEE;
+  border: 1px solid #DDDDDD;
+}
+
+/* Tables
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+th,
+td {
+  /* padding: 12px 15px; */
+  text-align: left;
+  border-bottom: 1px solid #E1E1E1; }
+th:first-child,
+td:first-child {
+  padding-left: 0; }
+th:last-child,
+td:last-child {
+  padding-right: 0; }
+
+
+/* Spacing
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+button,
+.button {
+  margin-bottom: 1rem; }
+input,
+textarea,
+select,
+fieldset {
+  margin-bottom: 1.5rem; }
+pre,
+blockquote,
+dl,
+figure,
+table,
+p,
+ul,
+ol,
+form {
+  margin-bottom: 2.5rem; }
+
+
+/* Utilities
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.u-full-width {
+  width: 100%;
+  box-sizing: border-box; }
+.u-max-full-width {
+  max-width: 100%;
+  box-sizing: border-box; }
+.u-pull-right {
+  float: right; }
+.u-pull-left {
+  float: left; }
+
+
+/* Misc
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+hr {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  border-width: 0;
+  border-top: 1px solid #E1E1E1; }
+
+  body{
+    overflow-y : auto !important;
+  }
+
