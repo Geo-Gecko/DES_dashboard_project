@@ -6,7 +6,7 @@ function loadStats() {
 function ake(schoolName) {
     //let e = document.getElementById("sel");
 
-    let value = schoolName ? schoolName : 'Bugana P.s.';
+    let value = schoolName ? schoolName : 'Aanga P.S';
 
     // Called to get enrollment for each school
     axios.get(`/enrollment-stats/${value}`)
@@ -150,7 +150,7 @@ function ake(schoolName) {
     axios.get(`/schooldetails-stats/${value}`)
         .then(function (response) {
             // handle success
-            //console.log(response.data);
+            console.log(response.data);
 
             let data = response.data;
             let school = data.school;
@@ -158,8 +158,8 @@ function ake(schoolName) {
             let countyData = data.county[0];
             let subcountyData = data.subcounty[0];
             let parishData = data.parish[0];
-            let statusData = data.status[0];
-            let levelData = data.level[0];
+            let emisData = data.emisNumber[0];
+            let regionData = data.region[0];
             let inspectionData = data.inspection[0];
             let max_inspectionData = data.max_inspection[0];
 
@@ -181,8 +181,8 @@ function ake(schoolName) {
                 "<tr><td>County:</td><td>" + countyData + "</td><tr>" +
                 "<tr><td>Sub-County:</td><td>" + subcountyData + "</td><tr>" +
                 "<tr><td>Parish:</td><td>" + parishData + "</td><tr>" +
-                "<tr><td>School Status:</td><td>" + statusData + "</td><tr>" +
-                "<tr><td>School Level:</td><td>" + levelData + "</td><tr>" +
+                "<tr><td>School Status:</td><td>" + emisData  + "</td><tr>" +
+                "<tr><td>School Level:</td><td>" + regionData + "</td><tr>" +
                 "<tr><td>Number of Inspections:</td><td>" + inspectionData + "</td><tr>" + 
                 "<tr><td>Latest Inspections:</td><td>" + max_inspectionData + "</td><tr>" +"</table>")
 
@@ -199,9 +199,9 @@ function ake(schoolName) {
 }
 
 
-function myFunction(num) {
-    return parseInt(num, 10);
-}
+// function myFunction(num) {
+//     return parseInt(num, 10);
+// }
 
 //charts
 var myEnrolChart, myAttendChart, teacherRatio, StanceRatio, ClassroomRatio, myPillarChart;

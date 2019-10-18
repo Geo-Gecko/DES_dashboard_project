@@ -5,7 +5,7 @@ var connection = require('../config/database');
 /* GET home page. */
 router.get('/', function (req, res, next) {
 
-    const schoolsQuery = "select distinct(name_of_school) as school from tbl_random";
+    const schoolsQuery = "SELECT details.name_of_school as school FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name group by details.name_of_school";
 
     connection.query(schoolsQuery, function (err, result) {
 
