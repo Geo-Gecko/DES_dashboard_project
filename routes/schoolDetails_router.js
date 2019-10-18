@@ -107,7 +107,9 @@ router.get('/:name_of_school', function(req, res, next) {
       console.log("DISTRICT", districtArray );
       console.log("COUNTY",countyArray);
       console.log("SUBCOUNTY", subcountyArray);
+      console.log("EMIS NUMBER",  emisArray);
       console.log("PARISH", parishArray);
+      console.log("REGION", regionOfSchoolArray)
       console.log("INSPECTION", inspectionArray);
       console.log("lastest inspection", maxinspectionArray);
 
