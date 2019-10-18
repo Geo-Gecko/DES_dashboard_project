@@ -21,34 +21,51 @@ var geojsonMarkerOptions = {
 
 geojson = L.geoJson(schools, {
     pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, geojsonMarkerOptions);},
-    onEachFeature: function(features, featureLayer) {
-            featureLayer.bindPopup(features.properties.Name);
-            featureLayer.on('click', function (e) {
-                mymap.setView(e.latlng, 8)
-                ake(features.properties.Name);
-             });
-  
-            }
+        return L.circleMarker(latlng, geojsonMarkerOptions);
+    },
+    onEachFeature: function (features, featureLayer) {
+        var popup_html = "<h4>School Info</h4>" +
+          "<table class='popup-table'>" +
+              "<tr>" +
+                  "<td class='attrib-name'>School Name:</td>" +
+                  "<td class='attrib-value'>"+ features.properties['School Name'] + "</td>" +
+              "</tr>" +
+              "<tr>" +
+                    "<td class='attrib-name'>EMIS Code:</td>" +
+                    "<td class='attrib-value'>"+ features.properties['EMIS NO'] + "</td>" +
+             " </tr>" +
+              "<tr>" +
+                    "<td class='attrib-name'>Location:</td>" +
+                   " <td class='attrib-value'>"+ features.properties.District + " | " + features.properties.Subcounty + " | " + features.properties['Parish\/Ward'] +"</td>" +
+              "</tr>" +
+         " </table>";
+        //  console.log(popup_html)
+        featureLayer.bindPopup(popup_html);
+        featureLayer.on('click', function (e) {
+            mymap.setView(e.latlng, 8)
+            ake(features.properties.Name);
+        });
+
+    }
 }).addTo(mymap);
 
 
 var searchControl = new L.Control.Search({
-    layer: geojson, 
-    container: 'findBox', 
-    propertyName: 'Name', 
-    circleLocation:false,
-  moveToLocation: null
-      });
-      searchControl.on('search:locationfound', function(e) {
-      ake(e.text);
-      e.layer.setStyle({fillColor: '#3f0', color: '#0f0'});
-      if(e.layer._popup)
-          e.layer.openPopup();
-  }).on('search_collapsed', function(e) {
-      geojson.eachLayer(function(layer) {
-          geojson.resetStyle(layer);
-      });
-  });
-  mymap.addControl( searchControl );
+    layer: geojson,
+    container: 'findBox',
+    propertyName: 'Name',
+    circleLocation: false,
+    moveToLocation: null
+});
+searchControl.on('search:locationfound', function (e) {
+    ake(e.text);
+    e.layer.setStyle({ fillColor: '#3f0', color: '#0f0' });
+    if (e.layer._popup)
+        e.layer.openPopup();
+}).on('search_collapsed', function (e) {
+    geojson.eachLayer(function (layer) {
+        geojson.resetStyle(layer);
+    });
+});
+mymap.addControl(searchControl);
 
