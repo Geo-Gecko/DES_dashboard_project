@@ -7,10 +7,10 @@ router.get('/:name_of_school', function(req, res, next) {
 
     
     const limit = 1;
+ 
+   let nameOfSchool = req.params.name_of_school;
 
-    let nameOfSchool = req.params.name_of_school;
-
-    const scQuery =`select distinct(name_of_school) as schools, district as district, county as county, subcounty as subcounty, parish as parish, school_status as status, level_of_school as level, name_of_ht as ht, ht_gender as gender, count(inspection_date) as inspection_number, max(inspection_date) as last_inspection from tbl_random where name_of_school = '${nameOfSchool}' group by name_of_school limit ${limit}`;
+    const scQuery =`SELECT inspection.school_name as submission_id, details.name_of_school as  schools, details.emis_number as emis_number, inspection.school_location as location, details.region as region, details.district as district, details.county as county, details.sub_county as sub_county, details.parish_ward as parish, MAX(inspection.date_of_inspection) as  last_inspection, count(inspection.date_of_inspection) as inspection_number FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name `;
 
 
     
@@ -19,8 +19,8 @@ router.get('/:name_of_school', function(req, res, next) {
     let countyArray = [];
     let subcountyArray =[];
     let parishArray =[];
-    let statusArray =[];
-    let levelOfSchoolArray =[];
+    let emisArray =[];
+    let regionOfSchoolArray =[];
     let inspectionArray = [];
     let maxinspectionArray = [];
 
@@ -61,10 +61,10 @@ router.get('/:name_of_school', function(req, res, next) {
          // Processing sub county for all school  
          let sSubCounty = [];
         for(let s = 1; s <= 1; s++){
-          let Sub = `subcounty`;
+          let Sub = `sub_county`;
           sSubCounty.push(result[i][ Sub ]);
         }
-        subcountyArray.push( sSubCounty);
+        subcountyArray.push(sSubCounty);
 
          // Processing parish for all school 
          let sParish= [];
@@ -75,20 +75,20 @@ router.get('/:name_of_school', function(req, res, next) {
         parishArray.push(sParish);
 
          // Processing status for all school 
-         let sStatus = [];
+         let sEmis = [];
         for(let e = 1; e <= 1; e++){
-          let status = `status`;
-          sStatus.push(result[i][status ]);
+          let emis_numer = `emis_number`;
+          sEmis.push(result[i][emis_numer ]);
         }
-        statusArray.push(sStatus);
+        emisArray.push(sEmis);
 
         //processing level of school for all school
-        let sLevel = [];
+        let sRegion = [];
         for(let e = 1; e <= 1; e++){
-          let level = `level`;
-          sLevel.push(result[i][level ]);
+          let region = `region`;
+          sRegion.push(result[i][region]);
         }
-        levelOfSchoolArray.push(sLevel);
+        regionOfSchoolArray.push(sRegion);
 
 
         //processing inspection of school for all school
@@ -103,26 +103,26 @@ router.get('/:name_of_school', function(req, res, next) {
 
       }
 
-      // console.log("SCHOOLS",schoolArray);
-      // console.log("DISTRICT", districtArray );
-      // console.log("COUNTY",countyArray);
-      // console.log("SUBCOUNTY", subcountyArray);
-      // console.log("PARISH", parishArray);
-      // console.log("INSPECTION", inspectionArray);
-      //console.log("lastest inspection", maxinspectionArray);
+      console.log("SCHOOLS",schoolArray);
+      console.log("DISTRICT", districtArray );
+      console.log("COUNTY",countyArray);
+      console.log("SUBCOUNTY", subcountyArray);
+      console.log("PARISH", parishArray);
+      console.log("INSPECTION", inspectionArray);
+      console.log("lastest inspection", maxinspectionArray);
 
       let school = schoolArray[0];
       let distinctData = districtArray[0];
       let countyData = countyArray[0];
       let subcountyData = subcountyArray[0];
       let parishData = parishArray[0];
-      let statusData = statusArray[0];
-      let levelData  = levelOfSchoolArray[0];
+      let emisData = emisArray[0];
+      let regionData  = regionOfSchoolArray[0];
       let inspectionData = inspectionArray[0];
       let maxinspectionData = maxinspectionArray[0];
 
 
-     res.send({school: school, district: distinctData, county: countyData, subcounty: subcountyData, parish:  parishData, status: statusData, level: levelData, inspection:  inspectionData, max_inspection: maxinspectionData})
+     res.send({school: school, district: distinctData, county: countyData, subcounty: subcountyData, parish:  parishData, emisNumber: emisData, region: regionData, inspection:  inspectionData, max_inspection: maxinspectionData})
 
         })
       
