@@ -10,33 +10,26 @@ router.get('/:name_of_school', function(req, res, next) {
 
     let nameOfSchool = req.params.name_of_school;
 
-    const aQuery =`select distinct(name_of_school) as schools, p1__attendance_on_visit_day__boys as p1_boys, 
-    p1__attendance_on_visit_day__girls as p1_girls, p2__attendance_on_visit_day__boys as p2_boys, 
-    p2__attendance_on_visit_day__girls as p2_girls, p3__attendance_on_visit_day__boys as p3_boys, 
-    p3__attendance_on_visit_day__girls as p3_girls, p4__attendance_on_visit_day__boys as p4_boys, 
-    p4__attendance_on_visit_day__girls as p4_girls, p5__attendance_on_visit_day__boys as p5_boys, 
-    p5__attendance_on_visit_day__girls as p5_girls, p6__attendance_on_visit_day__boys as p6_boys, 
-    p6__attendance_on_visit_day__girls as p6_girls, p7__attendance_on_visit_day__boys as p7_boys, 
-    p7__attendance_on_visit_day__girls as p7_girls from tbl_random where name_of_school = '${nameOfSchool}' limit ${limit}`;
+    const aQuery =`SELECT inspection.school_name, details.name_of_school as name_of_school, details.emis_number as emis_number, inspection.attendance_of_p1_boys_on_visitation_day  as p1boys, inspection.attendance_of_p1_girls_on_visitation_day  as p1girls, inspection.attendance_of_p2_boys_on_visitation_day  as p2boys, inspection.attendance_of_p2_girls_on_visitation_day  as p2girls, inspection.attendance_of_p3_boys_on_visitation_day  as p3boys, inspection.attendance_of_p3_girls_on_visitation_day  as p3girls, inspection.attendance_of_p4_boys_on_visitation_day  as p4boys, inspection.attendance_of_p4_girls_on_visitation_day  as p4girls, inspection.attendance_of_p5_boys_on_visitation_day  as p5boys, inspection.attendance_of_p5_girls_on_visitation_day  as p5girls, inspection.attendance_of_p6_boys_on_visitation_day  as p6boys, inspection.attendance_of_p6_girls_on_visitation_day  as p6girls, inspection.attendance_of_p7_boys_on_visitation_day  as p7boys, inspection.attendance_of_p7_girls_on_visitation_day  as p7girls FROM ft_form_12 as inspection, ft_form_11 as details WHERE details.submission_id=inspection.school_name group by details.name_of_school;`;
 
 
     connection.query(aQuery, function fill(err, result,){
             if (err) throw err;
-            let schoolsArray = [];
+            let EmisNumberArray = [];
             let attendenceBoysArray = [];
             let attendenceGirlsArray = [];
             //let flag = 0;
             for(let i = 0; i < result.length; i++){
                 // School
-                let school = result[i].schools;
+                let emisNumer = result[i].emis_number;
         
-                schoolsArray.push(school)
+                EmisNumberArray.push(emisNumer)
 
         
                 // Processing boys for each school and each class
                 let boysArray = [];
                 for(let b = 1; b <= 7; b++){
-                let sClass = `p${b}_boys`;
+                let sClass = `p${b}boys`;
                 boysArray.push(result[i][sClass]);
                 }
                 attendenceBoysArray.push(boysArray);
@@ -44,20 +37,22 @@ router.get('/:name_of_school', function(req, res, next) {
                 // Processing girls for each school and each class
                 let girlsArray = [];
                 for(let g = 1; g <= 7; g++){
-                let sClass = `p${g}_girls`;
+                let sClass = `p${g}girls`;
                 girlsArray.push(result[i][sClass]);
                 }
                 attendenceGirlsArray.push(girlsArray);
         
             }
            
-            
+            console.log("Attendence", attendenceBoysArray);
+            console.log("Attendence girls",  attendenceGirlsArray);
+            console.log("Emis", EmisNumberArray);
         
-            let school = schoolsArray[0];
+            let EmisNumber = EmisNumberArray[0];
             let boysPlot = JSON.stringify(attendenceBoysArray[0]);
             let girlsPlot = JSON.stringify(attendenceGirlsArray[0]);
 
-            res.send({school:school, boys: boysPlot, girls: girlsPlot});
+            res.send({Emis:EmisNumber, boys: boysPlot, girls: girlsPlot});
       
         })
 

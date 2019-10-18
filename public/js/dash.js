@@ -3,16 +3,16 @@ function loadStats() {
     ake();
 }
 
-function ake(schoolName) {
+function ake(emisNumber) {
     //let e = document.getElementById("sel");
 
-    let value = schoolName ? schoolName : 'Bugana P.s.';
+    let value = emisNumber ? emisNumber : '3818';
 
     // Called to get enrollment for each school
     axios.get(`/enrollment-stats/${value}`)
         .then(function (response) {
             // handle success
-            //console.log(response.data);
+            console.log(response.data);
 
             let data = response.data;
             let school = data.school;
@@ -34,15 +34,15 @@ function ake(schoolName) {
     axios.get(`/chart_attendance/${value}`)
         .then(function (response) {
             // handle success
-            //console.log(response.data);
+            console.log(response.data);
 
             let data = response.data;
-            let school = data.school;
+            let Emis = data.EmisNumber;
             let boysPlot = JSON.parse(data.boys).map(myFunction);
             let girlsPlot = JSON.parse(data.girls).map(myFunction);
 
             // call the chart function
-            chart_attendance(school, boysPlot, girlsPlot);
+            chart_attendance(Emis, boysPlot, girlsPlot);
         })
         .catch(function (error) {
             // handle error
@@ -127,13 +127,13 @@ function ake(schoolName) {
 
             let data = response.data;
             let school = data.school;
-
-            // console.log(data)
-
-            let conditionalPlot = data.conditionalPlot;
-            // console.log(conditionalPlot);
-            // let girlsPlot = JSON.parse(data.girls).map(myFunction);
-            chartPillar(school, conditionalPlot);
+            let pillarOne = data.pillar1;
+            let pillarTwo = data.pillar2;
+            let pillarThree = data.pillar3;
+            let pillarFour = data.pillar4;
+          
+         
+            chartPillar(school, pillarOne, pillarTwo, pillarThree, pillarFour);
 
         })
         .catch(function (error) {
