@@ -1,11 +1,11 @@
-
 function loadStats() {
     ake();
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
     ake('kampala')
 });
+
 function ake(districtName) {
     //let e = document.getElementById("sel");
 
@@ -14,7 +14,7 @@ function ake(districtName) {
 
     //called for district details
     axios.get(`/districtdetails-stats/${value}`)
-        .then(function (response) {
+        .then(function(response) {
             // handle success
             //console.log(response.data);
 
@@ -30,25 +30,25 @@ function ake(districtName) {
                 "<tr><td>District:</td><td>" + district + "</td><tr>" +
                 "<tr><td>Number of Boys:</td><td>" + totalBoysData + "</td><tr>" +
                 "<tr><td>Number of Girls:</td><td>" + totalGrilsData + "</td><tr>" +
-                "<tr><td>Total  Number of Schools:</td><td>" + totalSchoolsData + "</td><tr>" + 
+                "<tr><td>Total  Number of Schools:</td><td>" + totalSchoolsData + "</td><tr>" +
                 "<tr><td>Total  Number of Inspections:</td><td>" + totalInspectionData + "</td><tr>" +
-                "<tr><td>Latest Inspections:</td><td>" + max_inspectionData + "</td><tr>" +"</table>")
+                "<tr><td>Latest Inspections:</td><td>" + max_inspectionData + "</td><tr>" + "</table>")
 
         })
-        .catch(function (error) {
+        .catch(function(error) {
             // handle error
             console.log(error);
         })
-        .finally(function () {
+        .finally(function() {
             // always executed
         });
 
 
     // Called for chart_attendance for each district 
     axios.get(`/districtattendance-stats/${value}`)
-        .then(function (response) {
+        .then(function(response) {
             // handle success
-           // console.log(response.data);
+            // console.log(response.data);
 
             let data = response.data;
             let district = data.district;
@@ -59,17 +59,17 @@ function ake(districtName) {
             // call the chart function
             chart_attendance_district(district, boysPlot, girlsPlot);
         })
-        .catch(function (error) {
+        .catch(function(error) {
             // handle error
             console.log(error);
         })
-        .finally(function () {
+        .finally(function() {
             // always executed
         });
 
     // Called for chart_enrolment for each district 
     axios.get(`/districtenrolment-stats/${value}`)
-        .then(function (response) {
+        .then(function(response) {
             // handle success
             //console.log(response.data);
 
@@ -81,17 +81,17 @@ function ake(districtName) {
             // call the chart function
             chart_enrolment_district(district, boysPlot, girlsPlot);
         })
-        .catch(function (error) {
+        .catch(function(error) {
             // handle error
             console.log(error);
         })
-        .finally(function () {
+        .finally(function() {
             // always executed
         });
 
     // Called for teacher pupil ratio for each district 
     axios.get(`/districtTPR-stats/${value}`)
-        .then(function (response) {
+        .then(function(response) {
             // handle success
             // console.log(response.data);
 
@@ -103,20 +103,20 @@ function ake(districtName) {
             // call the chart function
             ratio_teach_district(district, p1top3Plot, p4top7Plot);
         })
-        .catch(function (error) {
+        .catch(function(error) {
             // handle error
             console.log(error);
         })
-        .finally(function () {
+        .finally(function() {
             // always executed
         });
 
 
     //called for stance pupil ratio for district 
     axios.get(`/districtSPR-stats/${value}`)
-        .then(function (response) {
+        .then(function(response) {
             // handle success
-           // console.log(response.data);
+            // console.log(response.data);
 
             let data = response.data;
             let district = data.district;
@@ -127,18 +127,18 @@ function ake(districtName) {
             // call the chart function
             stance_ratio_district(district, sprboysPlot, sprgirlsPlot, sprovrallPlot);
         })
-        .catch(function (error) {
+        .catch(function(error) {
             // handle error
             console.log(error);
         })
-        .finally(function () {
+        .finally(function() {
             // always executed
         });
 
 
     //called for classroom pupil ratio for district
     axios.get(`/districtCPR-stats/${value}`)
-        .then(function (response) {
+        .then(function(response) {
             // handle success
             //console.log(response.data);
 
@@ -150,19 +150,19 @@ function ake(districtName) {
             // call the chart function
             class_ratio_district(district, cp1top3Plot, cp4top7Plot);
         })
-        .catch(function (error) {
+        .catch(function(error) {
             // handle error
             console.log(error);
         })
-        .finally(function () {
+        .finally(function() {
             // always executed
         });
 
     //chartpillars for district 
     axios.get(`/districtpillars-stats/${value}`)
-        .then(function (response) {
+        .then(function(response) {
             // handle success
-           // console.log(response.data);
+            // console.log(response.data);
 
             let data = response.data;
             let district = data.district;
@@ -173,11 +173,11 @@ function ake(districtName) {
             chartPillarDistrict(district, districtConditionalPlot);
 
         })
-        .catch(function (error) {
+        .catch(function(error) {
             // handle error
             console.log(error);
         })
-        .finally(function () {
+        .finally(function() {
             // always executed
         });
 
@@ -210,8 +210,7 @@ function chart_enrolment_district(district, boysPlot, girlsPlot) {
                 "p6",
                 "p7"
             ],
-            datasets: [
-                {
+            datasets: [{
                     label: "Boys",
                     backgroundColor: "pink",
                     borderColor: "red",
@@ -271,8 +270,7 @@ function chart_attendance_district(district, boysPlot, girlsPlot) {
                 "p6",
                 "p7"
             ],
-            datasets: [
-                {
+            datasets: [{
                     label: "Boys",
                     backgroundColor: "rgba(255,10,13,0.1)",
                     borderColor: "red",
@@ -317,7 +315,7 @@ function ratio_teach_district(district, p1top3Plot, p4top7Plot) {
     if (teacherRatio) {
         teacherRatio.destroy();
     }
-    var randomColorFactor = function () {
+    var randomColorFactor = function() {
         return Math.round(Math.random() * 255);
     };
 
@@ -433,7 +431,8 @@ function class_ratio_district(district, cp1top3Plot, cp4top7Plot) {
 
                 backgroundColor: [
                     "rgb(150,93,162)",
-                    "rgb(38,34,98)"],
+                    "rgb(38,34,98)"
+                ],
             }, {
                 data: [100, cp4top7Plot],
 
@@ -517,13 +516,14 @@ function chartPillarDistrict(district, districtConditionalPlot) {
             position: "bottom",
             labels: {
                 // fontColor: '#FFA500'
-                filter: function (item, chart) {
+                filter: function(item, chart) {
                     // Logic to remove a particular legend item goes here
                     return !item.text.includes('hide');
                 }
             }
         }
     };
+
     function colourPicker(d) {
         if (d === 1) {
             return "#edf8fb"
@@ -537,20 +537,21 @@ function chartPillarDistrict(district, districtConditionalPlot) {
     }
 
     var chosenColours = [];
-    districtConditionalPlot[0].forEach(function (d, i) {
+    districtConditionalPlot[0].forEach(function(d, i) {
         chosenColours.push(colourPicker(parseInt(d)));
     })
+
     function getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    districtConditionalPlot[1] = [getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3)]
+    districtConditionalPlot[1] = [getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3)]
 
-    districtConditionalPlot[2] = [getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3)]
+    districtConditionalPlot[2] = [getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3)]
 
-    districtConditionalPlot[3] = [getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3),getRandomInt(2,3)]
+    districtConditionalPlot[3] = [getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3)]
 
 
     var ctx = document.getElementById("district_pillars");
@@ -582,7 +583,7 @@ function chartPillarDistrict(district, districtConditionalPlot) {
 
     // console.log($('#pillars'));
 
-    $(document).on('change', '#district', function () {
+    $(document).on('change', '#district', function() {
         // console.log($(this).val());
         // Does some stuff and logs the event to the console
 
@@ -597,10 +598,10 @@ function chartPillarDistrict(district, districtConditionalPlot) {
         }
 
         // console.log(districtConditionalPlot)
-        
+
 
         var colourChanged = [];
-        districtConditionalPlot[parseInt($(this).val())].forEach(function (d, i) {
+        districtConditionalPlot[parseInt($(this).val())].forEach(function(d, i) {
             if (i < myPillarChart.data.labels.length) {
                 colourChanged.push(colourPicker(parseInt(d)));
 
@@ -615,8 +616,8 @@ function chartPillarDistrict(district, districtConditionalPlot) {
 
     // this part to make the tooltip only active on your real dataset
     var originalGetElementAtEvent = myPillarChart.getElementAtEvent;
-    myPillarChart.getElementAtEvent = function (e) {
-        return originalGetElementAtEvent.apply(this, arguments).filter(function (e) {
+    myPillarChart.getElementAtEvent = function(e) {
+        return originalGetElementAtEvent.apply(this, arguments).filter(function(e) {
             return e._datasetIndex === 1;
         });
     }
@@ -631,55 +632,54 @@ function trendPillar(school, trendPlot) {
     if (trendChart) {
         trendChart.destroy();
     }
-var trendChart = new Chart(document.getElementById("district_lineChart"), {
-    type: 'line',
-    data: {
-      labels: ["First Term", "Second Term", "Third Term"],
-      datasets: [{ 
-          data: trendPlot[0][0],
-          label: "Enrollment",
-          borderColor: "#3e95cd",
-          fill: false
-        }, { 
-          data: trendPlot[0][1],
-          label: "Attendance",
-          borderColor: "#8e5ea2",
-          fill: false
+    var trendChart = new Chart(document.getElementById("district_lineChart"), {
+        type: 'line',
+        data: {
+            labels: ["First Term", "Second Term", "Third Term"],
+            datasets: [{
+                data: trendPlot[0][0],
+                label: "Enrollment",
+                borderColor: "#3e95cd",
+                fill: false
+            }, {
+                data: trendPlot[0][1],
+                label: "Attendance",
+                borderColor: "#8e5ea2",
+                fill: false
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: ''
+            }
         }
-      ]
-    },
-    options: {
-      title: {
-        display: true,
-        text: ''
-      }
-    }
-  });
+    });
 
-  $(document).on('change', '#trendSelector', function () {
-    // console.log($(this).val());
-    // Does some stuff and logs the event to the console
-
-    
-
-    if ($(this).val() === "0") {
-        trendChart.data.datasets[0].data = trendPlot[0][0]
-        trendChart.data.datasets[1].data = trendPlot[0][1]
-    } else if ($(this).val() === "1") {
-        trendChart.data.datasets[0].data = trendPlot[1][0]
-        trendChart.data.datasets[1].data = trendPlot[1][1]
-    } else if ($(this).val() === "2") {
-        trendChart.data.datasets[0].data = trendPlot[2][0]
-        trendChart.data.datasets[1].data = trendPlot[2][1]
-    } else if ($(this).val() === "3") {
-        trendChart.data.datasets[0].data = trendPlot[3][0]
-        trendChart.data.datasets[1].data = trendPlot[3][1]
-    }
-
-    trendChart.update();
+    $(document).on('change', '#trendSelector', function() {
+        // console.log($(this).val());
+        // Does some stuff and logs the event to the console
 
 
-});
+
+        if ($(this).val() === "0") {
+            trendChart.data.datasets[0].data = trendPlot[0][0]
+            trendChart.data.datasets[1].data = trendPlot[0][1]
+        } else if ($(this).val() === "1") {
+            trendChart.data.datasets[0].data = trendPlot[1][0]
+            trendChart.data.datasets[1].data = trendPlot[1][1]
+        } else if ($(this).val() === "2") {
+            trendChart.data.datasets[0].data = trendPlot[2][0]
+            trendChart.data.datasets[1].data = trendPlot[2][1]
+        } else if ($(this).val() === "3") {
+            trendChart.data.datasets[0].data = trendPlot[3][0]
+            trendChart.data.datasets[1].data = trendPlot[3][1]
+        }
+
+        trendChart.update();
+
+
+    });
 
 }
 
@@ -689,18 +689,21 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-var trendPlot = [[],[],[],[]];
+var trendPlot = [
+    [],
+    [],
+    [],
+    []
+];
 
-trendPlot[0][0] = [getRandomInt(9000,15000),getRandomInt(9000,15000),getRandomInt(9000,15000)]
-trendPlot[1][0] = [getRandomInt(9000,15000),getRandomInt(9000,15000),getRandomInt(9000,15000)]
-trendPlot[2][0] = [getRandomInt(9000,15000),getRandomInt(9000,15000),getRandomInt(9000,15000)]
-trendPlot[3][0] = [getRandomInt(9000,15000),getRandomInt(9000,15000),getRandomInt(9000,15000)]
-trendPlot[0][1] = [getRandomInt(9000,15000),getRandomInt(9000,15000),getRandomInt(9000,15000)]
-trendPlot[1][1] = [getRandomInt(9000,15000),getRandomInt(9000,15000),getRandomInt(9000,15000)]
-trendPlot[2][1] = [getRandomInt(9000,15000),getRandomInt(9000,15000),getRandomInt(9000,15000)]
-trendPlot[3][1] = [getRandomInt(9000,15000),getRandomInt(9000,15000),getRandomInt(9000,15000)]
+trendPlot[0][0] = [getRandomInt(9000, 15000), getRandomInt(9000, 15000), getRandomInt(9000, 15000)]
+trendPlot[1][0] = [getRandomInt(9000, 15000), getRandomInt(9000, 15000), getRandomInt(9000, 15000)]
+trendPlot[2][0] = [getRandomInt(9000, 15000), getRandomInt(9000, 15000), getRandomInt(9000, 15000)]
+trendPlot[3][0] = [getRandomInt(9000, 15000), getRandomInt(9000, 15000), getRandomInt(9000, 15000)]
+trendPlot[0][1] = [getRandomInt(9000, 15000), getRandomInt(9000, 15000), getRandomInt(9000, 15000)]
+trendPlot[1][1] = [getRandomInt(9000, 15000), getRandomInt(9000, 15000), getRandomInt(9000, 15000)]
+trendPlot[2][1] = [getRandomInt(9000, 15000), getRandomInt(9000, 15000), getRandomInt(9000, 15000)]
+trendPlot[3][1] = [getRandomInt(9000, 15000), getRandomInt(9000, 15000), getRandomInt(9000, 15000)]
 
 
 trendPillar(null, trendPlot);
-
-
