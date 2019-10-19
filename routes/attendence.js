@@ -26,7 +26,8 @@ router.get('/:name_of_school', function(req, res, next) {
          inspection.attendance_of_p7_boys_on_visitation_day  as p7boys, 
          inspection.attendance_of_p7_girls_on_visitation_day  as p7girls 
          FROM ft_form_12 as inspection, ft_form_11 as details 
-         WHERE details.submission_id=inspection.school_name group by details.name_of_school;`;
+         WHERE details.submission_id=inspection.school_name 
+         and details.emis_number='${nameOfSchool}' group by details.name_of_school;`;
 
 
     connection.query(aQuery, function fill(err, result, ) {

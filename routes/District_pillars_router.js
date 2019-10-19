@@ -54,11 +54,11 @@ router.get('/:district', function(req, res, next) {
 FROM  ft_form_12  as inspection,  ft_form_11  as details 
 WHERE details.submission_id=inspection.school_name and details.district = '${nameOfDistrict}' group by details.district`;
 
-    console.log("")
-    console.log("")
-    console.log("aQuery", aQuery)
-    console.log("")
-    console.log("")
+    // console.log("")
+    // console.log("")
+    // console.log("aQuery", aQuery)
+    // console.log("")
+    // console.log("")
 
     connection.query(aQuery, function fill(err, result, ) {
         if (err) throw err;
@@ -87,7 +87,7 @@ WHERE details.submission_id=inspection.school_name and details.district = '${nam
 
             //Processing each piller2 for each district
             let piller2 = [];
-            for (let b = 1; b <= 8; b++) {
+            for (let b = 1; b <= 7; b++) {
                 let pillerCond = `pilar2cond${b}`;
                 piller2.push(result[i][pillerCond]);
             }
@@ -103,8 +103,8 @@ WHERE details.submission_id=inspection.school_name and details.district = '${nam
 
             //Processing each piller2 for each district
             let piller4 = [];
-            for (let b = 1; b <= 8; b++) {
-                let pillerCond = `pilar3cond${b}`;
+            for (let b = 1; b <= 4; b++) {
+                let pillerCond = `pilar4cond${b}`;
                 piller4.push(result[i][pillerCond]);
             }
             pillar4Array.push(piller4);
@@ -121,7 +121,7 @@ WHERE details.submission_id=inspection.school_name and details.district = '${nam
             pillar4Array: pillar4Array
         };
         // let girlsPlot = JSON.stringify(attendenceGirlsArray[0]);
-        console.log('districtConditionalPlot', districtConditionalPlot)
+        // console.log('districtConditionalPlot', districtConditionalPlot)
         res.send(districtConditionalPlot);
 
     })

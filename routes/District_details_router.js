@@ -35,20 +35,40 @@ router.get('/:district', function(req, res, next) {
 
     let nameOfDistrict = req.params.district;
 
-    const dQuery = `select distinct(details.district) as district, count(details.name_of_school) as Totalschools,
-    sum(inspection.number_of_boys_enrolled_in_p1)+sum(inspection.number_of_girls_enrolled_in_p1)+sum(inspection.number_of_boys_enrolled_in_p2)+
-    sum(inspection.number_of_girls_enrolled_in_p2)+sum(inspection.number_of_boys_enrolled_in_p3)+sum(inspection.number_of_girls_enrolled_in_p3)+
-    sum(inspection.number_of_boys_enrolled_in_p4)+sum(inspection.number_of_girls_enrolled_in_p4)+sum(inspection.number_of_boys_enrolled_in_p5)+
-    sum(inspection.number_of_girls_enrolled_in_p5)+sum(inspection.number_of_boys_enrolled_in_p6)+sum(inspection.number_of_girls_enrolled_in_p6)+sum(inspection.number_of_boys_enrolled_in_p7) +sum(inspection.number_of_girls_enrolled_in_p7) as Total, sum(inspection.number_of_boys_enrolled_in_p1)+sum(inspection.number_of_boys_enrolled_in_p2)+sum(inspection.number_of_boys_enrolled_in_p3)+sum(inspection.number_of_boys_enrolled_in_p4)+
-    sum(inspection.number_of_boys_enrolled_in_p5)+sum(inspection.number_of_boys_enrolled_in_p6)+sum(inspection.number_of_boys_enrolled_in_p7) as TotalBoys, sum(inspection.number_of_girls_enrolled_in_p1)+sum(inspection.number_of_girls_enrolled_in_p2)+sum(inspection.number_of_girls_enrolled_in_p3)+
-    sum(inspection.number_of_girls_enrolled_in_p4)+sum(inspection.number_of_girls_enrolled_in_p5)+sum(inspection.number_of_girls_enrolled_in_p6)+sum(inspection.number_of_girls_enrolled_in_p7)  as TotalGirls, count(inspection.date_of_inspection) as inspection_number,
-    DATE_FORMAT(max(inspection.date_of_inspection), '%D-%b-%Y') as last_inspection  FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name group by details.district`;
+    const dQuery = `select distinct(details.district) as district, 
+    count(details.name_of_school) as Totalschools,
+    sum(inspection.number_of_boys_enrolled_in_p1)+
+    sum(inspection.number_of_girls_enrolled_in_p1)+
+    sum(inspection.number_of_boys_enrolled_in_p2)+
+    sum(inspection.number_of_girls_enrolled_in_p2)+
+    sum(inspection.number_of_boys_enrolled_in_p3)+
+    sum(inspection.number_of_girls_enrolled_in_p3)+
+    sum(inspection.number_of_boys_enrolled_in_p4)+
+    sum(inspection.number_of_girls_enrolled_in_p4)+
+    sum(inspection.number_of_boys_enrolled_in_p5)+
+    sum(inspection.number_of_girls_enrolled_in_p5)+
+    sum(inspection.number_of_boys_enrolled_in_p6)+
+    sum(inspection.number_of_girls_enrolled_in_p6)+
+    sum(inspection.number_of_boys_enrolled_in_p7) +
+    sum(inspection.number_of_girls_enrolled_in_p7) as Total, 
+    sum(inspection.number_of_boys_enrolled_in_p1)+
+    sum(inspection.number_of_boys_enrolled_in_p2)+
+    sum(inspection.number_of_boys_enrolled_in_p3)+
+    sum(inspection.number_of_boys_enrolled_in_p4)+
+    sum(inspection.number_of_boys_enrolled_in_p5)+
+    sum(inspection.number_of_boys_enrolled_in_p6)+
+    sum(inspection.number_of_boys_enrolled_in_p7) as TotalBoys,
+     sum(inspection.number_of_girls_enrolled_in_p1)+
+     sum(inspection.number_of_girls_enrolled_in_p2)+
+     sum(inspection.number_of_girls_enrolled_in_p3)+
+    sum(inspection.number_of_girls_enrolled_in_p4)+
+    sum(inspection.number_of_girls_enrolled_in_p5)+
+    sum(inspection.number_of_girls_enrolled_in_p6)+
+    sum(inspection.number_of_girls_enrolled_in_p7)  as TotalGirls, 
+    count(inspection.date_of_inspection) as inspection_number,
+    DATE_FORMAT(max(inspection.date_of_inspection), '%D-%b-%Y') as last_inspection  FROM  ft_form_12 
+     as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name group by details.district`;
 
-    console.log("")
-    console.log("")
-    console.log(dQuery)
-    console.log("")
-    console.log("")
 
     let districtArray = [];
     let totalSchoolArray = [];

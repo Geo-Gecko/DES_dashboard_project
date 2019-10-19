@@ -26,7 +26,8 @@ router.get('/:district', function(req, res, next) {
     sum(inspection.attendance_of_p7_boys_on_visitation_day) as p7_boys,
     sum(inspection.attendance_of_p7_girls_on_visitation_day) as p7_girls  
     FROM  ft_form_12  as inspection,  ft_form_11  as details
-     WHERE details.submission_id=inspection.school_name group by details.district`;
+     WHERE details.submission_id=inspection.school_name and details.district = '${nameOfDistrict}' 
+     group by details.district`;
 
 
     connection.query(dQuery, function fill(err, result, ) {

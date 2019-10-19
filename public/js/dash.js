@@ -12,7 +12,7 @@ function ake(emisNumber) {
     axios.get(`/enrollment-stats/${value}`)
         .then(function(response) {
             // handle success
-            console.log(response.data);
+            //  console.log(response.data);
 
             let data = response.data;
             let school = data.school;
@@ -206,7 +206,7 @@ function myFunction(num) {
 //charts
 var myEnrolChart, myAttendChart, teacherRatio, StanceRatio, ClassroomRatio, myPillarChart;
 
-function char_enrollment(school, boysPlot, girlsPlot) {
+function char_enrollment(school, girlsPlot, boysPlot) {
     if (myEnrolChart) {
         myEnrolChart.destroy();
     }
@@ -224,14 +224,14 @@ function char_enrollment(school, boysPlot, girlsPlot) {
                 "p7"
             ],
             datasets: [{
-                    label: "Boys",
+                    label: "Girls",
                     backgroundColor: "pink",
                     borderColor: "red",
                     borderWidth: 1,
                     data: boysPlot
                 },
                 {
-                    label: "Girls",
+                    label: "Boys",
                     backgroundColor: "lightblue",
                     borderColor: "blue",
                     borderWidth: 1,
@@ -259,7 +259,7 @@ function char_enrollment(school, boysPlot, girlsPlot) {
     });
 }
 
-function chart_attendance(school, boysPlot, girlsPlot) {
+function chart_attendance(school, girlsPlot, boysPlot) {
     if (myAttendChart) {
         myAttendChart.destroy();
     }
@@ -277,7 +277,7 @@ function chart_attendance(school, boysPlot, girlsPlot) {
                 "P7"
             ],
             datasets: [{
-                    label: "Boys Attendence",
+                    label: "Girls Attendence",
                     backgroundColor: "rgba(255,10,13,0.1)",
                     borderColor: "red",
                     fillOpacity: .3,
@@ -286,7 +286,7 @@ function chart_attendance(school, boysPlot, girlsPlot) {
                     data: boysPlot
                 },
                 {
-                    label: "Girls Attendence",
+                    label: "Boys Attendence",
                     backgroundColor: "lightblue",
                     borderColor: "blue",
                     borderWidth: 1,

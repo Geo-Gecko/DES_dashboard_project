@@ -16,7 +16,8 @@ router.get('/:name_of_school', function(req, res, next) {
        details.sub_county as sub_county, details.parish_ward as parish, 
        DATE_FORMAT(MAX(inspection.date_of_inspection) ,'%d-%b-%Y') as  last_inspection, 
        count(inspection.date_of_inspection) as inspection_number FROM  ft_form_12  as inspection,  
-       ft_form_11  as details WHERE details.submission_id=inspection.school_name `;
+       ft_form_11  as details WHERE details.submission_id=inspection.school_name 
+        and details.emis_number = '${nameOfSchool}'`;
 
 
 
@@ -109,15 +110,15 @@ router.get('/:name_of_school', function(req, res, next) {
 
         }
 
-        console.log("SCHOOLS", schoolArray);
-        console.log("DISTRICT", districtArray);
-        console.log("COUNTY", countyArray);
-        console.log("SUBCOUNTY", subcountyArray);
-        console.log("EMIS NUMBER", emisArray);
-        console.log("PARISH", parishArray);
-        console.log("REGION", regionOfSchoolArray)
-        console.log("INSPECTION", inspectionArray);
-        console.log("lastest inspection", maxinspectionArray);
+        // console.log("SCHOOLS", schoolArray);
+        // console.log("DISTRICT", districtArray);
+        // console.log("COUNTY", countyArray);
+        // console.log("SUBCOUNTY", subcountyArray);
+        // console.log("EMIS NUMBER", emisArray);
+        // console.log("PARISH", parishArray);
+        // console.log("REGION", regionOfSchoolArray)
+        // console.log("INSPECTION", inspectionArray);
+        // console.log("lastest inspection", maxinspectionArray);
 
         let school = schoolArray[0];
         let distinctData = districtArray[0];

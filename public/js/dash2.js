@@ -3,13 +3,13 @@ function loadStats() {
 }
 
 $(document).ready(function() {
-    ake('kampala')
+    ake('Adjumani')
 });
 
 function ake(districtName) {
     //let e = document.getElementById("sel");
 
-    let value = districtName ? districtName : 'kampala';
+    let value = districtName ? districtName : 'Adjumani';
 
 
     //called for district details
@@ -57,7 +57,7 @@ function ake(districtName) {
 
 
             // call the chart function
-            chart_attendance_district(district, boysPlot, girlsPlot);
+            chart_attendance_district(district, girlsPlot, boysPlot);
         })
         .catch(function(error) {
             // handle error
@@ -162,7 +162,7 @@ function ake(districtName) {
     axios.get(`/districtpillars-stats/${value}`)
         .then(function(response) {
             // handle success
-            // console.log(response.data);
+            console.log(response.data);
 
             let data = response.data;
             let district = data.district;
@@ -193,7 +193,7 @@ var myEnrolChart, myAttendChart, teacherRatio, StanceRatio, ClassroomRatio, myPi
 
 
 //bar chart but is not dymaic it is hard coded values for district
-function chart_enrolment_district(district, boysPlot, girlsPlot) {
+function chart_enrolment_district(district, girlsPlot, boysPlot) {
     if (myEnrolChart) {
         myEnrolChart.destroy();
     }
@@ -211,14 +211,14 @@ function chart_enrolment_district(district, boysPlot, girlsPlot) {
                 "p7"
             ],
             datasets: [{
-                    label: "Boys",
+                    label: "Girls",
                     backgroundColor: "pink",
                     borderColor: "red",
                     borderWidth: 1,
                     data: boysPlot
                 },
                 {
-                    label: "Girls",
+                    label: "Boys",
                     backgroundColor: "lightblue",
                     borderColor: "blue",
                     borderWidth: 1,
@@ -251,7 +251,7 @@ function chart_enrolment_district(district, boysPlot, girlsPlot) {
 
 
 //bar chart but is not dymaic it is hard coded values for district for the attendance 
-function chart_attendance_district(district, boysPlot, girlsPlot) {
+function chart_attendance_district(district, girlsPlot, boysPlot) {
 
     if (myAttendChart) {
         myAttendChart.destroy();
@@ -271,14 +271,14 @@ function chart_attendance_district(district, boysPlot, girlsPlot) {
                 "p7"
             ],
             datasets: [{
-                    label: "Boys",
+                    label: "Girls",
                     backgroundColor: "rgba(255,10,13,0.1)",
                     borderColor: "red",
                     borderWidth: 1,
                     data: boysPlot
                 },
                 {
-                    label: "Girls",
+                    label: "Boys",
                     backgroundColor: "lightblue",
                     borderColor: "blue",
                     borderWidth: 1,
