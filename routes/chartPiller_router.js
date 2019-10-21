@@ -52,8 +52,8 @@ router.get('/:emis_number', function(req, res, next) {
         let schoolArray = [];
         let pillar1Array = [];
         let pillar2Array = [];
-        let = pillar3Array = [];
-        let = pillar4Array = [];
+        let pillar3Array = [];
+        let pillar4Array = [];
 
 
 

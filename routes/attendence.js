@@ -11,7 +11,7 @@ router.get('/:name_of_school', function(req, res, next) {
     let nameOfSchool = req.params.name_of_school;
 
     const aQuery = `SELECT inspection.school_name, details.name_of_school as name_of_school, 
-    details.emis_number as emis_number, inspection.attendance_of_p1_boys_on_visitation_day  as p1boys, 
+    details.emis_code as emis_number, inspection.attendance_of_p1_boys_on_visitation_day  as p1boys, 
     inspection.attendance_of_p1_girls_on_visitation_day  as p1girls,
      inspection.attendance_of_p2_boys_on_visitation_day  as p2boys, 
      inspection.attendance_of_p2_girls_on_visitation_day  as p2girls,
@@ -27,7 +27,7 @@ router.get('/:name_of_school', function(req, res, next) {
          inspection.attendance_of_p7_girls_on_visitation_day  as p7girls 
          FROM ft_form_12 as inspection, ft_form_11 as details 
          WHERE details.submission_id=inspection.school_name 
-         and details.emis_number='${nameOfSchool}' group by details.name_of_school;`;
+         group by details.name_of_school;`;
 
 
     connection.query(aQuery, function fill(err, result, ) {

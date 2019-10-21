@@ -329,40 +329,41 @@ function ratio_teach(school, p1top3Plot, p4top7Plot) {
     // };
 
     var config = {
-        type: 'doughnut',
+        type: 'bar',
         data: {
             datasets: [{
-                data: [1, p1top3Plot],
+                data: [1/p1top3Plot, 1/p4top7Plot, 1/53],
                 backgroundColor: [
-                    "rgb(150,93,162)",
+                    "rgb(38,34,98)",
+                    "rgb(38,34,98)",
                     "rgb(38,34,98)"
                 ],
                 // borderColor:[
                 //     "red",
                 //     "blue"
                 // ],
-            }, {
-                data: [1, p4top7Plot],
-                backgroundColor: [
-                    "rgb(150,93,162)",
-                    "rgb(38,34,98)"
-                ]
-            }, {
-                data: [1, 53],
-                backgroundColor: [
-                    "rgb(150,93,162)",
-                    "rgb(38,34,98)"
-                ],
             }],
             labels: [
-                "Teacher",
-                "Pupils "
+                "P1-P3",
+                "P4-P7 ",
+                "National"
             ]
         },
         options: {
             legend: {
-                position: "bottom",
+                display: false,
+                // position: "bottom",
             }
+            ,
+                scales: {
+                  yAxes: [{
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'TPR'
+                    }
+                  }]
+                }     
+              
         }
 
     };
@@ -379,37 +380,37 @@ function stance_ratio(school, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
     }
 
     var config = {
-        type: 'doughnut',
+        type: 'bar',
         data: {
             datasets: [{
-                data: [1, sprboysPlot],
+                data: [1/sprboysPlot,1/sprgirlsPlot, 1/ 40 ],
                 backgroundColor: [
-                    "rgb(150,93,162)",
-                    "rgb(38,34,98)"
-                ],
-            }, {
-                data: [1, sprgirlsPlot],
-                backgroundColor: [
-                    "rgb(150,93,162)",
-                    "rgb(38,34,98)"
-                ],
-            }, {
-                data: [1, 400],
-                backgroundColor: [
-                    "rgb(150,93,162)",
+                    "rgb(38,34,98)",
+                    "rgb(38,34,98)",
                     "rgb(38,34,98)"
                 ],
             }],
             labels: [
-                "Stance",
-                "Pupils "
+                "P1-P3",
+                "P4-P7 ",
+                "National"
             ]
         },
         options: {
             responsive: true,
             legend: {
-                position: "bottom",
+                display: false,
             }
+            ,
+                scales: {
+                  yAxes: [{
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'SPR'
+                    }
+                  }]
+                }     
+              
         }
     };
 
@@ -428,32 +429,21 @@ function class_ratio(school, cp1top3Plot, cp4top7Plot) {
     }
 
     var config = {
-        type: 'doughnut',
+        type: 'bar',
         data: {
             datasets: [{
-                data: [1, cp1top3Plot],
+                data: [1/cp1top3Plot,1/cp4top7Plot,1/53  ],
 
                 backgroundColor: [
-                    "rgb(150,93,162)",
-                    "rgb(38,34,98)"
-                ],
-            }, {
-                data: [1, cp4top7Plot],
-
-                backgroundColor: [
-                    "rgb(150,93,162)",
-                    "rgb(38,34,98)"
-                ],
-            }, {
-                data: [1, 53],
-                backgroundColor: [
-                    "rgb(150,93,162)",
+                    "rgb(38,34,98)",
+                    "rgb(38,34,98)",
                     "rgb(38,34,98)"
                 ],
             }],
             labels: [
-                "Classroom",
-                "Pupils "
+                "P1-P3",
+                "P4-P7 ",
+                "National"
             ]
         },
         title: {
@@ -463,8 +453,17 @@ function class_ratio(school, cp1top3Plot, cp4top7Plot) {
         options: {
             responsive: true,
             legend: {
-                position: "bottom",
-            }
+                display: false,
+            },
+                scales: {
+                  yAxes: [{
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'CPR'
+                    }
+                  }]
+                }     
+              
         }
     };
 

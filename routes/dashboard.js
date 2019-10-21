@@ -33,7 +33,7 @@ router.get('/enrollment-stats/:name_of_school', function(req, res, next) {
     // run query where school id
     // const limit = 5;
     const aQuery = `SELECT inspection.school_name, details.name_of_school as name_of_school,
-     details.emis_number as emis_number, inspection.number_of_boys_enrolled_in_p1  as p1boys,
+     details.emis_code as emis_number, inspection.number_of_boys_enrolled_in_p1  as p1boys,
       inspection. number_of_girls_enrolled_in_p1  as p1girls, 
       inspection.number_of_boys_enrolled_in_p2  as p2boys, 
       inspection.number_of_girls_enrolled_in_p2  as p2girls,
@@ -48,7 +48,7 @@ router.get('/enrollment-stats/:name_of_school', function(req, res, next) {
            inspection.number_of_boys_enrolled_in_p7  as p7boys, 
            inspection.number_of_girls_enrolled_in_p7  as p7girls
             FROM  ft_form_12  as inspection, ft_form_11 as details 
-            WHERE details.submission_id=inspection.school_name  and details.emis_number='${nameOfSchool}'
+            WHERE details.submission_id=inspection.school_name  and details.emis_code='${nameOfSchool}'
              group by  details.name_of_school;`;
 
     connection.query(aQuery, function fillGraph(err, result, ) {
