@@ -61,9 +61,9 @@ function resetHighlight(e) {
 function geojsonpolygonOptions(feature) {
     return {
         "fillColor": "#fff",
-        "weight": 0.7, 
-        "opacity": 1, 
-        "color": '#000', 
+        "weight": 0.7,
+        "opacity": 1,
+        "color": '#000',
         "fillOpacity": 0.5
     };
 }
@@ -97,11 +97,12 @@ function zoomToFeature(e, check) {
     let letterD = selectedRegion.charAt(0);
     let remainingD = selectedRegion.substr(1);
 
-    let RegionStringD = letterD+remainingD
+    let RegionStringD = letterD + remainingD
 
     if (mymap.hasLayer(schoolsJson)) {
         mymap.removeLayer(schoolsJson)
     }
+
 
     schoolCount = 0;
 
@@ -126,8 +127,8 @@ function zoomToFeature(e, check) {
 
     for (key in mymap['_layers']) {
         if (typeof mymap['_layers'][key]['feature'] !== 'undefined' && mymap['_layers'][key]['feature']['geometry']['type'] !== 'MultiPolygon') {
-          var l = mymap['_layers'][key];
-          var popup_html = "<h4>School Information</h4>" +
+            var l = mymap['_layers'][key];
+            var popup_html = "<h4>School Information</h4>" +
                 "<table class='popup-table'>" +
                 "<tr>" +
                 "<td class='attrib-name'>School Name:</td>" +
@@ -151,12 +152,12 @@ function zoomToFeature(e, check) {
                 "</tr>" +
                 "<tr>" +
                 "<td class='attrib-name'>Parish/Ward:</td>" +
-                " <td class='attrib-value'>"+ l.feature.properties['Parish\/Ward'] + "</td>" +
+                " <td class='attrib-value'>" + l.feature.properties['Parish\/Ward'] + "</td>" +
                 "</tr>" +
                 " </table>";
-          l.bindPopup(popup_html)
+            l.bindPopup(popup_html)
         }
-      } 
+    }
 
     ake(RegionStringD)
 }
@@ -171,12 +172,11 @@ function onEachFeature(feature, layer) {
         mouseout: resetHighlight,
         click: zoomToFeature
     });
-    layer.bindPopup(feature.properties.REGION);
 }
 
-geojson = L.geoJson(regions,{
-        style: geojsonpolygonOptions,
-        onEachFeature: onEachFeature
+geojson = L.geoJson(regions, {
+    style: geojsonpolygonOptions,
+    onEachFeature: onEachFeature
 }).addTo(mymap);
 
 var select = $('<select name="options" id="options" style="width: 100%;"></select>');
@@ -193,36 +193,29 @@ $('#regionDropdown').empty().append(select);
 
 $('#options').change(function () {
 
-    for(key in geojson['_layers']) {
+    for (key in geojson['_layers']) {
         let l = geojson['_layers'][key]
         l.setStyle({
             "fillColor": "#fff",
-            "weight": 0.7, 
-            "opacity": 1, 
-            "color": '#000', 
+            "weight": 0.7,
+            "opacity": 1,
+            "color": '#000',
             "fillOpacity": 0.3
         })
-        if(l.feature.properties.REGION === $(this).val()){
+        if (l.feature.properties.REGION === $(this).val()) {
             zoomToFeature(l, false);
-            // l.setStyle({
-            //     "fillColor": "#0f0",
-            //     "weight": 0.7, 
-            //     "opacity": 1, 
-            //     "color": '#0f0', 
-            //     "fillOpacity": 0.3
-            // })  
         }
     }
 
     let letter = $(this).val().charAt(0);
     let remaining = $(this).val().substr(1);
 
-    let RegionString = letter+remaining
+    let RegionString = letter + remaining
 
     ake(RegionString)
 })
 
-var info1 = L.control();
+var info1 = L.control({ position: 'bottomright' });
 
 info1.onAdd = function (mymap) {
     this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
@@ -234,17 +227,17 @@ info1.onAdd = function (mymap) {
 info1.update = function (props) {
     this._div.innerHTML = "<div id='legend' style='display: none'>" +
         "<svg class='head' width='100' height='100'>" +
-            "<circle cy='30' cx='10' r='0.4em' style='fill: #008000;'></circle>" +
-            "<circle cy='50' cx='10' r='0.4em' style='fill: #FFFF00;'></circle>" +
-            "<circle cy='70' cx='10' r='0.4em' style='fill: #FFA500;'></circle>" +
-            "<circle cy='90' cx='10' r='0.4em' style='fill: #FF0000;'></circle>" +
-            "<text class='legend-text' x='25' y='25' dy='0.8em' style='color: white;'>Grade A</text>" +
-            "<text class='legend-text' x='25' y='45' dy='0.8em' style='color: white;'>Grade B</text>" +
-            "<text class='legend-text' x='25' y='65' dy='0.8em' style='color: white;'>Grade C</text>" +
-            "<text class='legend-text' x='25' y='85' dy='0.8em' style='color: white;'>Grade D</text>" +
-            "<text class='legend-title' x='0' y='0' font-weight='bold' dy='0.8em'>Legend</text>" +
+        "<circle cy='30' cx='10' r='0.4em' style='fill: #008000;'></circle>" +
+        "<circle cy='50' cx='10' r='0.4em' style='fill: #FFFF00;'></circle>" +
+        "<circle cy='70' cx='10' r='0.4em' style='fill: #FFA500;'></circle>" +
+        "<circle cy='90' cx='10' r='0.4em' style='fill: #FF0000;'></circle>" +
+        "<text class='legend-text' x='25' y='25' dy='0.8em' style='color: white;'>Grade A</text>" +
+        "<text class='legend-text' x='25' y='45' dy='0.8em' style='color: white;'>Grade B</text>" +
+        "<text class='legend-text' x='25' y='65' dy='0.8em' style='color: white;'>Grade C</text>" +
+        "<text class='legend-text' x='25' y='85' dy='0.8em' style='color: white;'>Grade D</text>" +
+        "<text class='legend-title' x='0' y='0' font-weight='bold' dy='0.8em'>Legend</text>" +
         "</svg>" +
-    "</div>";
+        "</div>";
 };
 
 info1.addTo(mymap);

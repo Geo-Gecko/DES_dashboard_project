@@ -56,7 +56,8 @@ function ake(regionName) {
             let girlsPlot = JSON.parse(data.girls).map(myFunction);
 
             // call the chart function
-            chart_enrolment_region(region, girlsPlot, boysPlot);
+            // chart_enrolment_region(region, girlsPlot, boysPlot);
+            dataCollection('enrollment', region, boysPlot, girlsPlot);
         })
         .catch(function(error) {
             // handle error
@@ -81,6 +82,8 @@ function ake(regionName) {
 
             // call the chart function
             chart_attendance_region(region, boysPlot, girlsPlot);
+
+            dataCollection('attendence', region, boysPlot, girlsPlot);
         })
         .catch(function(error) {
             // handle error
@@ -162,17 +165,35 @@ function ake(regionName) {
     axios.get(`/nationalPillars-stats/${value}`)
         .then(function(response) {
             // handle success
-            //    console.log(response.data);
 
             let data = response.data;
             let region = data.region;
+            // let pillarOne = data.regionConditionalPlot[0];
+            // let pillarTwo = data.regionConditionalPlot[1];
+            // let pillarThree = data.regionConditionalPlot[2];
+            // let pillarFour = data.regionConditionalPlot[3];
+
+            
+            function generateAverage(array) {
+                var sum = 0;
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i]) {
+                        sum += parseInt(array[i], 10); //don't forget to add the base
+                    }
+                }
+
+                var avg = sum / array.length;
+                return avg;
+            }
+            // let pillarSummary = [generateAverage(pillarOne), generateAverage(pillarTwo), generateAverage(pillarThree), generateAverage(pillarFour)]
+
 
             // console.log(data)
 
-            let regionConditionalPlot = data.regionConditionalPlot;
+            // let regionConditionalPlot = data.regionConditionalPlot;
             // console.log(conditionalPlot);
             // let girlsPlot = JSON.parse(data.girls).map(myFunction);
-            chartPillarRegion(region, regionConditionalPlot);
+            chartPillarRegion(region)//, pillarOne, pillarTwo, pillarThree, pillarFour, pillarSummary);
 
         })
         .catch(function(error) {
@@ -191,10 +212,38 @@ function myFunction(num) {
 }
 
 
+function generateSum(array) {
+    var sum = 0;
+    for (var i = 0; i < array.length; i++) {
+        if (array[i]) {
+            sum += parseInt(array[i], 10); //don't forget to add the base
+        }
+    }
+    return sum;
+}
+
+var data = {
+    "attendance": { values: [] },
+    "enrollment": { values: [] }
+};
+
+function dataCollection(type, region, boysPlot, girlsPlot) {
+
+    if (type === 'attendence') {
+        data.attendance.values = [generateSum(boysPlot), generateSum(girlsPlot)]
+    }
+    else {
+        data.enrollment.values = [generateSum(boysPlot), generateSum(girlsPlot)]
+    }
+    if (data.attendance.values.length === 2 && data.enrollment.values.length === 2) {
+        chart_enrolment_region(region, data);
+    }
+}
+
 var myEnrolChart, myAttendChart, teacherRatio, StanceRatio, ClassroomRatio, myPillarChart;
 
 //all the chart for the region below 
-function chart_enrolment_region(region, girlsPlot, boysPlot) {
+function chart_enrolment_region(region, data) {
     if (myEnrolChart) {
         myEnrolChart.destroy();
     }
@@ -203,27 +252,23 @@ function chart_enrolment_region(region, girlsPlot, boysPlot) {
         type: 'bar',
         data: {
             labels: [
-                "p1",
-                "p2",
-                "p3",
-                "p4",
-                "p5",
-                "p6",
-                "p7"
+                "Enrolment",
+                "Attendence"
             ],
-            datasets: [{
-                    label: "Girls",
-                    backgroundColor: "pink",
-                    borderColor: "red",
-                    borderWidth: 1,
-                    data: boysPlot
-                },
+            datasets: [
                 {
                     label: "Boys",
                     backgroundColor: "lightblue",
                     borderColor: "blue",
                     borderWidth: 1,
-                    data: girlsPlot
+                    data: [data.enrollment.values[0], data.attendance.values[0]]
+                },
+                {
+                    label: "Girls",
+                    backgroundColor: "pink",
+                    borderColor: "red",
+                    borderWidth: 1,
+                    data: [data.enrollment.values[1], data.attendance.values[1]]
                 }
             ]
         },
@@ -260,15 +305,7 @@ function chart_attendance_region(region, girlsPlot, boysPlot) {
     myAttendChart = new Chart(ctxx, {
         type: 'line',
         data: {
-            labels: [
-                "p1",
-                "p2",
-                "p3",
-                "p4",
-                "p5",
-                "p6",
-                "p7"
-            ],
+            labels: [["First Term", ['2017']], ["Second Term", ['2017']], ["Third Term", ['2017']], ["First Term", ['2018']], ["Second Term", ['2018']], ["Third Term", ['2018']]],
             datasets: [{
                     label: "Girls",
                     backgroundColor: "rgba(255,10,13,0.1)",
@@ -316,38 +353,37 @@ function ratio_teach_region(region, p1top3Plot, p4top7Plot) {
     }
 
     var config = {
-        type: 'doughnut',
+        type: 'bar',
         data: {
             datasets: [{
-                data: [100, p1top3Plot],
+                data: [1 / p1top3Plot, 100 / p4top7Plot, 1 / 53],
                 backgroundColor: [
-                    "rgb(150,93,162)",
-                    "rgb(38,34,98)"
-                ],
-            }, {
-                data: [100, p4top7Plot],
-                backgroundColor: [
-                    "rgb(150,93,162)",
-                    "rgb(38,34,98)"
-                ],
-            }, {
-                data: [1, 53],
-                backgroundColor: [
-                    "rgb(150,93,162)",
+                    "rgb(38,34,98)",
+                    "rgb(38,34,98)",
                     "rgb(38,34,98)"
                 ],
             }],
             labels: [
-                "Teacher",
-                "Pupils / Teacher"
+                "P1-P3",
+                "P4-P7",
+                "National"
 
             ]
-        },
-        options: {
-            responsive: true,
+        }, options: {
             legend: {
-                position: "bottom",
+                display: false,
+                // position: "bottom",
             }
+            ,
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'TPR'
+                    }
+                }]
+            }
+
         }
     };
 
@@ -369,40 +405,41 @@ function stance_ratio_region(region, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
     }
 
     var config = {
-        type: 'doughnut',
+        type: 'bar',
         data: {
             datasets: [{
-                data: [100, sprboysPlot],
+                data: [1 / sprboysPlot, 100 / sprgirlsPlot, 1 / 40],
                 backgroundColor: [
-                    "rgb(150,93,162)",
-                    "rgb(38,34,98)"
-                ],
-            }, {
-                data: [100, sprgirlsPlot],
-                backgroundColor: [
-                    "rgb(150,93,162)",
-                    "rgb(38,34,98)"
-                ],
-            }, {
-                data: [1, 400],
-                backgroundColor: [
-                    "rgb(150,93,162)",
+                    "rgb(38,34,98)",
+                    "rgb(38,34,98)",
                     "rgb(38,34,98)"
                 ],
             }],
             labels: [
-                "Stance",
-                "Pupils / Stance"
+                "P1-P3",
+                "P4-P7",
+                "National"
 
             ]
         },
         options: {
-            responsive: true,
             legend: {
-                position: "bottom",
+                display: false,
+                // position: "bottom",
             }
+            ,
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'SPR'
+                    }
+                }]
+            }
+
         }
     };
+
 
     var ctx = document.getElementById("region_2").getContext("2d");
     StanceRatio = new Chart(ctx, config);
@@ -420,43 +457,41 @@ function class_ratio_region(region, cp1top3Plot, cp4top7Plot) {
     }
 
     var config = {
-        type: 'doughnut',
+        type: 'bar',
         data: {
             datasets: [{
-                data: [100, cp1top3Plot],
-
+                data: [1 / cp1top3Plot, 1 / cp4top7Plot, 1 / 53],
                 backgroundColor: [
-                    "rgb(150,93,162)",
-                    "rgb(38,34,98)"
-                ],
-            }, {
-                data: [100, cp4top7Plot],
-
-                backgroundColor: [
-                    "rgb(150,93,162)",
-                    "rgb(38,34,98)"
-                ],
-            }, {
-                data: [1, 53],
-                backgroundColor: [
-                    "rgb(150,93,162)",
+                    "rgb(38,34,98)",
+                    "rgb(38,34,98)",
                     "rgb(38,34,98)"
                 ],
             }],
             labels: [
-                "Classroom",
-                "Pupils / Classroom"
+                "P1-P3",
+                "P4-P7",
+                "National"
             ]
         },
         title: {
-            display: true,
-            text: region
+            display: false,
+            // text: district
         },
         options: {
-            responsive: true,
             legend: {
-                position: "bottom",
+                display: false,
+                // position: "bottom",
             }
+            ,
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'CPR'
+                    }
+                }]
+            }
+
         }
     };
 
@@ -470,6 +505,17 @@ function chartPillarRegion(region, regionConditionalPlot) {
     if (myPillarChart) {
         myPillarChart.destroy();
     }
+
+    var trendPlot = [[], [], [], []];
+
+    trendPlot[0][0] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
+    trendPlot[0][1] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
+    trendPlot[0][2] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
+    trendPlot[0][3] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
+    trendPlot[0][4] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
+
+
+    trendPillar(null, trendPlot);
 
 
     var barOptions_stacked = {
@@ -485,13 +531,16 @@ function chartPillarRegion(region, regionConditionalPlot) {
                 ticks: {
                     beginAtZero: true,
                     fontFamily: "'Open Sans Bold', sans-serif",
-                    fontSize: 0
+                    fontSize: 11,
+                    autoSkip: false,
+                    maxRotation: 0,
+                    minRotation: 0
                 },
                 scaleLabel: {
-                    display: false
+                    display: true
                 },
                 gridLines: {
-                    display: false
+                    display: true
                 },
                 stacked: true
             }],
@@ -504,7 +553,7 @@ function chartPillarRegion(region, regionConditionalPlot) {
                 },
                 ticks: {
                     fontFamily: "'Open Sans Bold', sans-serif",
-                    fontSize: 11
+                    fontSize: 0
                 },
                 stacked: true
             }]
@@ -514,7 +563,7 @@ function chartPillarRegion(region, regionConditionalPlot) {
             position: "bottom",
             labels: {
                 // fontColor: '#FFA500'
-                filter: function(item, chart) {
+                filter: function (item, chart) {
                     // Logic to remove a particular legend item goes here
                     return !item.text.includes('hide');
                 }
@@ -522,86 +571,84 @@ function chartPillarRegion(region, regionConditionalPlot) {
         }
     };
 
-    function colourPicker(d) {
-        if (d === 1) {
-            return "#edf8fb"
-        } else if (d === 2) {
-            return "#b3cde3"
-        } else if (d === 3) {
-            return "#8c96c6"
-        } else if (d === 4) {
-            return "#88419d"
-        }
-    }
-
-    var chosenColours = [];
-    regionConditionalPlot[0].forEach(function(d, i) {
-        chosenColours.push(colourPicker(parseInt(d)));
-    })
-
-    function getRandomInt(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    regionConditionalPlot[1] = [getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3)]
-
-    regionConditionalPlot[2] = [getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3)]
-
-    regionConditionalPlot[3] = [getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3), getRandomInt(2, 3)]
-
-
-
     var ctx = document.getElementById("region_pillars");
     myPillarChart = new Chart(ctx, {
-        type: 'horizontalBar',
+        type: 'bar',
         data: {
-            labels: ["1.Condition of school building", "2.Classroom infrastucture", "3.Sanitary facilities", "4.Timetabling", "5.Teacher deployment", "6.Disciplinary policy", "7.Inclusive school practice", "8.Gender Sensitive School"],
+            labels: [["Pillar 1:", "Learning Environment"], ["Pillar 2:", "School Management", "and HT Performance"], ["Pillar 3:", "Effectiveness of", "Teaching and Learning"], ["Pillar 4:", "Involvement of", "Parents and", "Community"]],
 
-            datasets: [{
-                label: 'hide',
-                data: [1, 1, 1, 1, 1, 1, 1, 1],
-                backgroundColor: chosenColours,
-            }, {
-                label: '25% - 40%',
-                backgroundColor: "#edf8fb"
-            }, {
-                label: '41% - 60%',
-                backgroundColor: "#b3cde3"
-            }, {
-                label: '61% - 80%',
-                backgroundColor: "#8c96c6"
-            }, {
-                label: '81% - 100%',
-                backgroundColor: "#88419d"
-            }]
+            datasets: [
+                {
+                    label: '25% - 40%',
+                    data: [getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25)],
+                    backgroundColor: "#FF0000"
+                }, {
+                    label: '41% - 60%',
+                    data: [getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25)],
+                    backgroundColor: "#FFA500"
+                }, {
+                    label: '61% - 80%',
+                    data: [getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25)],
+                    backgroundColor: "#FFFF00"
+                }, {
+                    label: '81% - 100%',
+                    data: [getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25)],
+                    backgroundColor: "#008000"
+                }]
         },
         options: barOptions_stacked,
     });
 
     $(document).on('change', '#region', function() {
 
+        var colourChanged = [];
+
         if ($(this).val() === "0") {
-            myPillarChart.data.labels = ["1.Condition of school building", "2.Classroom infrastucture", "3.Sanitary facilities", "4.Timetabling", "5.Teacher deployment", "6.Disciplinary policy", "7.Inclusive school practice", "8.Gender Sensitive School"]
+            myPillarChart.data.labels = [["1.Condition of", "school building"], ["2.Classroom", "infrastucture"], ["3.Sanitary", "facilities"], "4.Timetabling", ["5.Teacher", "deployment"], ["6.Disciplinary", "policy"], ["7.Inclusive school", "practice"], ["8.Gender", "Sensitive School"]]
+            myPillarChart.data.labels.forEach(function (d, i) {
+                myPillarChart.data.datasets[0].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[1].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[2].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[3].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                // myPillarChart.data.datasets[i].data
+            })
         } else if ($(this).val() === "1") {
-            myPillarChart.data.labels = ["1.Teacher and pupil attendance", "2.School Improvement plan", "3.SIP activities", "4.Financial management", "5.Systematic monitoring and evaluation of teacher performance", "6.Continuous professional development", "7.Systematic monitoring of pupil performance"]
+            myPillarChart.data.labels = ["1.Teacher and pupil attendance", "2.School Improvement plan", "3.SIP activities", "4.Financial management", ["5.Systematic monitoring and", "evaluation of teacher performance"], "6.Continuous professional development", "7.Systematic monitoring of pupil performance"]
+            myPillarChart.data.labels.forEach(function (d, i) {
+                myPillarChart.data.datasets[0].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[1].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[2].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[3].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+            })
         } else if ($(this).val() === "2") {
             myPillarChart.data.labels = ["1.Lesson planning", "2,Lesson delivery", "3.Teaching and learning materials", "4.Learner particiption", "5,Learning", "6.Teachers' rapport with learners", "7.Classroom environment", "8.Pupils' work"]
+            myPillarChart.data.labels.forEach(function (d, i) {
+                myPillarChart.data.datasets[0].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[1].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[2].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[3].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+            })
         } else if ($(this).val() === "3") {
-            myPillarChart.data.labels = ["1. School management committee", "2. School communication with parents/community", "3. Teacher communication with parents", "4. Involvement of parents"]
+            myPillarChart.data.labels = ["1. School management committee", ["2. School communication", "ith parents/community"], "3. Teacher communication with parents", "4. Involvement of parents"]
+            myPillarChart.data.labels.forEach(function (d, i) {
+                myPillarChart.data.datasets[0].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[1].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[2].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[3].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+            })
+        } else if ($(this).val() === "4") {
+            myPillarChart.data.labels = [["Pillar 1:", "Learning Environment"], ["Pillar 2:", "School Management", "and HT Performance"], ["Pillar 3:", "Effectiveness of", "Teaching and Learning"], ["Pillar 4:", "Involvement of", "Parents and", "Community"]]
+            myPillarChart.data.labels.forEach(function (d, i) {
+                myPillarChart.data.datasets[0].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[1].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[2].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+                myPillarChart.data.datasets[3].data = [getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25),getRandomInt(10, 25)]
+            })
         }
 
+        // console.log(districtConditionalPlot)
 
-        var colourChanged = [];
-        regionConditionalPlot[parseInt($(this).val())].forEach(function(d, i) {
-            if (i < myPillarChart.data.labels.length) {
-                colourChanged.push(colourPicker(parseInt(d)));
-
-            }
-        })
-
-        myPillarChart.data.datasets[0].backgroundColor = colourChanged;
+        // myPillarChart.data.datasets[0].backgroundColor = colourChanged;
         myPillarChart.update();
 
 
@@ -625,28 +672,84 @@ function trendPillar(school, trendPlot) {
     var trendChart = new Chart(document.getElementById("region_lineChart"), {
         type: 'line',
         data: {
-            labels: ["First Term", "Second Term", "Third Term"],
+            labels: [["First Term", ['2017']], ["Second Term", ['2017']], ["Third Term", ['2017']], ["First Term", ['2018']], ["Second Term", ['2018']], ["Third Term", ['2018']]],
             datasets: [{
-                data: trendPlot[0][0],
-                label: "Enrollment",
-                borderColor: "#3e95cd",
+                data: trendPlot[0][4],
+                lineTension: 0,
+                label: "Pillar Summary",
+                borderColor: "rgb(242,101,34)",
                 fill: false
-            }, {
-                data: trendPlot[0][1],
-                label: "Attendance",
-                borderColor: "#8e5ea2",
+            }
+                , {
+                data: [1, 4],
+                label: "hide",
+                borderColor: "rgb(255,255,255)",
                 fill: false
-            }]
+            }
+            ]
         },
         options: {
             title: {
                 display: true,
                 text: ''
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Period'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Grade'
+                    },
+                    ticks: {
+                        min: 0,
+                        max: 5,
+                        stepSize: 1,
+                        suggestedMin: 0.5,
+                        suggestedMax: 5.5,
+                        callback: function (label, index, labels) {
+                            switch (label) {
+                                case 0:
+                                    return '';
+                                case 1:
+                                    return 'D';
+                                case 2:
+                                    return 'C';
+                                case 3:
+                                    return 'B';
+                                case 4:
+                                    return 'A';
+                                case 5:
+                                    return '';
+                            }
+                        }
+                    },
+                    gridLines: {
+                        display: true
+                    }
+                }]
+            },
+            legend: {
+                display: true,
+                position: "bottom",
+                labels: {
+                    // fontColor: '#FFA500'
+                    filter: function (item, chart) {
+                        // Logic to remove a particular legend item goes here
+                        return !item.text.includes('hide');
+                    }
+                }
             }
         }
     });
 
-    $(document).on('change', '#trendSelector', function() {
+    $(document).on('change', '#pillarsTrend', function () {
         // console.log($(this).val());
         // Does some stuff and logs the event to the console
 
@@ -654,16 +757,23 @@ function trendPillar(school, trendPlot) {
 
         if ($(this).val() === "0") {
             trendChart.data.datasets[0].data = trendPlot[0][0]
-            trendChart.data.datasets[1].data = trendPlot[0][1]
+            trendChart.data.datasets[0].label = "Pillar 1"
         } else if ($(this).val() === "1") {
-            trendChart.data.datasets[0].data = trendPlot[1][0]
-            trendChart.data.datasets[1].data = trendPlot[1][1]
+            trendChart.data.datasets[0].data = trendPlot[0][1]
+            trendChart.data.datasets[0].label = "Pillar 2"
+
         } else if ($(this).val() === "2") {
-            trendChart.data.datasets[0].data = trendPlot[2][0]
-            trendChart.data.datasets[1].data = trendPlot[2][1]
+            trendChart.data.datasets[0].data = trendPlot[0][2]
+            trendChart.data.datasets[0].label = "Pillar 3"
+
         } else if ($(this).val() === "3") {
-            trendChart.data.datasets[0].data = trendPlot[3][0]
-            trendChart.data.datasets[1].data = trendPlot[3][1]
+            trendChart.data.datasets[0].data = trendPlot[0][3]
+            trendChart.data.datasets[0].label = "Pillar 4"
+
+        } else if ($(this).val() === "4") {
+            trendChart.data.datasets[0].data = trendPlot[0][4]
+            trendChart.data.datasets[0].label = "Pillar Summary"
+
         }
 
         trendChart.update();
@@ -678,22 +788,3 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
-var trendPlot = [
-    [],
-    [],
-    [],
-    []
-];
-
-trendPlot[0][0] = [getRandomInt(18000, 30000), getRandomInt(18000, 30000), getRandomInt(18000, 30000)]
-trendPlot[1][0] = [getRandomInt(18000, 30000), getRandomInt(18000, 30000), getRandomInt(18000, 30000)]
-trendPlot[2][0] = [getRandomInt(18000, 30000), getRandomInt(18000, 30000), getRandomInt(18000, 30000)]
-trendPlot[3][0] = [getRandomInt(18000, 30000), getRandomInt(18000, 30000), getRandomInt(18000, 30000)]
-trendPlot[0][1] = [getRandomInt(18000, 30000), getRandomInt(18000, 30000), getRandomInt(18000, 30000)]
-trendPlot[1][1] = [getRandomInt(18000, 30000), getRandomInt(18000, 30000), getRandomInt(18000, 30000)]
-trendPlot[2][1] = [getRandomInt(18000, 30000), getRandomInt(18000, 30000), getRandomInt(18000, 30000)]
-trendPlot[3][1] = [getRandomInt(18000, 30000), getRandomInt(18000, 30000), getRandomInt(18000, 30000)]
-
-
-trendPillar(null, trendPlot);

@@ -507,7 +507,7 @@ function chartPillarDistrict(district, pillarOne, pillarTwo, pillarThree, pillar
     if (myPillarChart) {
         myPillarChart.destroy();
     }
-
+    
 
     var trendPlot = [[], [], [], []];
 
@@ -580,11 +580,6 @@ function chartPillarDistrict(district, pillarOne, pillarTwo, pillarThree, pillar
             labels: [["Pillar 1:", "Learning Environment"], ["Pillar 2:", "School Management", "and HT Performance"], ["Pillar 3:", "Effectiveness of", "Teaching and Learning"], ["Pillar 4:", "Involvement of", "Parents and", "Community"]],
 
             datasets: [
-                //     {
-                //     label: 'hide',
-                //     data: [1, 1, 1, 1, 1, 1, 1, 1],
-                //     backgroundColor: chosenColours,
-                // },
                 {
                     label: '25% - 40%',
                     data: [getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25)],
