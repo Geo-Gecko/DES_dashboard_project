@@ -7,6 +7,10 @@ var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(mymap);
 
+mymap.createPane('schools');
+
+mymap.getPane('schools').style.zIndex = 650;
+
 
 var info = L.control();
 
@@ -50,7 +54,7 @@ function resetHighlight(e) {
         "weight": 0.7,
         "opacity": 1,
         "color": '#000',
-        "fillOpacity": 0.3
+        "fillOpacity": 0
     });
 }
 
@@ -61,71 +65,103 @@ function geojsonpolygonOptions(feature) {
         "weight": 0.7,
         "opacity": 1,
         "color": '#000',
-        "fillOpacity": 0.5
+        "fillOpacity": 0
     };
 }
 
-var geojsonMarkerOptions = {
-    radius: 6,
-    fillColor: "#fe9929",
-    color: "#000",
-    weight: 0.6,
-    opacity: 1,
-    fillOpacity: 1
-};
+function getColour(d) {
+    if (d === "A") {
+        return "#008000"
+    } else if (d === "B") {
+        return "#FFFF00"
+    } else if (d === "C") {
+        return "#FFA500"
+    } else if (d === "D") {
+        return "#FF0000"
+    }
+}
+
 
 var schoolsJson;
 
-function zoomToFeature(e) {
-    mymap.fitBounds(e.target.getBounds());
-    let selectedDistrict = e.target.feature.properties.DNAME2014;
+var schoolCount = 0;
+
+function zoomToFeature(e, check) {
+    if (check == undefined) {
+        mymap.fitBounds(e.target.getBounds());
+        var selectedDistrict = e.target.feature.properties.DNAME2014;
+    } else {
+        mymap.fitBounds(e.getBounds());
+        var selectedDistrict = e.feature.properties.DNAME2014;
+    }
 
     let letterD = selectedDistrict.charAt(0);
     let remainingD = selectedDistrict.substr(1);
 
     let districtStringD = letterD + remainingD
 
-    // ake(districtStringD)
-
-
     if (mymap.hasLayer(schoolsJson)) {
         mymap.removeLayer(schoolsJson)
     }
 
+    schoolCount = 0;
+
     schoolsJson = L.geoJson(schools, {
         pointToLayer: function (feature, latlng) {
-            console.log(districtStringD);
-            console.log(feature.properties.District.toUpperCase());
-
+            var geojsonMarkerOptions = {
+                radius: 6,
+                fillColor: getColour(feature.properties.Grade),
+                color: "#000",
+                weight: 0.6,
+                opacity: 1,
+                fillOpacity: 1
+            };
             if (districtStringD === feature.properties.District.toUpperCase()) {
-                console.log(true)
+                schoolCount++;
                 return L.circleMarker(latlng, geojsonMarkerOptions);
             }
-        },
-        onEachFeature: function (features, featureLayer) {
-            var popup_html = "<h4>School Info</h4>" +
+        }
+    }).addTo(mymap);
+
+    $('#legend').show();
+
+    for (key in mymap['_layers']) {
+        if (typeof mymap['_layers'][key]['feature'] !== 'undefined' && mymap['_layers'][key]['feature']['geometry']['type'] !== 'MultiPolygon') {
+            var l = mymap['_layers'][key];
+            var popup_html = "<h4>School Information</h4>" +
                 "<table class='popup-table'>" +
                 "<tr>" +
                 "<td class='attrib-name'>School Name:</td>" +
-                "<td class='attrib-value'>" + features.properties['School Name'] + "</td>" +
+                "<td class='attrib-value'>" + l.feature.properties['School Name'] + "</td>" +
                 "</tr>" +
                 "<tr>" +
                 "<td class='attrib-name'>EMIS Code:</td>" +
-                "<td class='attrib-value'>" + features.properties['EMIS NO'] + "</td>" +
+                "<td class='attrib-value'>" + l.feature.properties['EMIS NO'] + "</td>" +
                 " </tr>" +
                 "<tr>" +
-                "<td class='attrib-name'>Location:</td>" +
-                " <td class='attrib-value'>" + features.properties.District + " | " + features.properties.Subcounty + " | " + features.properties['Parish\/Ward'] + "</td>" +
+                "<td class='attrib-name'>Ranking:</td>" +
+                " <td class='attrib-value'><b>" + l.feature.properties.Ranking + "</b> Out of " + schoolCount + " schools in " + l.feature.properties.District + "</td>" +
+                "</tr>" +
+                "<tr>" +
+                "<td class='attrib-name'>District:</td>" +
+                " <td class='attrib-value'>" + l.feature.properties.District + "</td>" +
+                "</tr>" +
+                "<tr>" +
+                "<td class='attrib-name'>Subcounty:</td>" +
+                " <td class='attrib-value'>" + l.feature.properties.Subcounty + "</td>" +
+                "</tr>" +
+                "<tr>" +
+                "<td class='attrib-name'>Parish/Ward:</td>" +
+                " <td class='attrib-value'>" + l.feature.properties['Parish\/Ward'] + "</td>" +
                 "</tr>" +
                 " </table>";
-            featureLayer.bindPopup(popup_html);
-            featureLayer.on('click', function (e) {
-                mymap.setView(e.latlng, 8)
-                ake(features.properties['EMIS NO']);
-            });
-
+            l.bindPopup(popup_html)
         }
-    }).addTo(mymap);
+    }
+
+
+
+    ake(districtStringD)
 
 }
 
@@ -168,14 +204,14 @@ $('#options').change(function () {
             "fillOpacity": 0.3
         })
         if (l.feature.properties.DNAME2014 === $(this).val()) {
-            mymap.fitBounds(l.getBounds());
-            l.setStyle({
-                "fillColor": "#0f0",
-                "weight": 0.7,
-                "opacity": 1,
-                "color": '#0f0',
-                "fillOpacity": 0.3
-            })
+            zoomToFeature(l, false);
+            // l.setStyle({
+            //     "fillColor": "#0f0",
+            //     "weight": 0.7,
+            //     "opacity": 1,
+            //     "color": '#0f0',
+            //     "fillOpacity": 0.3
+            // })
         }
     }
 
@@ -186,3 +222,35 @@ $('#options').change(function () {
 
     ake(districtString)
 })
+
+
+
+var info1 = L.control({ position: 'bottomright' });
+
+info1.onAdd = function (mymap) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info1.update = function (props) {
+    this._div.innerHTML = 
+    "<div id='legend' style='display: none'>" +
+        "<svg class='head' width='100' height='100'>" +
+            "<circle cy='30' cx='10' r='0.4em' style='fill: #008000;'></circle>" +
+            "<circle cy='50' cx='10' r='0.4em' style='fill: #FFFF00;'></circle>" +
+            "<circle cy='70' cx='10' r='0.4em' style='fill: #FFA500;'></circle>" +
+            "<circle cy='90' cx='10' r='0.4em' style='fill: #FF0000;'></circle>" +
+            "<text class='legend-text' x='25' y='25' dy='0.8em' style='color: white;'>Grade A</text>" +
+            "<text class='legend-text' x='25' y='45' dy='0.8em' style='color: white;'>Grade B</text>" +
+            "<text class='legend-text' x='25' y='65' dy='0.8em' style='color: white;'>Grade C</text>" +
+            "<text class='legend-text' x='25' y='85' dy='0.8em' style='color: white;'>Grade D</text>" +
+            "<text class='legend-title' x='0' y='0' font-weight='bold' dy='0.8em'>Legend</text>" +
+        "</svg>" +
+    "</div>";
+};
+
+info1.addTo(mymap);
+
+
