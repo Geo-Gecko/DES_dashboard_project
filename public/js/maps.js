@@ -18,32 +18,30 @@ var geojsonMarkerOptions = {
 };
 
 
-
 geojson = L.geoJson(schools, {
     pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, geojsonMarkerOptions);
     },
     onEachFeature: function (features, featureLayer) {
         var popup_html = "<h4>School Info</h4>" +
-          "<table class='popup-table'>" +
-              "<tr>" +
-                  "<td class='attrib-name'>School Name:</td>" +
-                  "<td class='attrib-value'>"+ features.properties['School Name'] + "</td>" +
-              "</tr>" +
-              "<tr>" +
-                    "<td class='attrib-name'>EMIS Code:</td>" +
-                    "<td class='attrib-value'>"+ features.properties['EMIS NO'] + "</td>" +
-             " </tr>" +
-              "<tr>" +
-                    "<td class='attrib-name'>Location:</td>" +
-                   " <td class='attrib-value'>"+ features.properties.District + " | " + features.properties.Subcounty + " | " + features.properties['Parish\/Ward'] +"</td>" +
-              "</tr>" +
-         " </table>";
-        //  console.log(popup_html)
+            "<table class='popup-table'>" +
+            "<tr>" +
+            "<td class='attrib-name'>School Name:</td>" +
+            "<td class='attrib-value'>" + features.properties['School Name'] + "</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td class='attrib-name'>EMIS Code:</td>" +
+            "<td class='attrib-value'>" + features.properties['EMIS NO'] + "</td>" +
+            " </tr>" +
+            "<tr>" +
+            "<td class='attrib-name'>Location:</td>" +
+            " <td class='attrib-value'>" + features.properties.District + " | " + features.properties.Subcounty + " | " + features.properties['Parish\/Ward'] + "</td>" +
+            "</tr>" +
+            " </table>";
         featureLayer.bindPopup(popup_html);
         featureLayer.on('click', function (e) {
             mymap.setView(e.latlng, 8)
-            ake(features.properties.Name);
+            ake(features.properties['EMIS NO']);
         });
 
     }
