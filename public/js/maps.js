@@ -89,7 +89,8 @@ var searchControl = new L.Control.Search({
     moveToLocation: null
 });
 searchControl.on('search:locationfound', function (e) {
-    ake(e.text);
+    console.log(e)
+    ake(e.layer.feature.properties["EMIS NO"]);
     mymap.setView(e.latlng, 15.5)
     e.layer.setStyle({ fillColor: '#3f0', color: '#0f0' });
     if (e.layer._popup)
@@ -100,6 +101,34 @@ searchControl.on('search:locationfound', function (e) {
     });
 });
 mymap.addControl(searchControl);
+
+var info1 = L.control({ position: 'bottomright' });
+
+info1.onAdd = function (mymap) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info1.update = function (props) {
+    this._div.innerHTML = 
+    "<div id='legend' style=''>" +
+        "<svg class='head' width='100' height='100'>" +
+            "<circle cy='30' cx='10' r='0.4em' style='fill: #008000;'></circle>" +
+            "<circle cy='50' cx='10' r='0.4em' style='fill: #FFFF00;'></circle>" +
+            "<circle cy='70' cx='10' r='0.4em' style='fill: #FFA500;'></circle>" +
+            "<circle cy='90' cx='10' r='0.4em' style='fill: #FF0000;'></circle>" +
+            "<text class='legend-text' x='25' y='25' dy='0.8em' style='color: white;'>Grade A</text>" +
+            "<text class='legend-text' x='25' y='45' dy='0.8em' style='color: white;'>Grade B</text>" +
+            "<text class='legend-text' x='25' y='65' dy='0.8em' style='color: white;'>Grade C</text>" +
+            "<text class='legend-text' x='25' y='85' dy='0.8em' style='color: white;'>Grade D</text>" +
+            "<text class='legend-title' x='0' y='0' font-weight='bold' dy='0.8em'>Legend</text>" +
+        "</svg>" +
+    "</div>";
+};
+
+info1.addTo(mymap);
 
 
 

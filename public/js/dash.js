@@ -10,9 +10,8 @@ function ake(emisNumber) {
 
     // Called to get enrollment for each school
     axios.get(`/enrollment-stats/${value}`)
-        .then(function(response) {
+        .then(function (response) {
             // handle success
-            //  console.log(response.data);
 
             let data = response.data;
             let school = data.school;
@@ -20,41 +19,47 @@ function ake(emisNumber) {
             let girlsPlot = JSON.parse(data.girls).map(myFunction);
 
             // call the chart function
-            char_enrollment(school, boysPlot, girlsPlot);
+            // char_enrollment(school, boysPlot, girlsPlot);
+
+            dataCollection('enrollment', school, boysPlot, girlsPlot);
+
+            chart_attendance(school);
         })
-        .catch(function(error) {
+        .catch(function (error) {
             // handle error
             console.log(error);
         })
-        .finally(function() {
+        .finally(function () {
             // always executed
         });
 
     // Called for chart_attendance for each school
     axios.get(`/chart_attendance/${value}`)
-        .then(function(response) {
+        .then(function (response) {
             // handle success
-            console.log(response.data);
 
             let data = response.data;
             let Emis = data.EmisNumber;
             let boysPlot = JSON.parse(data.boys).map(myFunction);
             let girlsPlot = JSON.parse(data.girls).map(myFunction);
 
+
             // call the chart function
-            chart_attendance(Emis, boysPlot, girlsPlot);
+            // chart_attendance(Emis, boysPlot, girlsPlot);
+
+            dataCollection('attendence', Emis, boysPlot, girlsPlot);
         })
-        .catch(function(error) {
+        .catch(function (error) {
             // handle error
             console.log(error);
         })
-        .finally(function() {
+        .finally(function () {
             // always executed
         });
 
     // Called for teacher pupil ratio
     axios.get(`/teacher-to-pupil-ratio/stats/${value}`)
-        .then(function(response) {
+        .then(function (response) {
             // handle success
             //console.log(response.data);
 
@@ -66,17 +71,17 @@ function ake(emisNumber) {
             // call the chart function
             ratio_teach(school, p1top3Plot, p4top7Plot);
         })
-        .catch(function(error) {
+        .catch(function (error) {
             // handle error
             console.log(error);
         })
-        .finally(function() {
+        .finally(function () {
             // always executed
         });
 
     //called for classroom pupil ratio
     axios.get(`/classroomPupil-stats/${value}`)
-        .then(function(response) {
+        .then(function (response) {
             // handle success
             //console.log(response.data);
 
@@ -88,17 +93,17 @@ function ake(emisNumber) {
             // call the chart function
             class_ratio(school, cp1top3Plot, cp4top7Plot);
         })
-        .catch(function(error) {
+        .catch(function (error) {
             // handle error
             console.log(error);
         })
-        .finally(function() {
+        .finally(function () {
             // always executed
         });
 
     //called for stance pupil ratio
     axios.get(`/stancePupil-stats/${value}`)
-        .then(function(response) {
+        .then(function (response) {
             // handle success
             //console.log(response.data);
 
@@ -111,17 +116,17 @@ function ake(emisNumber) {
             // call the chart function
             stance_ratio(school, sprboysPlot, sprgirlsPlot, sprovrallPlot);
         })
-        .catch(function(error) {
+        .catch(function (error) {
             // handle error
             console.log(error);
         })
-        .finally(function() {
+        .finally(function () {
             // always executed
         });
 
     //chartpillars Paul 
     axios.get(`/chartPiller-stats/${value}`)
-        .then(function(response) {
+        .then(function (response) {
             // handle success
             //    console.log(response.data);
 
@@ -132,15 +137,27 @@ function ake(emisNumber) {
             let pillarThree = data.pillar3;
             let pillarFour = data.pillar4;
 
+            function generateAverage(array) {
+                var sum = 0;
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i]) {
+                        sum += parseInt(array[i], 10); //don't forget to add the base
+                    }
+                }
 
-            chartPillar(school, pillarOne, pillarTwo, pillarThree, pillarFour);
+                var avg = sum / array.length;
+                return avg;
+            }
+            let pillarSummary = [generateAverage(pillarOne), generateAverage(pillarTwo), generateAverage(pillarThree), generateAverage(pillarFour)]
+
+            chartPillar(school, pillarOne, pillarTwo, pillarThree, pillarFour, pillarSummary);
 
         })
-        .catch(function(error) {
+        .catch(function (error) {
             // handle error
             console.log(error);
         })
-        .finally(function() {
+        .finally(function () {
             // always executed
         });
 
@@ -148,7 +165,7 @@ function ake(emisNumber) {
 
     //called for school details 
     axios.get(`/schooldetails-stats/${value}`)
-        .then(function(response) {
+        .then(function (response) {
             // handle success
             //console.log(response.data);
 
@@ -163,18 +180,6 @@ function ake(emisNumber) {
             let inspectionData = data.inspection[0];
             let max_inspectionData = data.max_inspection[0];
 
-
-
-            //        $('#schooldetails').html(' <ul id="car">'+    
-            //        '<li>School:'+   school + 
-            //       ' <li>District:    '+     distinctData+ 
-            //       '<li>County   :  '+     countyData+ 
-            //        '<li>Sub-county:   '+  subcountyData+ 
-            //        '<li>Parish      :  '+  parishData+ 
-            //        '<li>School Status:  '+  statusData+ 
-            //        ' <li>School Level :  '+ levelData + 
-            //    '</ul>')
-
             $('#schooldetails').html("<table>" +
                 "<tr><td>School:</td><td>" + school + "</td><tr>" +
                 "<tr><td>District:</td><td>" + distinctData + "</td><tr>" +
@@ -187,11 +192,11 @@ function ake(emisNumber) {
                 "<tr><td>Latest Inspections:</td><td>" + max_inspectionData + "</td><tr>" + "</table>")
 
         })
-        .catch(function(error) {
+        .catch(function (error) {
             // handle error
             console.log(error);
         })
-        .finally(function() {
+        .finally(function () {
             // always executed
         });
 
@@ -203,39 +208,66 @@ function myFunction(num) {
     return parseInt(num, 10);
 }
 
+function generateSum(array) {
+    var sum = 0;
+    for (var i = 0; i < array.length; i++) {
+        if (array[i]) {
+            sum += parseInt(array[i], 10); //don't forget to add the base
+        }
+    }
+    return sum;
+}
+
+var data = {
+    "attendance": { values: [] },
+    "enrollment": { values: [] }
+};
+
+function dataCollection(type, school, boysPlot, girlsPlot) {
+
+    if (type === 'attendence') {
+        data.attendance.values = [generateSum(boysPlot), generateSum(girlsPlot)]
+    }
+    else {
+        data.enrollment.values = [generateSum(boysPlot), generateSum(girlsPlot)]
+    }
+    if (data.attendance.values.length === 2 && data.enrollment.values.length === 2) {
+        char_enrollment(null, data);
+    }
+}
+
 //charts
 var myEnrolChart, myAttendChart, teacherRatio, StanceRatio, ClassroomRatio, myPillarChart;
 
-function char_enrollment(school, girlsPlot, boysPlot) {
+function char_enrollment(school, data) {
     if (myEnrolChart) {
         myEnrolChart.destroy();
     }
+
+    console.log(data)
+
     var ctxx = document.getElementById("mySuperChart").getContext("2d");
     myEnrolChart = new Chart(ctxx, {
         type: 'bar',
         data: {
             labels: [
-                "p1",
-                "p2",
-                "p3",
-                "p4",
-                "p5",
-                "p6",
-                "p7"
+                "Enrolment",
+                "Attendence"
             ],
-            datasets: [{
-                    label: "Girls",
-                    backgroundColor: "pink",
-                    borderColor: "red",
-                    borderWidth: 1,
-                    data: boysPlot
-                },
+            datasets: [
                 {
                     label: "Boys",
                     backgroundColor: "lightblue",
                     borderColor: "blue",
                     borderWidth: 1,
-                    data: girlsPlot
+                    data: [getRandomInt(0,1000), getRandomInt(0,1000)]
+                },
+                {
+                    label: "Girls",
+                    backgroundColor: "pink",
+                    borderColor: "red",
+                    borderWidth: 1,
+                    data: [getRandomInt(0,1000), getRandomInt(0,1000)]
                 }
             ]
         },
@@ -245,11 +277,13 @@ function char_enrollment(school, girlsPlot, boysPlot) {
                 position: "top"
             },
             title: {
-                display: true,
+                display: false,
                 text: school
             },
             scales: {
+                xAxes: [{ stacked: true }],
                 yAxes: [{
+                    stacked: true,
                     ticks: {
                         beginAtZero: true
                     }
@@ -259,39 +293,35 @@ function char_enrollment(school, girlsPlot, boysPlot) {
     });
 }
 
-function chart_attendance(school, girlsPlot, boysPlot) {
+
+function chart_attendance(school, boysPlot, girlsPlot) {
     if (myAttendChart) {
         myAttendChart.destroy();
     }
     var ctxx = document.getElementById("chart_attendance").getContext("2d");
     myAttendChart = new Chart(ctxx, {
-        type: 'line',
+        type: 'bar',
         data: {
-            labels: [
-                "P1",
-                "P2",
-                "P3",
-                "P4",
-                "P5",
-                "P6",
-                "P7"
-            ],
-            datasets: [{
-                    label: "Girls Attendence",
+            labels: [["First Term", ['2017']], ["Second Term", ['2017']], ["Third Term", ['2017']], ["First Term", ['2018']], ["Second Term", ['2018']], ["Third Term", ['2018']]],
+            datasets: [
+                {
+                    label: "Enrolment",
                     backgroundColor: "rgba(255,10,13,0.1)",
                     borderColor: "red",
                     fillOpacity: .3,
                     fill: true,
                     borderWidth: 1,
-                    data: boysPlot
+                    data: [getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000)]
                 },
                 {
-                    label: "Boys Attendence",
+                    label: "Attendence",
                     backgroundColor: "lightblue",
                     borderColor: "blue",
                     borderWidth: 1,
-                    data: girlsPlot
-                },
+                    type: 'line',
+                    lineTension: 0,
+                    data: [getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000)],
+                }
 
             ]
         },
@@ -301,7 +331,7 @@ function chart_attendance(school, girlsPlot, boysPlot) {
                 position: "top"
             },
             title: {
-                display: true,
+                display: false,
                 text: school
             },
             scales: {
@@ -332,7 +362,7 @@ function ratio_teach(school, p1top3Plot, p4top7Plot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [1/p1top3Plot, 1/p4top7Plot, 1/53],
+                data: [1 / p1top3Plot, 1 / p4top7Plot, 1 / 53],
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
@@ -355,15 +385,15 @@ function ratio_teach(school, p1top3Plot, p4top7Plot) {
                 // position: "bottom",
             }
             ,
-                scales: {
-                  yAxes: [{
+            scales: {
+                yAxes: [{
                     scaleLabel: {
-                      display: true,
-                      labelString: 'TPR'
+                        display: true,
+                        labelString: 'TPR'
                     }
-                  }]
-                }     
-              
+                }]
+            }
+
         }
 
     };
@@ -383,7 +413,7 @@ function stance_ratio(school, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [1/sprboysPlot,1/sprgirlsPlot, 1/ 40 ],
+                data: [1 / sprboysPlot, 1 / sprgirlsPlot, 1 / 40],
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
@@ -402,15 +432,15 @@ function stance_ratio(school, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
                 display: false,
             }
             ,
-                scales: {
-                  yAxes: [{
+            scales: {
+                yAxes: [{
                     scaleLabel: {
-                      display: true,
-                      labelString: 'SPR'
+                        display: true,
+                        labelString: 'SPR'
                     }
-                  }]
-                }     
-              
+                }]
+            }
+
         }
     };
 
@@ -432,7 +462,7 @@ function class_ratio(school, cp1top3Plot, cp4top7Plot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [1/cp1top3Plot,1/cp4top7Plot,1/53  ],
+                data: [1 / cp1top3Plot, 1 / cp4top7Plot, 1 / 53],
 
                 backgroundColor: [
                     "rgb(38,34,98)",
@@ -455,15 +485,15 @@ function class_ratio(school, cp1top3Plot, cp4top7Plot) {
             legend: {
                 display: false,
             },
-                scales: {
-                  yAxes: [{
+            scales: {
+                yAxes: [{
                     scaleLabel: {
-                      display: true,
-                      labelString: 'CPR'
+                        display: true,
+                        labelString: 'CPR'
                     }
-                  }]
-                }     
-              
+                }]
+            }
+
         }
     };
 
@@ -472,10 +502,22 @@ function class_ratio(school, cp1top3Plot, cp4top7Plot) {
 }
 
 
-function chartPillar(school, conditionalPlot) {
+function chartPillar(school, pillarOne, pillarTwo, pillarThree, pillarFour, pillarSummary) {
     if (myPillarChart) {
         myPillarChart.destroy();
     }
+
+
+    var trendPlot = [[], [], [], []];
+
+    trendPlot[0][0] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
+    trendPlot[0][1] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
+    trendPlot[0][2] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
+    trendPlot[0][3] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
+    trendPlot[0][4] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
+
+
+    trendPillar(null, trendPlot);
 
 
     var barOptions_stacked = {
@@ -520,7 +562,7 @@ function chartPillar(school, conditionalPlot) {
             position: "bottom",
             labels: {
                 // fontColor: '#FFA500'
-                filter: function(item, chart) {
+                filter: function (item, chart) {
                     // Logic to remove a particular legend item goes here
                     return !item.text.includes('hide');
                 }
@@ -529,19 +571,19 @@ function chartPillar(school, conditionalPlot) {
     };
 
     function colourPicker(d) {
-        if (d === 1) {
-            return "#edf8fb"
-        } else if (d === 2) {
-            return "#b3cde3"
+        if (d === 4) {
+            return "#008000"
         } else if (d === 3) {
-            return "#8c96c6"
-        } else if (d === 4) {
-            return "#88419d"
+            return "#FFFF00"
+        } else if (d === 2) {
+            return "#FFA500"
+        } else if (d === 1) {
+            return "#FF0000"
         }
     }
 
     var chosenColours = [];
-    conditionalPlot[0].forEach(function(d, i) {
+    pillarSummary.forEach(function (d, i) {
         chosenColours.push(colourPicker(parseInt(d)));
     })
 
@@ -550,7 +592,7 @@ function chartPillar(school, conditionalPlot) {
     myPillarChart = new Chart(ctx, {
         type: 'horizontalBar',
         data: {
-            labels: ["1.Condition of school building", "2.Classroom infrastucture", "3.Sanitary facilities", "4.Timetabling", "5.Teacher deployment", "6.Disciplinary policy", "7.Inclusive school practice", "8.Gender Sensitive School"],
+            labels: [["Pillar 1:", "Learning Environment"], ["Pillar 2:", "School Management and HT Performance"], ["Pillar 3:", "Effectiveness of Teaching and Learning"], ["Pillar 4:", "Involvement of Parents and Community"]],
 
             datasets: [{
                 label: 'hide',
@@ -558,16 +600,16 @@ function chartPillar(school, conditionalPlot) {
                 backgroundColor: chosenColours,
             }, {
                 label: '25% - 40%',
-                backgroundColor: "#edf8fb"
+                backgroundColor: "#FF0000"
             }, {
                 label: '41% - 60%',
-                backgroundColor: "#b3cde3"
+                backgroundColor: "#FFA500"
             }, {
                 label: '61% - 80%',
-                backgroundColor: "#8c96c6"
+                backgroundColor: "#FFFF00"
             }, {
                 label: '81% - 100%',
-                backgroundColor: "#88419d"
+                backgroundColor: "#008000"
             }]
         },
         options: barOptions_stacked,
@@ -575,30 +617,39 @@ function chartPillar(school, conditionalPlot) {
 
     // console.log($('#pillars'));
 
-    $(document).on('change', '#pillars', function() {
+    $(document).on('change', '#pillars', function () {
         // console.log($(this).val());
         // Does some stuff and logs the event to the console
 
 
+        var colourChanged = [];
 
         if ($(this).val() === "1") {
             myPillarChart.data.labels = ["1.Condition of school building", "2.Classroom infrastucture", "3.Sanitary facilities", "4.Timetabling", "5.Teacher deployment", "6.Disciplinary policy", "7.Inclusive school practice", "8.Gender Sensitive School"]
+            pillarOne.forEach(function (d, i) {
+                colourChanged.push(colourPicker(parseInt(d)));
+            })
         } else if ($(this).val() === "2") {
-            myPillarChart.data.labels = ["1.Teacher and pupil attendance", "2.School Improvement plan", "3.SIP activities", "4.Financial management", "5.Systematic monitoring and evaluation of teacher performance", "6.Continuous professional development", "7.Systematic monitoring of pupil performance"]
+            myPillarChart.data.labels = ["1.Teacher and pupil attendance", "2.School Improvement plan", "3.SIP activities", "4.Financial management", ["5.Systematic monitoring and", "evaluation of teacher performance"], "6.Continuous professional development", "7.Systematic monitoring of pupil performance"]
+            pillarTwo.forEach(function (d, i) {
+                colourChanged.push(colourPicker(parseInt(d)));
+            })
         } else if ($(this).val() === "3") {
             myPillarChart.data.labels = ["1.Lesson planning", "2,Lesson delivery", "3.Teaching and learning materials", "4.Learner particiption", "5,Learning", "6.Teachers' rapport with learners", "7.Classroom environment", "8.Pupils' work"]
-        } else if ($(this).val() === "4") {
-            myPillarChart.data.labels = ["1. School management committee", "2. School communication with parents/community", "3. Teacher communication with parents", "4. Involvement of parents"]
-        }
-
-
-        var colourChanged = [];
-        conditionalPlot[parseInt($(this).val())].forEach(function(d, i) {
-            if (i < myPillarChart.data.labels.length) {
+            pillarThree.forEach(function (d, i) {
                 colourChanged.push(colourPicker(parseInt(d)));
-
-            }
-        })
+            })
+        } else if ($(this).val() === "4") {
+            myPillarChart.data.labels = ["1. School management committee", ["2. School communication", "ith parents/community"], "3. Teacher communication with parents", "4. Involvement of parents"]
+            pillarFour.forEach(function (d, i) {
+                colourChanged.push(colourPicker(parseInt(d)));
+            })
+        } else if ($(this).val() === "5") {
+            myPillarChart.data.labels = [["Pillar 1:", "Learning Environment"], ["Pillar 2:", "School Management and HT Performance"], ["Pillar 3:", "Effectiveness of Teaching and Learning"], ["Pillar 4:", "Involvement of Parents and Community"]]
+            pillarSummary.forEach(function (d, i) {
+                colourChanged.push(colourPicker(parseInt(d)));
+            })
+        }
 
         myPillarChart.data.datasets[0].backgroundColor = colourChanged;
         myPillarChart.update();
@@ -608,8 +659,8 @@ function chartPillar(school, conditionalPlot) {
 
     // this part to make the tooltip only active on your real dataset
     var originalGetElementAtEvent = myPillarChart.getElementAtEvent;
-    myPillarChart.getElementAtEvent = function(e) {
-        return originalGetElementAtEvent.apply(this, arguments).filter(function(e) {
+    myPillarChart.getElementAtEvent = function (e) {
+        return originalGetElementAtEvent.apply(this, arguments).filter(function (e) {
             return e._datasetIndex === 1;
         });
     }
@@ -626,28 +677,84 @@ function trendPillar(school, trendPlot) {
     var trendChart = new Chart(document.getElementById("line-chart"), {
         type: 'line',
         data: {
-            labels: ["First Term", "Second Term", "Third Term"],
+            labels: [["First Term", ['2017']], ["Second Term", ['2017']], ["Third Term", ['2017']], ["First Term", ['2018']], ["Second Term", ['2018']], ["Third Term", ['2018']]],
             datasets: [{
-                data: trendPlot[0][0],
-                label: "Enrollment",
-                borderColor: "#3e95cd",
+                data: trendPlot[0][4],
+                lineTension: 0,
+                label: "Pillar Summary",
+                borderColor: "rgb(242,101,34)",
                 fill: false
-            }, {
-                data: trendPlot[0][1],
-                label: "Attendance",
-                borderColor: "#8e5ea2",
+            }
+                , {
+                data: [1, 4],
+                label: "hide",
+                borderColor: "rgb(255,255,255)",
                 fill: false
-            }]
+            }
+            ]
         },
         options: {
             title: {
                 display: true,
                 text: ''
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Period'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Grade'
+                    },
+                    ticks: {
+                        min: 0,
+                        max: 5,
+                        stepSize: 1,
+                        suggestedMin: 0.5,
+                        suggestedMax: 5.5,
+                        callback: function (label, index, labels) {
+                            switch (label) {
+                                case 0:
+                                    return '';
+                                case 1:
+                                    return 'D';
+                                case 2:
+                                    return 'C';
+                                case 3:
+                                    return 'B';
+                                case 4:
+                                    return 'A';
+                                case 5:
+                                    return '';
+                            }
+                        }
+                    },
+                    gridLines: {
+                        display: true
+                    }
+                }]
+            },
+            legend: {
+                display: true,
+                position: "bottom",
+                labels: {
+                    // fontColor: '#FFA500'
+                    filter: function (item, chart) {
+                        // Logic to remove a particular legend item goes here
+                        return !item.text.includes('hide');
+                    }
+                }
             }
         }
     });
 
-    $(document).on('change', '#trendSelector', function() {
+    $(document).on('change', '#pillarsTrend', function () {
         // console.log($(this).val());
         // Does some stuff and logs the event to the console
 
@@ -655,16 +762,23 @@ function trendPillar(school, trendPlot) {
 
         if ($(this).val() === "0") {
             trendChart.data.datasets[0].data = trendPlot[0][0]
-            trendChart.data.datasets[1].data = trendPlot[0][1]
+            trendChart.data.datasets[0].label = "Pillar 1"
         } else if ($(this).val() === "1") {
-            trendChart.data.datasets[0].data = trendPlot[1][0]
-            trendChart.data.datasets[1].data = trendPlot[1][1]
+            trendChart.data.datasets[0].data = trendPlot[0][1]
+            trendChart.data.datasets[0].label = "Pillar 2"
+
         } else if ($(this).val() === "2") {
-            trendChart.data.datasets[0].data = trendPlot[2][0]
-            trendChart.data.datasets[1].data = trendPlot[2][1]
+            trendChart.data.datasets[0].data = trendPlot[0][2]
+            trendChart.data.datasets[0].label = "Pillar 3"
+
         } else if ($(this).val() === "3") {
-            trendChart.data.datasets[0].data = trendPlot[3][0]
-            trendChart.data.datasets[1].data = trendPlot[3][1]
+            trendChart.data.datasets[0].data = trendPlot[0][3]
+            trendChart.data.datasets[0].label = "Pillar 4"
+
+        } else if ($(this).val() === "4") {
+            trendChart.data.datasets[0].data = trendPlot[0][4]
+            trendChart.data.datasets[0].label = "Pillar Summary"
+
         }
 
         trendChart.update();
@@ -679,22 +793,3 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
-var trendPlot = [
-    [],
-    [],
-    [],
-    []
-];
-
-trendPlot[0][0] = [getRandomInt(900, 1500), getRandomInt(900, 1500), getRandomInt(900, 1500)]
-trendPlot[1][0] = [getRandomInt(900, 1500), getRandomInt(900, 1500), getRandomInt(900, 1500)]
-trendPlot[2][0] = [getRandomInt(900, 1500), getRandomInt(900, 1500), getRandomInt(900, 1500)]
-trendPlot[3][0] = [getRandomInt(900, 1500), getRandomInt(900, 1500), getRandomInt(900, 1500)]
-trendPlot[0][1] = [getRandomInt(900, 1500), getRandomInt(900, 1500), getRandomInt(900, 1500)]
-trendPlot[1][1] = [getRandomInt(900, 1500), getRandomInt(900, 1500), getRandomInt(900, 1500)]
-trendPlot[2][1] = [getRandomInt(900, 1500), getRandomInt(900, 1500), getRandomInt(900, 1500)]
-trendPlot[3][1] = [getRandomInt(900, 1500), getRandomInt(900, 1500), getRandomInt(900, 1500)]
-
-
-trendPillar(null, trendPlot);

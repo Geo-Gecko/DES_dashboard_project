@@ -19,10 +19,14 @@
 
     <!--<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0//css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
     <link rel="stylesheet" href="/css/leaflet-search.css" />
     <!-- Make sure you put this AFTER Leaflet's CSS -->
-    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+        crossorigin=""></script>
 
 
     <!-- Custom styles for this template-->
@@ -38,8 +42,8 @@
         <a class="navbar-brand mr-1" href="/">Dashboard</a>
 
         <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
-      <i class="fas fa-bars"></i>
-    </button>
+            <i class="fas fa-bars"></i>
+        </button>
         <!--Nav search-->
         <!-- <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         <div class="input-group">
@@ -159,15 +163,13 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">average district Pillars</h5>
-                                <form action="/action_page.php">
-                                    <select id="district" name="cars">
-                    <option value="0">Pillar1:Learning Environment</option>
-                    <option value="1">Pillar2:School Management and HT Performance</option>
-                    <option value="2">Pillar3:Effectiveness of Teaching and Learning</option>
-                    <option value="3">Pillar4:Involvement of Parents and Community</option>
-                  </select>
+                                <select id="district" name="cars">
+                                    <option value="0">Pillar1:Learning Environment</option>
+                                    <option value="1">Pillar2:School Management and HT Performance</option>
+                                    <option value="2">Pillar3:Effectiveness of Teaching and Learning</option>
+                                    <option value="3">Pillar4:Involvement of Parents and Community</option>
+                                </select>
 
-                                </form>
                                 <div class="graph_container1">
                                     <canvas id="district_pillars"></canvas>
                                 </div>
@@ -180,11 +182,11 @@
                                 <h5 class="card-title">Trends for a district</h5>
                                 <div id="linegraph">
                                     <select id='trendSelector' name="cars">
-                            <option value="0">2018</option>
-                            <option value="1">2017</option>
-                            <option value="2">2016</option>
-                            <option value="3">2015</option>
-                        </select>
+                                        <option value="0">2018</option>
+                                        <option value="1">2017</option>
+                                        <option value="2">2016</option>
+                                        <option value="3">2015</option>
+                                    </select>
                                     <canvas id="district_lineChart"></canvas>
                                 </div>
                             </div>
@@ -321,14 +323,15 @@
     </a>
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">

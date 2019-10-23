@@ -19,12 +19,16 @@
 
     <!--<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0//css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
 
     <link rel="stylesheet" href="/css/leaflet-search.css" />
 
     <!-- Make sure you put this AFTER Leaflet's CSS -->
-    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+        crossorigin=""></script>
 
 
 
@@ -103,17 +107,13 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">pillars</h5>
-                                <form action="/action_page.php">
-                                    <select id='pillars' name="cars">
-                                        <option value="5">- Pillars Summary -</option>
-                                        <option value="1">Pillar1:Learning Environment</option>
-                                        <option value="2">Pillar2:School Management and HT Performance</option>
-                                        <option value="3">Pillar3:Effectiveness of Teaching and Learning</option>
-                                        <option value="4">Pillar4:Involvement of Parents and Community</option>
-                                    </select>
-                                    <!-- <br><br>
-                          <input type="submit"> -->
-                                </form>
+                                <select id='pillars' name="cars">
+                                    <option value="5">- Pillars Summary -</option>
+                                    <option value="1">Pillar1:Learning Environment</option>
+                                    <option value="2">Pillar2:School Management and HT Performance</option>
+                                    <option value="3">Pillar3:Effectiveness of Teaching and Learning</option>
+                                    <option value="4">Pillar4:Involvement of Parents and Community</option>
+                                </select>
                                 <div class="graph_container1">
                                     <canvas id="mypillars"></canvas>
                                 </div>
@@ -142,7 +142,7 @@
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">enrolment</h5>
+                                <h5 class="card-title">enrolment & attendence</h5>
                                 <div class="maps">
                                     <canvas id="mySuperChart"></canvas>
                                 </div>
@@ -210,29 +210,6 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">enrolment</h5>
-                                <div class="maps">
-                                    <canvas id=""></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">attendence</h5>
-                                <div class="maps">
-                                    <canvas id=""></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
@@ -242,19 +219,7 @@
     </div>
 
 
-    <!-- /.container-fluid -->
-
-    <!-- Sticky Footer -->
-    <!-- <footer class="sticky-footer">
-  <div class="container my-auto">
-    <div class="copyright text-center my-auto">
-      <span>Copyright © Your Website 2019</span>
     </div>
-  </div>
-</footer> -->
-
-    </div>
-    <!-- /.content-wrapper -->
 
     </div>
     <!-- /#wrapper -->
@@ -263,26 +228,6 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
-    <!-- Logout Modal-->
-    <!-- <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
-            </div>
-        </div>
-    </div>
-</div> -->
 
 
     <!-- Leafelt Search By Evet -->

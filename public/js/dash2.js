@@ -162,15 +162,32 @@ function ake(districtName) {
     axios.get(`/districtpillars-stats/${value}`)
         .then(function(response) {
             // handle success
-            console.log(response.data);
 
             let data = response.data;
             let district = data.district;
+            let pillarOne = data.pillar1Array;
+            let pillarTwo = data.pillar2Array;
+            let pillarThree = data.pillar3Array;
+            let pillarFour = data.pillar4Array;
 
-            let districtConditionalPlot = data.districtConditionalPlot;
+            function generateAverage(array) {
+                var sum = 0;
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i]) {
+                        sum += parseInt(array[i], 10); //don't forget to add the base
+                    }
+                }
+
+                var avg = sum / array.length;
+                return avg;
+            }
+            let pillarSummary = [generateAverage(pillarOne), generateAverage(pillarTwo), generateAverage(pillarThree), generateAverage(pillarFour)]
+
+
+            // let districtConditionalPlot = data.districtConditionalPlot;
             // console.log(conditionalPlot);
             // let girlsPlot = JSON.parse(data.girls).map(myFunction);
-            chartPillarDistrict(district, districtConditionalPlot);
+            chartPillarDistrict(district, pillarOne, pillarTwo, pillarThree, pillarFour, pillarSummary);
 
         })
         .catch(function(error) {
@@ -554,26 +571,32 @@ function chartPillarDistrict(district, districtConditionalPlot) {
 
     var ctx = document.getElementById("district_pillars");
     myPillarChart = new Chart(ctx, {
-        type: 'horizontalBar',
+        type: 'bar',
         data: {
-            labels: ["1.Condition of school building", "2.Classroom infrastucture", "3.Sanitary facilities", "4.Timetabling", "5.Teacher deployment", "6.Disciplinary policy", "7.Inclusive school practice", "8.Gender Sensitive School"],
+            labels: [["Pillar 1:", "Learning Environment"], ["Pillar 2:", "School Management and HT Performance"], ["Pillar 3:", "Effectiveness of Teaching and Learning"], ["Pillar 4:", "Involvement of Parents and Community"]],
 
-            datasets: [{
-                label: 'hide',
-                data: [1, 1, 1, 1, 1, 1, 1, 1],
-                backgroundColor: chosenColours,
-            }, {
+            datasets: [
+            //     {
+            //     label: 'hide',
+            //     data: [1, 1, 1, 1, 1, 1, 1, 1],
+            //     backgroundColor: chosenColours,
+            // },
+             {
                 label: '25% - 40%',
-                backgroundColor: "#edf8fb"
+                data: [1, 1, 1, 1],
+                backgroundColor: "#FF0000"
             }, {
                 label: '41% - 60%',
-                backgroundColor: "#b3cde3"
+                data: [1, 1, 1, 1],
+                backgroundColor: "#FFA500"
             }, {
                 label: '61% - 80%',
-                backgroundColor: "#8c96c6"
+                data: [1, 1, 1, 1],
+                backgroundColor: "#FFFF00"
             }, {
                 label: '81% - 100%',
-                backgroundColor: "#88419d"
+                data: [1, 1, 1, 1],
+                backgroundColor: "#008000"
             }]
         },
         options: barOptions_stacked,
@@ -588,11 +611,11 @@ function chartPillarDistrict(district, districtConditionalPlot) {
         if ($(this).val() === "0") {
             myPillarChart.data.labels = ["1.Condition of school building", "2.Classroom infrastucture", "3.Sanitary facilities", "4.Timetabling", "5.Teacher deployment", "6.Disciplinary policy", "7.Inclusive school practice", "8.Gender Sensitive School"]
         } else if ($(this).val() === "1") {
-            myPillarChart.data.labels = ["1.Teacher and pupil attendance", "2.School Improvement plan", "3.SIP activities", "4.Financial management", "5.Systematic monitoring and evaluation of teacher performance", "6.Continuous professional development", "7.Systematic monitoring of pupil performance"]
+            myPillarChart.data.labels = ["1.Teacher and pupil attendance", "2.School Improvement plan", "3.SIP activities", "4.Financial management", ["5.Systematic monitoring and", "evaluation of teacher performance"], "6.Continuous professional development", "7.Systematic monitoring of pupil performance"]
         } else if ($(this).val() === "2") {
             myPillarChart.data.labels = ["1.Lesson planning", "2,Lesson delivery", "3.Teaching and learning materials", "4.Learner particiption", "5,Learning", "6.Teachers' rapport with learners", "7.Classroom environment", "8.Pupils' work"]
         } else if ($(this).val() === "3") {
-            myPillarChart.data.labels = ["1. School management committee", "2. School communication with parents/community", "3. Teacher communication with parents", "4. Involvement of parents"]
+            myPillarChart.data.labels = ["1. School management committee", ["2. School communication", "ith parents/community"], "3. Teacher communication with parents", "4. Involvement of parents"]
         }
 
         // console.log(districtConditionalPlot)
