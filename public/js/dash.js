@@ -244,8 +244,6 @@ function char_enrollment(school, data) {
         myEnrolChart.destroy();
     }
 
-    console.log(data)
-
     var ctxx = document.getElementById("mySuperChart").getContext("2d");
     myEnrolChart = new Chart(ctxx, {
         type: 'bar',
