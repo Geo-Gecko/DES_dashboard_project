@@ -11,11 +11,11 @@ router.get('/stats/:name_of_school', function(req, res, next) {
 
     // run query where school id
     const limit = 1;
-    const rQuery = `select distinct(inspection.school_name) as school,
+    const rQuery = `select distinct(inspection.school_name),  details.name_of_school as school,
     inspection.teacher_to_pupil_ratio_in_lower_primaryp1p3 as tprp1p3,
     inspection.teacher_to_pupil_ratio_in_upper_primaryp4p7 as tprp4p7 
      FROM  ft_form_12  as inspection,  ft_form_11  as details
-      WHERE details.submission_id=inspection.school_name`;
+      WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}'`;
 
 
     let schoolsArray = [];
@@ -28,7 +28,7 @@ router.get('/stats/:name_of_school', function(req, res, next) {
         //let flag = 0;
         for (let i = 0; i < result.length; i++) {
             // School
-            let school = result[i].schools;
+            let school = result[i].school;
 
             schoolsArray.push(school)
 
@@ -43,16 +43,16 @@ router.get('/stats/:name_of_school', function(req, res, next) {
             // Processing girls for each school and each class
             let tpRatiop7 = [];
             for (let g = 1; g <= 1; g++) {
-                let sRatio = `tprp4p7 `;
+                let sRatio = `tprp4p7`;
                 tpRatiop7.push(result[i][sRatio]);
             }
             p4top7Array.push(tpRatiop7);
 
         }
 
-        // console.log("SCHOOLS",schoolsArray);
-        // console.log("P1TOP3",p1top3Array );
-        // console.log("P4P7",p4top7Array);
+        console.log("SCHOOLS",schoolsArray);
+        console.log("P1TOP3",p1top3Array );
+        console.log("P4P7",p4top7Array);
 
         let school = schoolsArray[0];
         let p1top3Plot = JSON.stringify(p1top3Array[0]);

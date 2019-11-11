@@ -7,7 +7,7 @@ var connection = require('../config/database');
 
 
 
-router.get('/:emis_number', function(req, res, next) {
+router.get('/:name_of_school', function(req, res, next) {
 
 
 
@@ -17,7 +17,7 @@ router.get('/:emis_number', function(req, res, next) {
 
     const aQuery = `SELECT inspection.school_name as school_id, details.name_of_school as name_of_school, 
     inspection. condition_of_school_building_and_compound  as pillar1_domain1, 
-    inspection. classroom_infrastructure  as pillar1_domai2, 
+    inspection.classroom_infrastructure  as pillar1_domain2, 
     inspection. sanitary_facilities  as pillar1_domain3, 
     inspection. timetabling  as pillar1_domain4, 
     inspection. teacher_deployment  as pillar1_domain5, 
@@ -43,7 +43,7 @@ router.get('/:emis_number', function(req, res, next) {
           inspection. school_communication_with_parents_community  as pillar4_domain2, 
           inspection. teacher_communication_with_parents  as pillar4_domain3, 
           inspection. involvement_of_parents  as pillar4_domain4 
-          FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name`;
+          FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}'`;
 
 
 
@@ -84,7 +84,7 @@ router.get('/:emis_number', function(req, res, next) {
             // // Processing pillars 2 for each school  
             let pillar3 = [];
             for (let c = 1; c <= 8; c++) {
-                let pillarDomi = `pillar2_domain${c}`;
+                let pillarDomi = `pillar3_domain${c}`;
                 pillar3.push(result[i][pillarDomi]);
             }
             pillar3Array.push(pillar3);
@@ -93,7 +93,7 @@ router.get('/:emis_number', function(req, res, next) {
             // // Processing pillars 2 for each school  
             let pillar4 = [];
             for (let m = 1; m <= 4; m++) {
-                let pillarDomi = `pillar2_domain${m}`;
+                let pillarDomi = `pillar4_domain${m}`;
                 pillar4.push(result[i][pillarDomi]);
             }
             pillar4Array.push(pillar4);

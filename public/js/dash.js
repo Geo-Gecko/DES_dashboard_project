@@ -3,10 +3,10 @@ function loadStats() {
     ake();
 }
 
-function ake(emisNumber) {
+function ake(nameOfSchool) {
     //let e = document.getElementById("sel");
 
-    let value = emisNumber ? emisNumber : '3818';
+    let value = nameOfSchool ? nameOfSchool : 'Kapteret P.S';
 
     // Called to get enrollment for each school
     axios.get(`/enrollment-stats/${value}`)
@@ -39,15 +39,17 @@ function ake(emisNumber) {
             // handle success
 
             let data = response.data;
-            let Emis = data.EmisNumber;
-            let boysPlot = JSON.parse(data.boys).map(myFunction);
-            let girlsPlot = JSON.parse(data.girls).map(myFunction);
+            let school = data.School;
+            let boysPlotEnrol = JSON.parse(data.boysEnrol).map(myFunction);
+            let girlsPlotEnrol = JSON.parse(data.girlsEnrol).map(myFunction);
+            let boysPlotAttend = JSON.parse(data.boysAttend).map(myFunction);
+            let girlsPlotAttend = JSON.parse(data.girlsAttend).map(myFunction);
 
 
             // call the chart function
             // chart_attendance(Emis, boysPlot, girlsPlot);
 
-            dataCollection('attendence', Emis, boysPlot, girlsPlot);
+            dataCollection('attendence', School, boysPlot, girlsPlot);
         })
         .catch(function (error) {
             // handle error
@@ -199,6 +201,34 @@ function ake(emisNumber) {
         .finally(function () {
             // always executed
         });
+
+
+         // Called to get teacher stats for each school
+    axios.get(`/teacher-stats/${value}`)
+    .then(function (response) {
+        // handle success
+        console.log(response);
+        let data = response.data;
+        let school = data.school[0];
+        let enrol = data.enrol[0];
+        let staff = data.staff[0];
+        let attend = data.attend[0];
+        let timetable = data.timetable[0];
+
+        // call the chart function
+        // char_enrollment(school, boysPlot, girlsPlot);
+
+        teacherStats(school, enrol, staff, attend, timetable );
+
+        // chart_attendance(school);
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error);
+    })
+    .finally(function () {
+        // always executed
+    });
 
 
 }
@@ -360,7 +390,7 @@ function ratio_teach(school, p1top3Plot, p4top7Plot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [1 / p1top3Plot, 1 / p4top7Plot, 1 / 53],
+                data: [p1top3Plot,  p4top7Plot, 53],
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
@@ -388,6 +418,9 @@ function ratio_teach(school, p1top3Plot, p4top7Plot) {
                     scaleLabel: {
                         display: true,
                         labelString: 'TPR'
+                    },
+                    ticks: {
+                        beginAtZero: true
                     }
                 }]
             }
@@ -411,7 +444,7 @@ function stance_ratio(school, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [1 / sprboysPlot, 1 / sprgirlsPlot, 1 / 40],
+                data: [sprboysPlot,  sprgirlsPlot, 40],
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
@@ -435,6 +468,9 @@ function stance_ratio(school, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
                     scaleLabel: {
                         display: true,
                         labelString: 'SPR'
+                    },
+                    ticks: {
+                        beginAtZero: true
                     }
                 }]
             }
@@ -460,7 +496,7 @@ function class_ratio(school, cp1top3Plot, cp4top7Plot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [1 / cp1top3Plot, 1 / cp4top7Plot, 1 / 53],
+                data: [ cp1top3Plot, cp4top7Plot,  53],
 
                 backgroundColor: [
                     "rgb(38,34,98)",
@@ -488,6 +524,9 @@ function class_ratio(school, cp1top3Plot, cp4top7Plot) {
                     scaleLabel: {
                         display: true,
                         labelString: 'CPR'
+                    },
+                    ticks: {
+                        beginAtZero: true
                     }
                 }]
             }
@@ -790,4 +829,48 @@ function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Teacher stats plot
+function teacherStats(school, enrol, staff, attend, timetable ) {
+
+var ctxx = document.getElementById("TeacherChart").getContext("2d");
+    var myChart = new Chart(ctxx, {
+        type: 'bar',
+        data: {
+            labels: [
+                ["Established staffting"," as per enrolment"],
+               [ "Current","staffting"," level"],
+               [ "Staff attendance"," on visit day"],
+                ["Number of classes"," taught according"," to timetable"],
+            ],
+            datasets: [
+                {
+                    label: "",
+                    backgroundColor:  "rgb(38,34,98)",
+                    borderColor:  "rgb(38,34,98)",
+                    borderWidth: 1,
+                    data: [enrol, staff, attend, timetable]
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: "top",
+                display: false
+            },
+            title: {
+                display: false,
+                text: school
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
 }

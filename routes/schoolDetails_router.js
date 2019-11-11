@@ -11,13 +11,13 @@ router.get('/:name_of_school', function(req, res, next) {
     let nameOfSchool = req.params.name_of_school;
 
     const scQuery = `SELECT inspection.school_name as submission_id, details.name_of_school as  schools,
-     details.emis_code as emis_number, inspection.school_location as location,
-      details.region as region, details.district as district, details.countymunicipality as county,
-       details.subcountydivision as sub_county, details.parishward as parish, 
+     details.emis_number as emis_number, inspection.school_location as location,
+      details.region as region, details.district as district, details.county as county,
+       details.sub_county as sub_county, details.parish_ward as parish, 
        DATE_FORMAT(MAX(inspection.date_of_inspection) ,'%d-%b-%Y') as  last_inspection, 
        count(inspection.date_of_inspection) as inspection_number FROM  ft_form_12  as inspection,  
        ft_form_11  as details WHERE details.submission_id=inspection.school_name 
-        and details.emis_code = '${nameOfSchool}'`;
+        and details.name_of_school = '${nameOfSchool}'`;
 
 
 
