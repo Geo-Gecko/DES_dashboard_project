@@ -15,6 +15,7 @@ var stancePupil = require('./routes/stancePupil_router');
 var details = require('./routes/schoolDetails_router');
 //sub county 
 var subCountyRouter = require('./routes/subCounty');
+var teacherStatsRouter = require('./routes/teacher_stats_router');
 
 //Districts
 var districtsRouter = require('./routes/districts');
@@ -61,6 +62,7 @@ app.use('/classroomPupil-stats', classroomPupil);
 app.use('/schooltrend-stats', trend);
 app.use('/schooldetails-stats', details);
 app.use('/stancePupil-stats', stancePupil);
+app.use('/teacher-stats', teacherStatsRouter);
 
 //sub countys 
 app.use('/subCounty', subCountyRouter);
