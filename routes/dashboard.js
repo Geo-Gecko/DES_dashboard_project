@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
             let school = result[i].school;
             allSchools.push(school)
         }
-console.log(allSchools)
+//console.log(allSchools)
         res.render('dashboard', { schools: allSchools });
 
 
@@ -80,18 +80,18 @@ router.get('/enrollment-stats/:name_of_school', function(req, res, next) {
             }
             schoolGirlsArray.push(girlsArray);
 
-            let sEmis = [];
-            for (let e = 1; e <= 1; e++) {
-                let emis_numer = `emis_number`;
-                sEmis.push(result[i][emis_numer]);
-            }
-            emisArray.push(sEmis);
+            // let sEmis = [];
+            // for (let e = 1; e <= 1; e++) {
+            //     let emis_numer = `emis_number`;
+            //     sEmis.push(result[i][emis_numer]);
+            // }
+            // emisArray.push(sEmis);
 
         }
 
         console.log("boys", schoolBoysArray);
         console.log("girls", schoolGirlsArray);
-        console.log("EMIS", emisArray);
+       // console.log("EMIS", emisArray);
 
         let school = schoolsArray[0];
         let boysPlot = JSON.stringify(schoolBoysArray[0]);

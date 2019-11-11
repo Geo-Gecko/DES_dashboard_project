@@ -9,47 +9,49 @@ function ake(nameOfSchool) {
     let value = nameOfSchool ? nameOfSchool : 'Kapteret P.S';
 
     // Called to get enrollment for each school
-    axios.get(`/enrollment-stats/${value}`)
-        .then(function (response) {
-            // handle success
+    // axios.get(`/enrollment-stats/${value}`)
+    //     .then(function (response) {
+    //         // handle success
 
-            let data = response.data;
-            let school = data.school;
-            let boysPlot = JSON.parse(data.boys).map(myFunction);
-            let girlsPlot = JSON.parse(data.girls).map(myFunction);
+    //         let data = response.data;
+    //         let school = data.school;
+    //         let boysPlot = JSON.parse(data.boys).map(myFunction);
+    //         let girlsPlot = JSON.parse(data.girls).map(myFunction);
 
-            // call the chart function
-            // char_enrollment(school, boysPlot, girlsPlot);
+    //         // call the chart function
+    //         // char_enrollment(school, boysPlot, girlsPlot);
 
-            dataCollection('enrollment', school, boysPlot, girlsPlot);
+    //         dataCollection('enrollment', school, boysPlot, girlsPlot);
 
-            chart_attendance(school);
-        })
-        .catch(function (error) {
-            // handle error
-            console.log(error);
-        })
-        .finally(function () {
-            // always executed
-        });
+    //         chart_attendance(school);
+    //     })
+    //     .catch(function (error) {
+    //         // handle error
+    //         console.log(error);
+    //     })
+    //     .finally(function () {
+    //         // always executed
+    //     });
 
     // Called for chart_attendance for each school
     axios.get(`/chart_attendance/${value}`)
         .then(function (response) {
             // handle success
-
+    
             let data = response.data;
             let school = data.School;
-            let boysPlotEnrol = JSON.parse(data.boysEnrol).map(myFunction);
-            let girlsPlotEnrol = JSON.parse(data.girlsEnrol).map(myFunction);
-            let boysPlotAttend = JSON.parse(data.boysAttend).map(myFunction);
-            let girlsPlotAttend = JSON.parse(data.girlsAttend).map(myFunction);
+            let boysPlotEnrol = data.boysEnrol;
+            let girlsPlotEnrol = data.girlsEnrol;
+            let boysPlotAttend = data.boysAttend;
+            let girlsPlotAttend = data.girlsAttend;
+
+            console.log(girlsPlotAttend, boysPlotEnrol);
 
 
             // call the chart function
-            // chart_attendance(Emis, boysPlot, girlsPlot);
+          //  chart_attendance(Emis, boysPlot, girlsPlot);
 
-            dataCollection('attendence', School, boysPlot, girlsPlot);
+            char_enrollment(school, boysPlotEnrol,  girlsPlotEnrol, boysPlotAttend, boysPlotAttend);
         })
         .catch(function (error) {
             // handle error
@@ -238,38 +240,16 @@ function myFunction(num) {
     return parseInt(num, 10);
 }
 
-function generateSum(array) {
-    var sum = 0;
-    for (var i = 0; i < array.length; i++) {
-        if (array[i]) {
-            sum += parseInt(array[i], 10); //don't forget to add the base
-        }
-    }
-    return sum;
-}
-
 var data = {
     "attendance": { values: [] },
     "enrollment": { values: [] }
 };
 
-function dataCollection(type, school, boysPlot, girlsPlot) {
-
-    if (type === 'attendence') {
-        data.attendance.values = [generateSum(boysPlot), generateSum(girlsPlot)]
-    }
-    else {
-        data.enrollment.values = [generateSum(boysPlot), generateSum(girlsPlot)]
-    }
-    if (data.attendance.values.length === 2 && data.enrollment.values.length === 2) {
-        char_enrollment(null, data);
-    }
-}
 
 //charts
 var myEnrolChart, myAttendChart, teacherRatio, StanceRatio, ClassroomRatio, myPillarChart;
 
-function char_enrollment(school, data) {
+function char_enrollment(school, boysPlotEnrol,  girlsPlotEnrol, boysPlotAttend, girlsPlotAttend) {
     if (myEnrolChart) {
         myEnrolChart.destroy();
     }
@@ -288,14 +268,14 @@ function char_enrollment(school, data) {
                     backgroundColor: "lightblue",
                     borderColor: "blue",
                     borderWidth: 1,
-                    data: [getRandomInt(0,1000), getRandomInt(0,1000)]
+                    data: [boysPlotEnrol, boysPlotAttend]
                 },
                 {
                     label: "Girls",
                     backgroundColor: "pink",
                     borderColor: "red",
                     borderWidth: 1,
-                    data: [getRandomInt(0,1000), getRandomInt(0,1000)]
+                    data: [girlsPlotAttend, girlsPlotAttend]
                 }
             ]
         },
@@ -309,9 +289,9 @@ function char_enrollment(school, data) {
                 text: school
             },
             scales: {
-                xAxes: [{ stacked: true }],
+                xAxes: [{ stacked: false }],
                 yAxes: [{
-                    stacked: true,
+                    stacked: false,
                     ticks: {
                         beginAtZero: true
                     }
