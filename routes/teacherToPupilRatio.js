@@ -50,9 +50,9 @@ router.get('/stats/:name_of_school', function(req, res, next) {
 
         }
 
-        console.log("SCHOOLS",schoolsArray);
-        console.log("P1TOP3",p1top3Array );
-        console.log("P4P7",p4top7Array);
+        // console.log("SCHOOLS",schoolsArray);
+        // console.log("P1TOP3",p1top3Array );
+        // console.log("P4P7",p4top7Array);
 
         let school = schoolsArray[0];
         let p1top3Plot = JSON.stringify(p1top3Array[0]);
