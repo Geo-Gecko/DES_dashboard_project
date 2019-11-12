@@ -8,25 +8,40 @@ router.get('/:region', function(req, res, next) {
 
     const limit = 10;
 
-    let nameOfREgion = req.params.region;
+    let nameOfRegion = req.params.region;
 
-    const dQuery = `select distinct(details.region) as region,
-    sum(inspection.attendance_of_p1_boys_on_visitation_day) as p1_boys,
-    sum(inspection.attendance_of_p1_girls_on_visitation_day) as p1_girls, 
-    sum(inspection.attendance_of_p2_boys_on_visitation_day) as p2_boys,
-    sum(inspection.attendance_of_p2_girls_on_visitation_day) as p2_girls, 
-    sum(inspection.attendance_of_p3_boys_on_visitation_day) as p3_boys,
-    sum(inspection.attendance_of_p3_girls_on_visitation_day) as p3_girls, 
-    sum(inspection.attendance_of_p4_boys_on_visitation_day) as p4_boys,
-    sum(inspection.attendance_of_p4_girls_on_visitation_day) as p4_girls, 
-    sum(inspection.attendance_of_p5_boys_on_visitation_day) as p5_boys,
-    sum(inspection.attendance_of_p5_girls_on_visitation_day) as p5_girls,
-    sum(inspection.attendance_of_p6_boys_on_visitation_day) as p6_boys,
-    sum(inspection.attendance_of_p6_girls_on_visitation_day) as p6_girls, 
-    sum(inspection.attendance_of_p7_boys_on_visitation_day) as p7_boys,
-    sum(inspection.attendance_of_p7_girls_on_visitation_day) as p7_girls  
-    FROM  ft_form_12  as inspection,  ft_form_11  as details
-     WHERE details.submission_id=inspection.school_name group by details.region`;
+    const dQuery = `SELECT details.region as region, 
+    sum(inspection.attendance_of_p1_boys_on_visitation_day) +
+       sum(inspection.attendance_of_p2_boys_on_visitation_day)  +
+       sum(inspection.attendance_of_p3_boys_on_visitation_day) +
+       sum(inspection.attendance_of_p4_boys_on_visitation_day)  +
+       sum(inspection.attendance_of_p5_boys_on_visitation_day) +
+       sum(inspection.attendance_of_p6_boys_on_visitation_day)  +
+       sum(inspection.attendance_of_p7_boys_on_visitation_day)  as boys_vd,
+       sum(inspection.attendance_of_p1_girls_on_visitation_day) +
+        sum(inspection.attendance_of_p2_girls_on_visitation_day) +
+         sum(inspection.attendance_of_p3_girls_on_visitation_day) +
+          sum(inspection.attendance_of_p4_girls_on_visitation_day) +
+           sum(inspection.attendance_of_p5_girls_on_visitation_day) +
+            sum(inspection.attendance_of_p6_girls_on_visitation_day) +
+            sum(inspection.attendance_of_p7_girls_on_visitation_day) as girls_vd, 
+           sum(inspection.number_of_boys_enrolled_in_p1)+
+           sum(inspection.number_of_boys_enrolled_in_p2)  +
+           sum(inspection.number_of_boys_enrolled_in_p3) +
+           sum(inspection.number_of_boys_enrolled_in_p4) +
+           sum(inspection.number_of_boys_enrolled_in_p5) +
+           sum(inspection.number_of_boys_enrolled_in_p6)  + 
+           sum(inspection.number_of_boys_enrolled_in_p7)  as boys_enrol,
+           sum(inspection.number_of_girls_enrolled_in_p1) + 
+           sum(inspection.number_of_girls_enrolled_in_p2)  +     
+          sum(inspection.number_of_girls_enrolled_in_p3)  +   
+          sum(inspection.number_of_girls_enrolled_in_p4)  +   
+           sum(inspection.number_of_girls_enrolled_in_p5) +
+           sum(inspection.number_of_girls_enrolled_in_p6)  +
+           sum(inspection.number_of_girls_enrolled_in_p7)  as girls_enrol
+            FROM ft_form_12 as inspection, ft_form_11 as details 
+            WHERE details.submission_id=inspection.school_name and details.region='${nameOfRegion}'
+            group by details.region`;
 
 
     connection.query(dQuery, function fill(err, result, ) {
@@ -34,6 +49,8 @@ router.get('/:region', function(req, res, next) {
         let regionArray = [];
         let totalAttendenceBoysArray = [];
         let totalAttendenceGirlsArray = [];
+        let totalEnrolGirlsArray = [];
+        let totalEnrolBoysArray = [];
         //let flag = 0;
         for (let i = 0; i < result.length; i++) {
             // district
@@ -41,36 +58,55 @@ router.get('/:region', function(req, res, next) {
 
             regionArray.push(region)
 
+// Processing boys for each school and each class
+let boysArrayAttend = [];
+for (let b = 1; b <= 1; b++) {
+    let sClass = `boys_vd`;
+    boysArrayAttend.push(result[i][sClass]);
+}
+totalAttendenceBoysArray.push(boysArrayAttend);
 
-            // Processing boys for each school and each class
-            let boysArray = [];
-            for (let b = 1; b <= 7; b++) {
-                let sRegion = `p${b}_boys`;
-                boysArray.push(result[i][sRegion]);
-            }
-            totalAttendenceBoysArray.push(boysArray);
+// Processing girls for each school and each class
+let girlsArrayAttend = [];
+for (let g = 1; g <= 1; g++) {
+    let sClass = `girls_vd`;
+    girlsArrayAttend.push(result[i][sClass]);
+}
+totalAttendenceGirlsArray.push(girlsArrayAttend);
 
-            // Processing girls for each school and each class
-            let girlsArray = [];
-            for (let g = 1; g <= 7; g++) {
-                let sDistricts = `p${g}_girls`;
-                girlsArray.push(result[i][sDistricts]);
-            }
-            totalAttendenceGirlsArray.push(girlsArray);
+ // Processing girls for each school and each class
+ let girlsArrayEnrol = [];
+ for (let g = 1; g <= 1; g++) {
+     let sClass = `girls_enrol`;
+     girlsArrayEnrol.push(result[i][sClass]);
+ }
+ totalEnrolGirlsArray.push(girlsArrayEnrol);
 
-        }
-        // console.log("REGION", regionArray);
-        // console.log("TOTAL ATTENDENCE BOYS", totalAttendenceBoysArray );
-        // console.log("TOTAL ATTENDENCE GILRS", totalAttendenceGirlsArray);
+  // Processing girls for each school and each class
+  let boysArrayEnrol = [];
+  for (let g = 1; g <= 1; g++) {
+      let sClass = `boys_enrol`;
+      boysArrayEnrol.push(result[i][sClass]);
+  }
+  totalEnrolBoysArray.push(boysArrayEnrol);
 
+}
 
-        let region = regionArray[0];
-        let boysPlot = JSON.stringify(totalAttendenceBoysArray[0]);
-        let girlsPlot = JSON.stringify(totalAttendenceGirlsArray[0]);
+console.log("Attendence", totalAttendenceGirlsArray);
+// console.log("Attendence girls", attendenceGirlsArray);
+// console.log("Enrolment Girls",  enrolmentGirlsArray);
+// console.log("Enrolment Boys", enrolmentBoysArray);
 
-        res.send({ region: region, boys: boysPlot, girls: girlsPlot });
+let region = regionArray[0];
+let boysPlotAttend =totalAttendenceBoysArray[0];
+let girlsPlotAttend = totalAttendenceGirlsArray[0];
+let boysPlotEnrol =  totalEnrolGirlsArray[0];
+let girlsPlotEnrol =totalEnrolBoysArray[0];
+// console.log(girlsPlotAttend)
 
-    })
+res.send({ region: region, boysAttend: boysPlotAttend, girlsAttend: girlsPlotAttend, boysEnrol:boysPlotEnrol, girlsEnrol:girlsPlotEnrol});
+
+})
 
 });
 

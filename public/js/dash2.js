@@ -111,7 +111,7 @@ function ake(districtName) {
         let enrolPlot = data.enrol;
         let attendPlot = data.attend;
         let inspectionPlot = data.inspection;
-        console.log( inspectionPlot);
+        console.log( 'inspectionPlot', inspectionPlot);
 
         // call the chart function
         chart_attendance_enrolment_Trend_district(district,enrolPlot, attendPlot,inspectionPlot);
@@ -358,13 +358,17 @@ function chart_attendance_enrolment_Trend_district(district,enrolPlot, attendPlo
           datasets: [{ 
               data: enrolPlot,
               label: "Enrolment",
-              borderColor: "#3e95cd",
-              fill: false
+              borderColor: "#006400",
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
             }, { 
               data: attendPlot,
               label: "Attendance",
               borderColor: "#8e5ea2",
-              fill: false
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
             }
           ]
         },
@@ -372,7 +376,12 @@ function chart_attendance_enrolment_Trend_district(district,enrolPlot, attendPlo
           title: {
             display: true,
             text:district
-            }
+            },
+            legend: {
+                labels : {
+                    usePointStyle: true
+                }
+                }
         }
       });
     }
@@ -486,23 +495,31 @@ function teacher_stats_Trend_district(district, enrol, staff, attend, timetable,
           datasets: [{ 
               data: enrol,
               label: "Established staffting as per enrolment",
-              borderColor: "#3e95cd",
-              fill: false
+              borderColor: "#901818",
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
             }, { 
               data: staff,
               label: "Current staffting level",
               borderColor: "#8e5ea2",
-              fill: false
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
             }, { 
               data:attend,
               label: "Staff attendance on visit day",
               borderColor: "#3cba9f",
-              fill: false
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
             }, { 
               data:timetable,
               label: "Number of classes taught according to timetable",
               borderColor: "#e8c3b9",
-              fill: false
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
             }
           ]
         },
@@ -510,7 +527,12 @@ function teacher_stats_Trend_district(district, enrol, staff, attend, timetable,
           title: {
             display: false,
             text:district
-                  }
+            },
+            legend: {
+            labels : {
+                usePointStyle: true
+            }
+            }
         }
       });
     }

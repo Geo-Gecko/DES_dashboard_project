@@ -3,13 +3,13 @@ function loadStats() {
 }
 
 $(document).ready(function() {
-    ake('central')
+    ake('Elgon')
 });
 
 function ake(regionName) {
     //let e = document.getElementById("sel");
 
-    let value = regionName ? regionName : 'central';
+    let value = regionName ? regionName : 'Elgon';
 
     //called for district details
     axios.get(`/nationalDetails-stats/${value}`)
@@ -33,7 +33,8 @@ function ake(regionName) {
                 "<tr><td>Number of Girls:</td><td>" + totalGrilsData + "</td><tr>" +
                 "<tr><td>Total Number of Schools:</td><td>" + totalSchoolsData + "</td><tr>" +
                 "<tr><td>Total Number of Inspections:</td><td>" + totalInspectionData + "</td><tr>" +
-                "<tr><td>Latest Inspections:</td><td>" + max_inspectionData + "</td><tr>" + "</table>")
+                // "<tr><td>Latest Inspections:</td><td>" + max_inspectionData + "</td><tr>" 
+                 "</table>")
 
         })
         .catch(function(error) {
@@ -45,19 +46,20 @@ function ake(regionName) {
         });
 
     // Called for chart_enrolment for each region
-    axios.get(`/nationalEnrolment-stats/${value}`)
+    axios.get(`/nationalEnrolAttend-Trend-stats/${value}`)
         .then(function(response) {
             // handle success
-            /// console.log(response.data);
+            // console.log(response.data);
 
             let data = response.data;
             let region = data.region;
-            let boysPlot = JSON.parse(data.boys).map(myFunction);
-            let girlsPlot = JSON.parse(data.girls).map(myFunction);
+            let enrolPlot = data.enrol;
+            let attendPlot = data.attend;
+            let inspectionPlot = data.inspection;
 
             // call the chart function
-            // chart_enrolment_region(region, girlsPlot, boysPlot);
-            dataCollection('enrollment', region, boysPlot, girlsPlot);
+            chart_enrol_attend_trend_region(region, enrolPlot, attendPlot,inspectionPlot);
+        //    / dataCollection('enrollment', region, boysPlot, girlsPlot);
         })
         .catch(function(error) {
             // handle error
@@ -72,18 +74,20 @@ function ake(regionName) {
     axios.get(`/nationalAttendance-stats/${value}`)
         .then(function(response) {
             // handle success
-            //console.log(response.data);
+            // console.log(response.data);
 
             let data = response.data;
             let region = data.region;
-            let boysPlot = JSON.parse(data.boys).map(myFunction);
-            let girlsPlot = JSON.parse(data.girls).map(myFunction);
-
+            let boysPlotAttend = data.boysAttend;
+            let girlsPlotAttend = data.girlsAttend;
+            let boysPlotEnrol = data.boysEnrol;
+            let girlsPlotEnrol = data.girlsEnrol;
+          
 
             // call the chart function
-            chart_attendance_region(region, boysPlot, girlsPlot);
+            chart_attendance_enrolment_region(region, boysPlotAttend, girlsPlotAttend, boysPlotEnrol,girlsPlotEnrol);
 
-            dataCollection('attendence', region, boysPlot, girlsPlot);
+            // dataCollection('attendence', region, boysPlot, girlsPlot);
         })
         .catch(function(error) {
             // handle error
@@ -101,8 +105,8 @@ function ake(regionName) {
 
             let data = response.data;
             let region = data.region;
-            let p1top3Plot = JSON.parse(data.p1top3).map(myFunction);
-            let p4top7Plot = JSON.parse(data.p4top7).map(myFunction);
+            let p1top3Plot = data.p1top3;
+            let p4top7Plot = data.p4top7;
 
             // call the chart function
             ratio_teach_region(region, p1top3Plot, p4top7Plot);
@@ -119,13 +123,13 @@ function ake(regionName) {
     axios.get(`/nationalSPR-stats/${value}`)
         .then(function(response) {
             // handle success
-            // console.log(response.data);
+             console.log(response.data);
 
             let data = response.data;
             let region = data.region;
-            let sprboysPlot = JSON.parse(data.sprboys).map(myFunction);
-            let sprgirlsPlot = JSON.parse(data.sprgirls).map(myFunction);
-            let sprovrallPlot = JSON.parse(data.sproverall).map(myFunction);
+            let sprboysPlot = data.sprboys;
+            let sprgirlsPlot = data.sprgirls;
+            let sprovrallPlot = data.sproverall;
 
             // call the chart function
             stance_ratio_region(region, sprboysPlot, sprgirlsPlot, sprovrallPlot);
@@ -142,12 +146,12 @@ function ake(regionName) {
     axios.get(`/nationalCPR-stats/${value}`)
         .then(function(response) {
             // handle success
-            // console.log(response.data);
+            console.log(response.data);
 
             let data = response.data;
             let region = data.region;
-            let cp1top3Plot = JSON.parse(data.cp1top3).map(myFunction);
-            let cp4top7Plot = JSON.parse(data.cp4top7).map(myFunction);
+            let cp1top3Plot = data.cp1top3;
+            let cp4top7Plot = data.cp4top7;
 
             // call the chart function
             class_ratio_region(region, cp1top3Plot, cp4top7Plot);
@@ -212,38 +216,12 @@ function myFunction(num) {
 }
 
 
-function generateSum(array) {
-    var sum = 0;
-    for (var i = 0; i < array.length; i++) {
-        if (array[i]) {
-            sum += parseInt(array[i], 10); //don't forget to add the base
-        }
-    }
-    return sum;
-}
 
-var data = {
-    "attendance": { values: [] },
-    "enrollment": { values: [] }
-};
-
-function dataCollection(type, region, boysPlot, girlsPlot) {
-
-    if (type === 'attendence') {
-        data.attendance.values = [generateSum(boysPlot), generateSum(girlsPlot)]
-    }
-    else {
-        data.enrollment.values = [generateSum(boysPlot), generateSum(girlsPlot)]
-    }
-    if (data.attendance.values.length === 2 && data.enrollment.values.length === 2) {
-        chart_enrolment_region(region, data);
-    }
-}
 
 var myEnrolChart, myAttendChart, teacherRatio, StanceRatio, ClassroomRatio, myPillarChart;
 
 //all the chart for the region below 
-function chart_enrolment_region(region, data) {
+function chart_attendance_enrolment_region(region, boysPlotAttend, girlsPlotAttend, boysPlotEnrol,girlsPlotEnrol) {
     if (myEnrolChart) {
         myEnrolChart.destroy();
     }
@@ -261,14 +239,14 @@ function chart_enrolment_region(region, data) {
                     backgroundColor: "lightblue",
                     borderColor: "blue",
                     borderWidth: 1,
-                    data: [data.enrollment.values[0], data.attendance.values[0]]
+                    data: [boysPlotEnrol, boysPlotAttend]
                 },
                 {
                     label: "Girls",
                     backgroundColor: "pink",
                     borderColor: "red",
                     borderWidth: 1,
-                    data: [data.enrollment.values[1], data.attendance.values[1]]
+                    data: [girlsPlotEnrol, girlsPlotAttend]
                 }
             ]
         },
@@ -296,53 +274,45 @@ function chart_enrolment_region(region, data) {
 
 
 
-//bar chart but is not dymaic it is hard coded values for district for the attendance 
-function chart_attendance_region(region, girlsPlot, boysPlot) {
-    if (myAttendChart) {
-        myAttendChart.destroy();
-    }
-    var ctxx = document.getElementById("attendence_region").getContext("2d");
-    myAttendChart = new Chart(ctxx, {
+//line charts for enrol and attend trends at regional level 
+
+function  chart_enrol_attend_trend_region(region, enrolPlot, attendPlot,inspectionPlot) {
+
+    new Chart(document.getElementById("line-chart-trend-region"), {
         type: 'line',
         data: {
-            labels: [["First Term", ['2017']], ["Second Term", ['2017']], ["Third Term", ['2017']], ["First Term", ['2018']], ["Second Term", ['2018']], ["Third Term", ['2018']]],
-            datasets: [{
-                    label: "Girls",
-                    backgroundColor: "rgba(255,10,13,0.1)",
-                    borderColor: "red",
-                    borderWidth: 1,
-                    data: boysPlot
-                },
-                {
-                    label: "Boys",
-                    backgroundColor: "lightblue",
-                    borderColor: "blue",
-                    borderWidth: 1,
-                    data: girlsPlot
-                }
-            ]
+          labels: inspectionPlot,
+          datasets: [{ 
+              data: enrolPlot,
+              label: "Enrolment",
+              borderColor: "#006400",
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
+            }, { 
+              data: attendPlot,
+              label: "Attendance",
+              borderColor: "#8e5ea2",
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
+            }
+          ]
         },
         options: {
-            responsive: true,
+          title: {
+            display: true,
+            text:region
+            },
             legend: {
-                position: "top"
-            },
-            title: {
-                display: true,
-                text: region
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
+                labels : {
+                    usePointStyle: true
+                }
+                }
         }
-    });
+      });
+    }
 
-
-}
 
 
 
@@ -356,7 +326,7 @@ function ratio_teach_region(region, p1top3Plot, p4top7Plot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [1 / p1top3Plot, 100 / p4top7Plot, 1 / 53],
+                data: [p1top3Plot, p4top7Plot, 53],
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
@@ -380,6 +350,9 @@ function ratio_teach_region(region, p1top3Plot, p4top7Plot) {
                     scaleLabel: {
                         display: true,
                         labelString: 'TPR'
+                    },
+                    ticks: {
+                        beginAtZero: true
                     }
                 }]
             }
@@ -408,7 +381,7 @@ function stance_ratio_region(region, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [1 / sprboysPlot, 100 / sprgirlsPlot, 1 / 40],
+                data: [sprboysPlot, sprgirlsPlot, 40],
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
@@ -433,13 +406,16 @@ function stance_ratio_region(region, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
                     scaleLabel: {
                         display: true,
                         labelString: 'SPR'
+                    },
+                    ticks: {
+                        beginAtZero: true
                     }
                 }]
             }
 
         }
     };
-
+  
 
     var ctx = document.getElementById("region_2").getContext("2d");
     StanceRatio = new Chart(ctx, config);
@@ -460,7 +436,7 @@ function class_ratio_region(region, cp1top3Plot, cp4top7Plot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [1 / cp1top3Plot, 1 / cp4top7Plot, 1 / 53],
+                data: [ cp1top3Plot, cp4top7Plot, 53],
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
@@ -488,6 +464,9 @@ function class_ratio_region(region, cp1top3Plot, cp4top7Plot) {
                     scaleLabel: {
                         display: true,
                         labelString: 'CPR'
+                    },
+                    ticks: {
+                        beginAtZero: true
                     }
                 }]
             }

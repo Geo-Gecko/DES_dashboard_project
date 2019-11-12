@@ -35,7 +35,7 @@ var districtteacherStatsTrendRouter = require('./routes/District_teacher_stats_t
 var nationalRouter = require('./routes/national_router');
 var nationalDetailsRouter = require('./routes/national_details_router');
 var nationalAttendanceRouter = require('./routes/national_attendance_router');
-var nationalEnrolmentRouter = require('./routes/national_enrolment_router');
+var nationalEnrolAttendTrendRouter = require('./routes/national_attendance_enrolment_trend_router');
 var nationalTPRRouter = require('./routes/national_TPR_router');
 var nationalSPRRouter = require('./routes/national_SPR_router');
 var nationalCPRRouter = require('./routes/national_CPR_router');
@@ -90,7 +90,7 @@ app.use('/districtrteacher_stats-Trend', districtteacherStatsTrendRouter)
 app.use('/nationals', nationalRouter);
 app.use('/nationalDetails-stats', nationalDetailsRouter);
 app.use('/nationalAttendance-stats', nationalAttendanceRouter);
-app.use('/nationalEnrolment-stats', nationalEnrolmentRouter);
+app.use('/nationalEnrolAttend-Trend-stats', nationalEnrolAttendTrendRouter);
 app.use('/nationalTPR-stats', nationalTPRRouter);
 app.use('/nationalSPR-stats', nationalSPRRouter);
 app.use('/nationalCPR-stats', nationalCPRRouter);

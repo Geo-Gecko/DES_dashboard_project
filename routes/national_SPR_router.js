@@ -14,11 +14,11 @@ router.get('/:region', function(req, res, next) {
     // run query where school id
 
     const dQuery = `select distinct(details.region) as region,
-    sum(inspection.stance_to_pupilboys_ratio) as sprboys,  
-    sum(inspection.stance_to_pupilgirls_ratio) as sprgirls,
-     sum(inspection.stance_to_pupiloverall_ratio) as spr_overall 
+    avg(inspection.stance_to_pupilboys_ratio) as sprboys,  
+    avg(inspection.stance_to_pupilgirls_ratio) as sprgirls,
+     avg(inspection.stance_to_pupiloverall_ratio) as spr_overall 
      FROM  ft_form_12  as inspection,  ft_form_11  as details 
-     WHERE details.submission_id=inspection.school_name group by details.region`;
+     WHERE details.submission_id=inspection.school_name and details.region='${nameOfRegion}' group by details.region`;
 
 
     let regionArray = [];
@@ -39,7 +39,7 @@ router.get('/:region', function(req, res, next) {
             // Processing boys for stance ratio for district 
             let srRatio = [];
             for (let b = 1; b <= 1; b++) {
-                let sRatio = `spr_boys`;
+                let sRatio = `sprboys`;
                 srRatio.push(result[i][sRatio]);
             }
             sprboysArray.push(srRatio);
@@ -47,7 +47,7 @@ router.get('/:region', function(req, res, next) {
             // Processing girls for stance ratio for district 
             let srRatiop7 = [];
             for (let g = 1; g <= 1; g++) {
-                let sRatio = `spr_girls`;
+                let sRatio = `sprgirls`;
                 srRatiop7.push(result[i][sRatio]);
             }
             sprgirlsArray.push(srRatiop7);
@@ -55,7 +55,7 @@ router.get('/:region', function(req, res, next) {
             // Processing stance for overall for district 
             let srRatiop8 = [];
             for (let a = 1; a <= 1; a++) {
-                let sRatio = `spr_overall`;
+                let sRatio = `spr_overall `;
                 srRatiop8.push(result[i][sRatio]);
             }
             sproverallArray.push(srRatiop7);
@@ -67,11 +67,11 @@ router.get('/:region', function(req, res, next) {
         // console.log("SPROVERALL", sproverallArray);
 
         let region = regionArray[0];
-        let sprboysPlot = JSON.stringify(sprboysArray[0]);
-        let sprgirlsPlot = JSON.stringify(sprgirlsArray[0]);
-        let sproverallPlot = JSON.stringify(sproverallArray[0]);
+        let sprboysPlot = sprboysArray[0];
+        let sprgirlsPlot = sprgirlsArray[0];
+        let sproverallPlot = sproverallArray[0];
 
-        res.send({ region: region, sprboys: sprboysPlot, sprgirls: sprgirlsPlot, sproverall: sproverallPlot })
+        res.send({ region:region, sprboys:sprboysPlot, sprgirls:sprgirlsPlot, sproverall:sproverallPlot })
 
     })
 

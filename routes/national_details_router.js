@@ -120,7 +120,7 @@ router.get('/:region', function(req, res, next) {
         let max_inspectionData = maxinspectionArray[0];
 
         let response = { region: region, school: totalSchoolsData, Boys: totalBoysData, Grils: totalGrilsData, Inspection: totalInspectionData, Max_inspection: max_inspectionData }
-        console.log('response', response)
+        // console.log('response', response)
         res.send(response)
 
     })
