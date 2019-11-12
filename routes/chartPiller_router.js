@@ -100,11 +100,11 @@ router.get('/:name_of_school', function(req, res, next) {
 
         }
 
-        console.log("SCHOOL", schoolArray);
-        console.log("PILLAR1", pillar1Array);
-        console.log("PILLAR2", pillar2Array);
-        console.log("PILLAR3", pillar3Array);
-        console.log("PILLAR4", pillar4Array);
+        // console.log("SCHOOL", schoolArray);
+        // console.log("PILLAR1", pillar1Array);
+        // console.log("PILLAR2", pillar2Array);
+        // console.log("PILLAR3", pillar3Array);
+        // console.log("PILLAR4", pillar4Array);
 
 
         let school = schoolArray[0];

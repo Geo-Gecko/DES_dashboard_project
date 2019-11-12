@@ -69,9 +69,9 @@ router.get('/:name_of_school', function(req, res, next) {
 
         }
 
-        console.log("staffArray",staffArray);
-        console.log("enrolArray",enrolArray);
-        console.log(" attendArray", attendArray);
+        // console.log("staffArray",staffArray);
+        // console.log("enrolArray",enrolArray);
+        // console.log(" attendArray", attendArray);
 
         let school = schoolsArray[0];
         let enrol = enrolArray[0];

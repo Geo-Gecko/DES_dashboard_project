@@ -95,13 +95,13 @@ router.get('/:name_of_school', function(req, res, next) {
         // console.log("Attendence girls", attendenceGirlsArray);
         // console.log("Enrolment Girls",  enrolmentGirlsArray);
         // console.log("Enrolment Boys", enrolmentBoysArray);
-        // console.log("Schools", SchoolArray);
+        // console.log("SCHOOLDATA", SchoolArray);
 
         let school = SchoolArray[0];
-        let boysPlotAttend = JSON.stringify(attendenceBoysArray[0]);
-        let girlsPlotAttend = JSON.stringify(attendenceGirlsArray[0]);
-        let boysPlotEnrol = JSON.stringify(enrolmentGirlsArray[0]);
-        let girlsPlotEnrol = JSON.stringify(enrolmentBoysArray[0]);
+        let boysPlotAttend = attendenceBoysArray[0];
+        let girlsPlotAttend = attendenceGirlsArray[0];
+        let boysPlotEnrol = enrolmentGirlsArray[0];
+        let girlsPlotEnrol = enrolmentBoysArray[0];
 
         res.send({ School: school, boysAttend: boysPlotAttend, girlsAttend: girlsPlotAttend, boysEnrol:boysPlotEnrol, girlsEnrol:girlsPlotEnrol });
 

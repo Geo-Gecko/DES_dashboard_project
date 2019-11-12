@@ -46,6 +46,7 @@ router.get('/:name_of_school', function(req, res, next) {
     connection.query(aQuery, function fill(err, result, ) {
         if (err) throw err;
         let SchoolArray= [];
+        let inspectionDataArray = [];
         let enrolmentBoysArray = [];
         let enrolmentGirlsArray = [];
         let attendenceBoysArray = [];
@@ -55,6 +56,14 @@ router.get('/:name_of_school', function(req, res, next) {
             // School
             let school = result[i]. name_of_school;
             SchoolArray.push(school)
+
+    // Processing inspection date 
+            let inpsection = [];
+            for (let m = 1; m <= 1; m++) {
+                let inpsect = `date_of_inspection`;
+                inpsection.push(result[i][inpsect]);
+            }
+            inspectionDataArray.push(inpsection);
 
 
             // Processing boys for each school and each class
@@ -96,14 +105,16 @@ router.get('/:name_of_school', function(req, res, next) {
         console.log("Enrolment Girls",  enrolmentGirlsArray);
         console.log("Enrolment Boys", enrolmentBoysArray);
         console.log("Schools", SchoolArray);
+        console.log("inspection", inspectionDataArray); 
 
         let school = SchoolArray[0];
-        let boysPlotAttend = JSON.stringify(attendenceBoysArray[0]);
-        let girlsPlotAttend = JSON.stringify(attendenceGirlsArray[0]);
-        let boysPlotEnrol = JSON.stringify(enrolmentGirlsArray[0]);
-        let girlsPlotEnrol = JSON.stringify(enrolmentBoysArray[0]);
+        let boysPlotAttend = attendenceBoysArray[0];
+        let girlsPlotAttend = attendenceGirlsArray[0];
+        let boysPlotEnrol = enrolmentGirlsArray[0];
+        let girlsPlotEnrol = enrolmentBoysArray[0];
+        let inspectionPlot = inspectionDataArray[0];
 
-        res.send({ School: school, boysAttend: boysPlotAttend, girlsAttend: girlsPlotAttend, boysEnrol:boysPlotEnrol, girlsEnrol:girlsPlotEnrol });
+        res.send({ School: school, boysAttend: boysPlotAttend, girlsAttend: girlsPlotAttend, boysEnrol:boysPlotEnrol, girlsEnrol:girlsPlotEnrol, inspectPlot:inspectionPlot});
 
     })
 
