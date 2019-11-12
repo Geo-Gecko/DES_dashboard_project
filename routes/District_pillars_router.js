@@ -15,7 +15,7 @@ router.get('/:district', function(req, res, next) {
     let nameOfDistrict = req.params.district;
 
     const aQuery = `select distinct(details.district) as district, 
-    cast(avg(inspection.condition_of_school_building_and_compound) as unsigned)  as pilar1cond1, 
+    cast(avg(inspection.condition_of_school_building_and_compound) as unsigned) as pilar1cond1, 
     cast(avg(inspection.classroom_infrastructure) as unsigned) as pilar1cond2,
     cast(avg(inspection.sanitary_facilities) as unsigned) as pilar1cond3, 
     cast(avg(inspection.timetabling) as unsigned) as pilar1cond4, 

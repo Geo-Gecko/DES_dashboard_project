@@ -9,6 +9,8 @@ $(document).ready(function () {
 function ake(districtName) {
     //let e = document.getElementById("sel");
 
+    console.log(districtName)
+
     let value = districtName ? districtName : 'Adjumani';
 
 
@@ -16,7 +18,7 @@ function ake(districtName) {
     axios.get(`/districtdetails-stats/${value}`)
         .then(function (response) {
             // handle success
-            //console.log(response.data);
+            // console.log(response.data);
 
             let data = response.data;
             let district = data.district;
@@ -32,7 +34,8 @@ function ake(districtName) {
                 "<tr><td>Number of Girls:</td><td>" + totalGrilsData + "</td><tr>" +
                 "<tr><td>Total  Number of Schools:</td><td>" + totalSchoolsData + "</td><tr>" +
                 "<tr><td>Total  Number of Inspections:</td><td>" + totalInspectionData + "</td><tr>" +
-                "<tr><td>Latest Inspections:</td><td>" + max_inspectionData + "</td><tr>" + "</table>")
+              // "<tr><td>Latest Inspections:</td><td>" + max_inspectionData + "</td><tr>" 
+               "</table>")
 
         })
         .catch(function (error) {
@@ -48,18 +51,22 @@ function ake(districtName) {
     axios.get(`/districtattendance-stats/${value}`)
         .then(function (response) {
             // handle success
-            // console.log(response.data);
+            
 
             let data = response.data;
             let district = data.district;
-            let boysPlot = JSON.parse(data.boys).map(myFunction);
-            let girlsPlot = JSON.parse(data.girls).map(myFunction);
-
+            let boysPlotAttend =data.boysAttend;
+            let girlsPlotAttend = data.girlsAttend;
+            let boysPlotEnrol = data.boysEnrol;
+            let girlsPlotEnrol = data.girlsEnrol;
+            console.log(girlsPlotEnrol);
+                 
 
             // call the chart function
-            chart_attendance_district(district, boysPlot, girlsPlot);
+            chart_attendance_enrolment_district(district,boysPlotAttend, girlsPlotAttend, boysPlotEnrol, girlsPlotEnrol);
+          
 
-            dataCollection('attendence', district, boysPlot, girlsPlot);
+            // dataCollection(district,boysPlotAttend, girlsPlotAttend, boysPlotEnrol, girlsPlotEnrol );
         })
         .catch(function (error) {
             // handle error
@@ -77,13 +84,13 @@ function ake(districtName) {
 
             let data = response.data;
             let district = data.district;
-            let boysPlot = JSON.parse(data.boys).map(myFunction);
-            let girlsPlot = JSON.parse(data.girls).map(myFunction);
+            let boysPlot = data.boys;
+            let girlsPlot = data.girls;
 
             // call the chart function
-            // chart_enrolment_district(district, boysPlot, girlsPlot);
+            chart_attendance_district(district, boysPlot, girlsPlot);
 
-            dataCollection('enrollment', district, boysPlot, girlsPlot);
+            // dataCollection('enrollment', district, boysPlot, girlsPlot);
         })
         .catch(function (error) {
             // handle error
@@ -101,8 +108,8 @@ function ake(districtName) {
 
             let data = response.data;
             let district = data.district;
-            let p1top3Plot = JSON.parse(data.p1top3).map(myFunction);
-            let p4top7Plot = JSON.parse(data.p4top7).map(myFunction);
+            let p1top3Plot = data.p1top3;
+            let p4top7Plot = data.p4top7;
 
             // call the chart function
             ratio_teach_district(district, p1top3Plot, p4top7Plot);
@@ -124,9 +131,9 @@ function ake(districtName) {
 
             let data = response.data;
             let district = data.district;
-            let sprboysPlot = JSON.parse(data.sprboys).map(myFunction);
-            let sprgirlsPlot = JSON.parse(data.sprgirls).map(myFunction);
-            let sprovrallPlot = JSON.parse(data.sproverall).map(myFunction);
+            let sprboysPlot = data.sprboys;
+            let sprgirlsPlot = data.sprgirls;
+            let sprovrallPlot = data.sproverall;
 
             // call the chart function
             stance_ratio_district(district, sprboysPlot, sprgirlsPlot, sprovrallPlot);
@@ -148,8 +155,8 @@ function ake(districtName) {
 
             let data = response.data;
             let district = data.district;
-            let cp1top3Plot = JSON.parse(data.cp1top3).map(myFunction);
-            let cp4top7Plot = JSON.parse(data.cp4top7).map(myFunction);
+            let cp1top3Plot = data.cp1top3;
+            let cp4top7Plot = data.cp4top7;
 
             // call the chart function
             class_ratio_district(district, cp1top3Plot, cp4top7Plot);
@@ -161,6 +168,30 @@ function ake(districtName) {
         .finally(function () {
             // always executed
         });
+
+          //called for teacher stats for district
+    axios.get(`/districtteacher-stats/${value}`)
+    .then(function (response) {
+        // handle success
+        console.log(response.data);
+
+        let data = response.data;
+        let district = data.district;
+        let enrol = data.enrol;
+        let staff = data.staff;
+        let attend = data.attend;
+        let timetable = data.timetable;
+
+        // call the chart function
+        teacher_stats_district(district, enrol, staff, attend, timetable);
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error);
+    })
+    .finally(function () {
+        // always executed
+    });
 
     //chartpillars for district 
     axios.get(`/districtpillars-stats/${value}`)
@@ -205,47 +236,17 @@ function ake(districtName) {
 
 }
 
-function myFunction(num) {
-    return parseInt(num, 10);
-}
 
-function generateSum(array) {
-    var sum = 0;
-    for (var i = 0; i < array.length; i++) {
-        if (array[i]) {
-            sum += parseInt(array[i], 10); //don't forget to add the base
-        }
-    }
-    return sum;
-}
-
-var data = {
-    "attendance": { values: [] },
-    "enrollment": { values: [] }
-};
-
-function dataCollection(type, district, boysPlot, girlsPlot) {
-
-    if (type === 'attendence') {
-        data.attendance.values = [generateSum(boysPlot), generateSum(girlsPlot)]
-    }
-    else {
-        data.enrollment.values = [generateSum(boysPlot), generateSum(girlsPlot)]
-    }
-    if (data.attendance.values.length === 2 && data.enrollment.values.length === 2) {
-        chart_enrolment_district(district, data);
-    }
-}
 
 var myEnrolChart, myAttendChart, teacherRatio, StanceRatio, ClassroomRatio, myPillarChart;
 
 
 //bar chart but is not dymaic it is hard coded values for district
-function chart_enrolment_district(district, data) {
+function  chart_attendance_enrolment_district(district,boysPlotAttend, girlsPlotAttend, boysPlotEnrol, girlsPlotEnrol) {
     if (myEnrolChart) {
         myEnrolChart.destroy();
     }
-    console.log(data)
+    
     var ctxx = document.getElementById("superChart").getContext("2d");
     myEnrolChart = new Chart(ctxx, {
         type: 'bar',
@@ -260,14 +261,14 @@ function chart_enrolment_district(district, data) {
                     backgroundColor: "lightblue",
                     borderColor: "blue",
                     borderWidth: 1,
-                    data: [data.enrollment.values[0], data.attendance.values[0]]
+                    data: [boysPlotEnrol, boysPlotAttend]
                 },
                 {
                     label: "Girls",
                     backgroundColor: "pink",
                     borderColor: "red",
                     borderWidth: 1,
-                    data: [data.enrollment.values[1], data.attendance.values[1]]
+                    data: [girlsPlotEnrol,  girlsPlotAttend]
                 }
             ]
         },
@@ -360,7 +361,7 @@ function ratio_teach_district(district, p1top3Plot, p4top7Plot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [1 / p1top3Plot, 100 / p4top7Plot, 1 / 53],
+                data: [p1top3Plot,p4top7Plot, 53],
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
@@ -384,6 +385,9 @@ function ratio_teach_district(district, p1top3Plot, p4top7Plot) {
                     scaleLabel: {
                         display: true,
                         labelString: 'TPR'
+                    },
+                    ticks: {
+                        beginAtZero: true
                     }
                 }]
             }
@@ -396,8 +400,49 @@ function ratio_teach_district(district, p1top3Plot, p4top7Plot) {
 
 }
 
+// Teacher stats at district level
+function   teacher_stats_district(district, enrol, staff, attend, timetable) {
 
-
+    var ctxx = document.getElementById("TeacherChartDistrict").getContext("2d");
+        var myChart = new Chart(ctxx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    ["Established"," staffting"," as per enrolment"],
+                   [ "Current","staffting"," level"],
+                   [ "Staff attendance"," on visit day"],
+                    ["Number of classes"," taught according"," to timetable"],
+                ],
+                datasets: [
+                    {
+                        label: "",
+                        backgroundColor:  "rgb(38,34,98)",
+                        borderColor:  "rgb(38,34,98)",
+                        borderWidth: 1,
+                        data: [enrol, staff, attend, timetable]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: "top",
+                    display: false
+                },
+                title: {
+                    display: false,
+                    text: district
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
 
 //stance to pupils ratio for district 
 function stance_ratio_district(district, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
@@ -412,7 +457,7 @@ function stance_ratio_district(district, sprboysPlot, sprgirlsPlot, sprovrallPlo
         type: 'bar',
         data: {
             datasets: [{
-                data: [1 / sprboysPlot, 100 / sprgirlsPlot, 1 / 40],
+                data: [sprboysPlot, sprgirlsPlot, 40],
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
@@ -437,6 +482,9 @@ function stance_ratio_district(district, sprboysPlot, sprgirlsPlot, sprovrallPlo
                     scaleLabel: {
                         display: true,
                         labelString: 'SPR'
+                    },
+                    ticks: {
+                        beginAtZero: true
                     }
                 }]
             }
@@ -463,7 +511,7 @@ function class_ratio_district(district, cp1top3Plot, cp4top7Plot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [1 / cp1top3Plot, 1 / cp4top7Plot, 1 / 53],
+                data: [cp1top3Plot, cp4top7Plot, 53],
 
                 backgroundColor: [
                     "rgb(38,34,98)",
@@ -492,6 +540,9 @@ function class_ratio_district(district, cp1top3Plot, cp4top7Plot) {
                     scaleLabel: {
                         display: true,
                         labelString: 'CPR'
+                    },
+                    ticks: {
+                        beginAtZero: true
                     }
                 }]
             }

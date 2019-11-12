@@ -17,7 +17,8 @@ router.get('/:district', function(req, res, next) {
     sum(inspection.teacher_to_pupil_ratio_in_lower_primaryp1p3) as tprp1p3,
     sum(inspection.teacher_to_pupil_ratio_in_upper_primaryp4p7) as tprp4p7 
      FROM  ft_form_12  as inspection,  ft_form_11  as details
-      WHERE details.submission_id=inspection.school_name group by details.district`;
+      WHERE details.submission_id=inspection.school_name and details.district ='${nameOfDistrict}' 
+       group by details.district`;
 
 
     let districtArray = [];
@@ -57,8 +58,8 @@ router.get('/:district', function(req, res, next) {
         // console.log("P4P7",p4top7Array);
 
         let district = districtArray[0];
-        let p1top3Plot = JSON.stringify(p1top3Array[0]);
-        let p4top7Plot = JSON.stringify(p4top7Array[0]);
+        let p1top3Plot =p1top3Array[0];
+        let p4top7Plot = p4top7Array[0];
 
         res.send({ district: district, p1top3: p1top3Plot, p4top7: p4top7Plot })
 

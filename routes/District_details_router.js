@@ -5,7 +5,7 @@ var connection = require('../config/database');
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-    const districtsQuery = "select distinct(district) as district from tbl_random";
+    const districtsQuery = "select distinct(details.district) as district  FROM  ft_form_12  as inspection, ft_form_11 as details WHERE details.submission_id = inspection.school_name";
 
     connection.query(districtsQuery, function(err, result) {
 
@@ -67,7 +67,7 @@ router.get('/:district', function(req, res, next) {
     sum(inspection.number_of_girls_enrolled_in_p7)  as TotalGirls, 
     count(inspection.date_of_inspection) as inspection_number,
     DATE_FORMAT(max(inspection.date_of_inspection), '%D-%b-%Y') as last_inspection  FROM  ft_form_12 
-     as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name group by details.district`;
+     as inspection, ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.district ='${nameOfDistrict}' group by details.district`;
 
 
     let districtArray = [];

@@ -6,7 +6,9 @@ function loadStats() {
 function ake(nameOfSchool) {
     //let e = document.getElementById("sel");
 
-    let value = nameOfSchool ? nameOfSchool : 'Aanga P.S';
+
+    let value = nameOfSchool ? nameOfSchool : 'Adranga P.S';
+
 
     // Called to get enrollment for each school
     axios.get(`/attend-enrol-trend/${value}`)
