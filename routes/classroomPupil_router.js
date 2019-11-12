@@ -18,7 +18,7 @@ router.get('/:name_of_school', function(req, res, next) {
     inspection.classroom_to_pupil_ratio_in_lower_primaryp1p3 as cprp1p3,
      inspection.classroom_to_pupil_ratio_in_upper_primaryp4p7 as cprp4p7  
      FROM  ft_form_12  as inspection,  ft_form_11  as details 
-     WHERE details.submission_id=inspection.school_name`;
+     WHERE details.submission_id=inspection.school_name and name_of_school = '${nameOfSchool}' `;
 
 
     let schoolArray = [];

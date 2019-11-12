@@ -6,7 +6,7 @@ var connection = require('../config/database');
 router.get('/:name_of_school', function(req, res, next) {
 
 
-    const limit = 10;
+    //const limit = 10;
 
     let nameOfSchool = req.params.name_of_school;
 
@@ -39,8 +39,7 @@ router.get('/:name_of_school', function(req, res, next) {
         inspection.number_of_girls_enrolled_in_p5 +
         inspection.number_of_girls_enrolled_in_p6  +   inspection.number_of_girls_enrolled_in_p7  as girls_enrol
          FROM ft_form_12 as inspection, ft_form_11 as details 
-         WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}'
-         group by details.name_of_school, inspection.date_of_inspection;`;
+         WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}'`;
 
 
     connection.query(aQuery, function fill(err, result, ) {
@@ -56,7 +55,7 @@ router.get('/:name_of_school', function(req, res, next) {
             // School
             let school = result[i]. name_of_school;
             SchoolArray.push(school)
-
+       // console.log(school);
     // Processing inspection date 
             let inpsection = [];
             for (let m = 1; m <= 1; m++) {
@@ -69,32 +68,32 @@ router.get('/:name_of_school', function(req, res, next) {
             // Processing boys for each school and each class
             let boysArrayAttend = [];
             for (let b = 1; b <= 1; b++) {
-                let sClass = `boys_vd`;
-                boysArrayAttend.push(result[i][sClass]);
+                let boysData = `boys_vd`;
+                boysArrayAttend.push(result[i][boysData]);
             }
             attendenceBoysArray.push(boysArrayAttend);
 
             // Processing girls for each school and each class
             let girlsArrayAttend = [];
             for (let g = 1; g <= 1; g++) {
-                let sClass = `girls_vd`;
-                girlsArrayAttend.push(result[i][sClass]);
+                let girlsData = `girls_vd`;
+                girlsArrayAttend.push(result[i][girlsData]);
             }
             attendenceGirlsArray.push(girlsArrayAttend);
 
              // Processing girls for each school and each class
              let girlsArrayEnrol = [];
              for (let g = 1; g <= 1; g++) {
-                 let sClass = `girls_enrol`;
-                 girlsArrayEnrol.push(result[i][sClass]);
+                 let girlsEnroData = `girls_enrol`;
+                 girlsArrayEnrol.push(result[i][girlsEnroData]);
              }
              enrolmentGirlsArray.push(girlsArrayEnrol);
 
               // Processing girls for each school and each class
               let boysArrayEnrol = [];
               for (let g = 1; g <= 1; g++) {
-                  let sClass = `boys_enrol`;
-                  boysArrayEnrol.push(result[i][sClass]);
+                  let boysEnroData = `boys_enrol`;
+                  boysArrayEnrol.push(result[i][boysEnroData]);
               }
               enrolmentBoysArray.push(boysArrayEnrol);
 
@@ -108,11 +107,11 @@ router.get('/:name_of_school', function(req, res, next) {
         console.log("inspection", inspectionDataArray); 
 
         let school = SchoolArray[0];
-        let boysPlotAttend = attendenceBoysArray[0];
-        let girlsPlotAttend = attendenceGirlsArray[0];
-        let boysPlotEnrol = enrolmentGirlsArray[0];
-        let girlsPlotEnrol = enrolmentBoysArray[0];
-        let inspectionPlot = inspectionDataArray[0];
+        let boysPlotAttend = attendenceBoysArray;
+        let girlsPlotAttend = attendenceGirlsArray;
+        let boysPlotEnrol = enrolmentGirlsArray;
+        let girlsPlotEnrol = enrolmentBoysArray;
+        let inspectionPlot = inspectionDataArray;
 
         res.send({ School: school, boysAttend: boysPlotAttend, girlsAttend: girlsPlotAttend, boysEnrol:boysPlotEnrol, girlsEnrol:girlsPlotEnrol, inspectPlot:inspectionPlot});
 

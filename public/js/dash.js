@@ -6,32 +6,34 @@ function loadStats() {
 function ake(nameOfSchool) {
     //let e = document.getElementById("sel");
 
+
     let value = nameOfSchool ? nameOfSchool : 'Adranga P.S';
 
+
     // Called to get enrollment for each school
-    // axios.get(`/enrollment-stats/${value}`)
-    //     .then(function (response) {
-    //         // handle success
-
-    //         let data = response.data;
-    //         let school = data.school;
-    //         let boysPlot = JSON.parse(data.boys).map(myFunction);
-    //         let girlsPlot = JSON.parse(data.girls).map(myFunction);
-
-    //         // call the chart function
-    //         // char_enrollment(school, boysPlot, girlsPlot);
-
-    //         dataCollection('enrollment', school, boysPlot, girlsPlot);
-
-    //         chart_attendance(school);
-    //     })
-    //     .catch(function (error) {
-    //         // handle error
-    //         console.log(error);
-    //     })
-    //     .finally(function () {
-    //         // always executed
-    //     });
+    axios.get(`/attend-enrol-trend/${value}`)
+        .then(function (response) {
+            // handle success
+            console.log(response);
+            let data = response.data;
+            let school = data.school;
+            let boysPlotEnrol = data.boysEnrol;
+            let girlsPlotEnrol = data.girlsEnrol;
+            let boysPlotAttend = data.boysAttend;
+            let girlsPlotAttend = data.girlsAttend;
+            let inspectionPlot = data.inspectPlot;
+    
+        
+            attend_enrol_trend(school, boysPlotEnrol, girlsPlotEnrol, boysPlotAttend, girlsPlotAttend, inspectionPlot);
+           
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .finally(function () {
+            // always executed
+        });
 
     // Called for chart_attendance for each school
     axios.get(`/chart_attendance/${value}`)
@@ -302,13 +304,13 @@ function char_enrollment(school, boysPlotEnrol,  girlsPlotEnrol, boysPlotAttend,
 }
 
 
-function chart_attendance(school, boysPlot, girlsPlot) {
+function attend_enrol_trend(school, boysPlotEnrol, girlsPlotEnrol, boysPlotAttend, girlsPlotAttend, inspectionPlot) {
     if (myAttendChart) {
         myAttendChart.destroy();
     }
     var ctxx = document.getElementById("chart_attendance").getContext("2d");
     myAttendChart = new Chart(ctxx, {
-        type: 'bar',
+        type: 'line',
         data: {
             labels: [["First Term", ['2017']], ["Second Term", ['2017']], ["Third Term", ['2017']], ["First Term", ['2018']], ["Second Term", ['2018']], ["Third Term", ['2018']]],
             datasets: [
@@ -319,16 +321,35 @@ function chart_attendance(school, boysPlot, girlsPlot) {
                     fillOpacity: .3,
                     fill: true,
                     borderWidth: 1,
-                    data: [getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000)]
+                    data: [boysPlotEnrol, girlsPlotEnrol]
                 },
                 {
                     label: "Attendence",
                     backgroundColor: "lightblue",
                     borderColor: "blue",
                     borderWidth: 1,
-                    type: 'line',
                     lineTension: 0,
-                    data: [getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000), getRandomInt(1000, 2000)],
+                    data: boysPlotAttend
+                }
+
+            ],
+            datasets: [
+                {
+                    label: "Enrolment",
+                    backgroundColor: "rgba(255,10,13,0.1)",
+                    borderColor: "red",
+                    fillOpacity: .3,
+                    fill: true,
+                    borderWidth: 1,
+                    data: girlsPlotEnrol
+                },
+                {
+                    label: "Attendence",
+                    backgroundColor: "lightblue",
+                    borderColor: "blue",
+                    borderWidth: 1,
+                    lineTension: 0,
+                    data: girlsPlotAttend
                 }
 
             ]
@@ -820,8 +841,8 @@ var ctxx = document.getElementById("TeacherChart").getContext("2d");
         data: {
             labels: [
                 ["Established staffting"," as per enrolment"],
-               [ "Current","staffting"," level"],
-               [ "Staff attendance"," on visit day"],
+                [ "Current","staffting"," level"],
+                [ "Staff attendance"," on visit day"],
                 ["Number of classes"," taught according"," to timetable"],
             ],
             datasets: [

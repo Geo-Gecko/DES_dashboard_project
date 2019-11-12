@@ -19,7 +19,9 @@ router.get('/:name_of_school', function(req, res, next) {
     inspection.stance_to_pupilgirls_ratio as sprgirls,
      inspection.stance_to_pupiloverall_ratio as spr_overall 
      FROM  ft_form_12  as inspection,  ft_form_11  as details 
-     WHERE details.submission_id=inspection.school_name and details.name_of_school = '${nameOfSchool}'`;
+     WHERE details.submission_id=inspection.school_name and name_of_school = '${nameOfSchool}' `;
+
+     
 
 
     let schoolArray = [];

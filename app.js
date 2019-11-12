@@ -6,13 +6,14 @@ var logger = require('morgan');
 
 // Schools
 var dashboardRouter = require('./routes/dashboard');
-var attendenceRouter = require('./routes/attendence');
+var attendence_enrolmentRouter = require('./routes/attendence_enrolment_router');
 var teacherToPupilRatioRouter = require('./routes/teacherToPupilRatio');
 var chartPiller = require('./routes/chartPiller_router');
 var classroomPupil = require('./routes/classroomPupil_router');
 var trend = require('./routes/schooltrend_router');
 var stancePupil = require('./routes/stancePupil_router');
 var details = require('./routes/schoolDetails_router');
+var attendence_entrolmant_trendRouter = require('./routes/attendance_entolment_trend_router');
 //sub county 
 var subCountyRouter = require('./routes/subCounty');
 var teacherStatsRouter = require('./routes/teacher_stats_router');
@@ -57,7 +58,7 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 
 //Schools
 app.use('/', dashboardRouter);
-app.use('/chart_attendance', attendenceRouter);
+app.use('/chart_attendance', attendence_enrolmentRouter);
 app.use('/teacher-to-pupil-ratio', teacherToPupilRatioRouter);
 app.use('/chartPiller-stats', chartPiller);
 app.use('/classroomPupil-stats', classroomPupil);
@@ -65,6 +66,7 @@ app.use('/schooltrend-stats', trend);
 app.use('/schooldetails-stats', details);
 app.use('/stancePupil-stats', stancePupil);
 app.use('/teacher-stats', teacherStatsRouter);
+app.use('/attend-enrol-trend', attendence_entrolmant_trendRouter);
 
 //sub countys 
 app.use('/subCounty', subCountyRouter);
