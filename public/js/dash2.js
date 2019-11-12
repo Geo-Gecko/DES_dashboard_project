@@ -59,7 +59,7 @@ function ake(districtName) {
             let girlsPlotAttend = data.girlsAttend;
             let boysPlotEnrol = data.boysEnrol;
             let girlsPlotEnrol = data.girlsEnrol;
-            console.log(girlsPlotEnrol);
+           // console.log(girlsPlotEnrol);
                  
 
             // call the chart function
@@ -76,29 +76,55 @@ function ake(districtName) {
             // always executed
         });
 
-    // Called for chart_enrolment for each district 
-    axios.get(`/districtenrolment-stats/${value}`)
-        .then(function (response) {
-            // handle success
-            //console.log(response.data);
+    // // Called for chart_enrolment for each district 
+    // axios.get(`/districtenrolment-stats/${value}`)
+    //     .then(function (response) {
+    //         // handle success
+    //         //console.log(response.data);
 
-            let data = response.data;
-            let district = data.district;
-            let boysPlot = data.boys;
-            let girlsPlot = data.girls;
+    //         let data = response.data;
+    //         let district = data.district;
+    //         let boysPlot = data.boys;
+    //         let girlsPlot = data.girls;
 
-            // call the chart function
-            chart_attendance_district(district, boysPlot, girlsPlot);
+    //         // call the chart function
+    //         chart_attendance_district(district, boysPlot, girlsPlot);
 
-            // dataCollection('enrollment', district, boysPlot, girlsPlot);
-        })
-        .catch(function (error) {
-            // handle error
-            console.log(error);
-        })
-        .finally(function () {
-            // always executed
-        });
+    //         // dataCollection('enrollment', district, boysPlot, girlsPlot);
+    //     })
+    //     .catch(function (error) {
+    //         // handle error
+    //         console.log(error);
+    //     })
+    //     .finally(function () {
+    //         // always executed
+    //     });
+
+           // Called for district attendance and enrolment stats for each district 
+    axios.get(`/districttrend-stats/${value}`)
+    .then(function (response) {
+        // handle success
+     
+
+        let data = response.data;
+        let district = data.district;
+        let enrolPlot = data.enrol;
+        let attendPlot = data.attend;
+        let inspectionPlot = data.inspection;
+        console.log( inspectionPlot);
+
+        // call the chart function
+        chart_attendance_enrolment_Trend_district(district,enrolPlot, attendPlot,inspectionPlot);
+
+        // dataCollection('enrollment', district, boysPlot, girlsPlot);
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error);
+    })
+    .finally(function () {
+        // always executed
+    });
 
     // Called for teacher pupil ratio for each district 
     axios.get(`/districtTPR-stats/${value}`)
@@ -173,7 +199,7 @@ function ake(districtName) {
     axios.get(`/districtteacher-stats/${value}`)
     .then(function (response) {
         // handle success
-        console.log(response.data);
+        // console.log(response.data);
 
         let data = response.data;
         let district = data.district;
@@ -192,6 +218,32 @@ function ake(districtName) {
     .finally(function () {
         // always executed
     });
+
+
+         //called for teacher stats Trends for district
+         axios.get(`/districtrteacher_stats-Trend/${value}`)
+         .then(function (response) {
+             // handle success
+            //  console.log(response.data);
+                
+             let data = response.data;
+             let district = data.district;
+             let enrol = data.enrol;
+             let staff = data.staff;
+             let attend = data.attend;
+             let timetable = data.timetable;
+             let inspections = data.inspections;
+     
+             // call the chart function
+             teacher_stats_Trend_district(district, enrol, staff, attend, timetable, inspections);
+         })
+         .catch(function (error) {
+             // handle error
+             console.log(error);
+         })
+         .finally(function () {
+             // always executed
+         });
 
     //chartpillars for district 
     axios.get(`/districtpillars-stats/${value}`)
@@ -297,54 +349,33 @@ function  chart_attendance_enrolment_district(district,boysPlotAttend, girlsPlot
 
 
 //bar chart but is not dymaic it is hard coded values for district for the attendance 
-function chart_attendance_district(district, girlsPlot, boysPlot) {
+function chart_attendance_enrolment_Trend_district(district,enrolPlot, attendPlot,inspectionPlot) {
 
-    if (myAttendChart) {
-        myAttendChart.destroy();
-    }
-
-    var ctxx = document.getElementById("attendanChart").getContext("2d");
-    myAttendChart = new Chart(ctxx, {
+    new Chart(document.getElementById("line-chart-trend"), {
         type: 'line',
         data: {
-            labels: [["First Term", ['2017']], ["Second Term", ['2017']], ["Third Term", ['2017']], ["First Term", ['2018']], ["Second Term", ['2018']], ["Third Term", ['2018']]],
-            datasets: [{
-                label: "Girls",
-                backgroundColor: "rgba(255,10,13,0.1)",
-                borderColor: "red",
-                borderWidth: 1,
-                data: boysPlot
-            },
-            {
-                label: "Boys",
-                backgroundColor: "lightblue",
-                borderColor: "blue",
-                borderWidth: 1,
-                data: girlsPlot
+          labels: inspectionPlot,
+          datasets: [{ 
+              data: enrolPlot,
+              label: "Enrolment",
+              borderColor: "#3e95cd",
+              fill: false
+            }, { 
+              data: attendPlot,
+              label: "Attendance",
+              borderColor: "#8e5ea2",
+              fill: false
             }
-            ]
+          ]
         },
         options: {
-            responsive: true,
-            legend: {
-                position: "top"
-            },
-            title: {
-                display: true,
-                text: district
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
+          title: {
+            display: true,
+            text:district
             }
         }
-    });
-
-
-}
+      });
+    }
 
 
 
@@ -442,6 +473,46 @@ function   teacher_stats_district(district, enrol, staff, attend, timetable) {
                 }
             }
         });
+    }
+
+
+    // Teacher stats trend at district level
+function teacher_stats_Trend_district(district, enrol, staff, attend, timetable, inspections) {
+
+    new Chart(document.getElementById("line-chart"), {
+        type: 'line',
+        data: {
+          labels: inspections,
+          datasets: [{ 
+              data: enrol,
+              label: "Established staffting as per enrolment",
+              borderColor: "#3e95cd",
+              fill: false
+            }, { 
+              data: staff,
+              label: "Current staffting level",
+              borderColor: "#8e5ea2",
+              fill: false
+            }, { 
+              data:attend,
+              label: "Staff attendance on visit day",
+              borderColor: "#3cba9f",
+              fill: false
+            }, { 
+              data:timetable,
+              label: "Number of classes taught according to timetable",
+              borderColor: "#e8c3b9",
+              fill: false
+            }
+          ]
+        },
+        options: {
+          title: {
+            display: false,
+            text:district
+                  }
+        }
+      });
     }
 
 //stance to pupils ratio for district 

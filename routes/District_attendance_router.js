@@ -91,10 +91,10 @@ router.get('/:district', function(req, res, next) {
         
                 }
         
-                console.log("Attendence", attendenceBoysArray);
-                console.log("Attendence girls", attendenceGirlsArray);
-                console.log("Enrolment Girls",  enrolmentGirlsArray);
-                console.log("Enrolment Boys", enrolmentBoysArray);
+                // console.log("Attendence", attendenceBoysArray);
+                // console.log("Attendence girls", attendenceGirlsArray);
+                // console.log("Enrolment Girls",  enrolmentGirlsArray);
+                // console.log("Enrolment Boys", enrolmentBoysArray);
                
                 let district = DistrictArray[0];
                 let boysPlotAttend =attendenceBoysArray[0];

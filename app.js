@@ -28,6 +28,7 @@ var districtsCPRRouter = require('./routes/District_CPR_router');
 var districtsPillarsRouter = require('./routes/District_pillars_router');
 var districtstrendRouter = require('./routes/District_trend_router');
 var districtteacherStatsRouter = require('./routes/District_teacher_stats_router.js');
+var districtteacherStatsTrendRouter = require('./routes/District_teacher_stats_trend_router.js');
 
 //National 
 var nationalRouter = require('./routes/national_router');
@@ -80,6 +81,7 @@ app.use('/districtCPR-stats', districtsCPRRouter);
 app.use('/districtpillars-stats', districtsPillarsRouter);
 app.use('/districttrend-stats', districtstrendRouter);
 app.use('/districtteacher-stats',districtteacherStatsRouter)
+app.use('/districtrteacher_stats-Trend', districtteacherStatsTrendRouter)
 
 
 //National

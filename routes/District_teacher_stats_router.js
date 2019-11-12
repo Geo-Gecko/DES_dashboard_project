@@ -71,9 +71,9 @@ router.get('/:district', function(req, res, next) {
 
         }
 
-        console.log("staffArray",staffArray);
-        console.log("enrolArray",enrolArray);
-        console.log(" attendArray", attendArray);
+        // console.log("staffArray",staffArray);
+        // console.log("enrolArray",enrolArray);
+        // console.log(" attendArray", attendArray);
 
         let district = districtsArray[0];
         let enrol = enrolArray[0];

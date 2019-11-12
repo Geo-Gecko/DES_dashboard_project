@@ -15,7 +15,7 @@ router.get('/:district', function(req, res, next) {
     let nameOfDistrict = req.params.district;
 
     const aQuery = `select distinct(details.district) as district,
- inspection.date_of_inspection as inspection_date,
+    DATE_FORMAT(inspection.date_of_inspection, '%d-%m-%Y') as inspection_date,
     sum(inspection.attendance_of_p1_boys_on_visitation_day)+
     sum(inspection.attendance_of_p1_girls_on_visitation_day)+
     sum(inspection.attendance_of_p2_boys_on_visitation_day) +
@@ -48,22 +48,67 @@ FROM  ft_form_12  as inspection,  ft_form_11  as details
 WHERE details.submission_id=inspection.school_name and details.district='${nameOfDistrict}'
  group by details.district, inspection.date_of_inspection`;
 
-    // console.log("")
-    // console.log("")
-    // console.log("aQuery", aQuery)
-    // console.log("")
-    // console.log("")
+    
+ let enrolArray = [];
+ let districtsArray = [];
+ let attendArray = [];
+ let inspectionArray = [];
 
-    connection.query(aQuery, function fill(err, result, ) {
-        if (err) throw err;
+ connection.query(aQuery, function fillGraph(err, result, ) {
+     if (err) throw err;
 
-        console.log('result', result)
+     //let flag = 0;
+     for (let i = 0; i < result.length; i++) {
+         // School
+         let district = result[i].district;
 
-        res.send('hi')
-    })
+         districtsArray.push(district)
+
+         // Processing student enrolment for each district
+         let studentenrol = [];
+         for (let b = 1; b <= 1; b++) {
+             let Tenrol = `enrollment`;
+             studentenrol.push(result[i][Tenrol]);
+         }
+         enrolArray.push(studentenrol);
+
+         
+          // Processing student attendance for each district 
+          let studentattend = [];
+          for (let g = 1; g <= 1; g++) {
+              let Tattend = `attendance`;
+              studentattend.push(result[i][Tattend]);
+          }
+          attendArray.push(studentattend);
+
+            // processing inspection dates for each district
+            let inspections = [];
+            for (let g = 1; g <= 1; g++) {
+                let Tinspection = `inspection_date`;
+                inspections.push(result[i][Tinspection]);
+            }
+            inspectionArray.push(inspections);
+
+     }
+
+     
+     console.log("enrolArray",enrolArray);
+     console.log(" attendArray", attendArray);
+     console.log(" inspectionArray", inspectionArray);
+    
+
+     let district = districtsArray[0];
+     let enrol = enrolArray;
+     let attend = attendArray;
+     let inspection =  inspectionArray;
+
+
+     res.send({ district: district, enrol: enrol, attend:attend, inspection:inspection})
+
+ })
+
+
 
 });
-
-
 
 module.exports = router;

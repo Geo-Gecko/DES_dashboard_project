@@ -11,7 +11,7 @@ router.get('/:district', function(req, res, next) {
 
     // run query where school id
     const limit = 1;
-    const rQuery = `select distinct(inspection.date_of_inspection), sum(inspection.established_staffing_as_per_enrollment) as enrol, sum(inspection.current_staffing_level) as staff,
+    const rQuery = `select distinct(DATE_FORMAT(inspection.date_of_inspection, '%d-%m-%Y')) as inspection_date, sum(inspection.established_staffing_as_per_enrollment) as enrol, sum(inspection.current_staffing_level) as staff,
     sum(inspection.staff_attendance_on_visit_day) as attend,
     sum(inspection.no_of_teachers_teaching_according_to_timetable) as timetable, 
     details.district FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.district ='${nameOfDistrict}' group by inspection.date_of_inspection order by inspection.date_of_inspection asc`;
@@ -22,6 +22,7 @@ router.get('/:district', function(req, res, next) {
     let staffArray = [];
     let attendArray = [];
     let timetableArray = [];
+    let inspectionArray=[];
 
     connection.query(rQuery, function fillGraph(err, result, ) {
         if (err) throw err;
@@ -66,19 +67,30 @@ router.get('/:district', function(req, res, next) {
              }
              timetableArray.push(teacherstaff);
 
+             // processing inspection dates
+             let inspections = [];
+             for (let g = 1; g <= 1; g++) {
+                 let Tinspection = `inspection_date`;
+                 inspections.push(result[i][Tinspection]);
+             }
+             inspectionArray.push(inspections);
+
+
         }
 
-        console.log("staffArray",staffArray);
-        console.log("enrolArray",enrolArray);
-        console.log(" attendArray", attendArray);
+        // console.log("staffArray",staffArray);
+        // console.log("enrolArray",enrolArray);
+        // console.log(" attendArray", attendArray);
+        // console.log("inspectionArray", inspectionArray)
 
         let district = districtsArray[0];
-        let enrol = enrolArray[0];
-        let staff = staffArray[0];
-        let attend = attendArray[0];
-        let  timetable =  timetableArray[0];
+        let enrol = enrolArray;
+        let staff = staffArray;
+        let attend = attendArray;
+        let  timetable =  timetableArray;
+        let inspections = inspectionArray;
 
-        res.send({ district: district, enrol: enrol, staff: staff, attend:attend, timetable:timetable  })
+        res.send({ district: district, enrol: enrol, staff: staff, attend:attend, timetable:timetable, inspections:inspections  })
 
     })
 
