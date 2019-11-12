@@ -18,7 +18,8 @@ router.get('/:district', function(req, res, next) {
     sum(inspection.stance_to_pupilgirls_ratio) as sprgirls,
      sum(inspection.stance_to_pupiloverall_ratio) as spr_overall 
      FROM  ft_form_12  as inspection,  ft_form_11  as details 
-     WHERE details.submission_id=inspection.school_name group by details.district`;
+     WHERE details.submission_id=inspection.school_name and details.district ='${nameOfDistrict}'
+      group by details.district`;
 
 
     let districtArray = [];
@@ -61,15 +62,15 @@ router.get('/:district', function(req, res, next) {
             sproverallArray.push(srRatiop7);
         }
 
-        // console.log("DISTRICT",districtArray);
-        // console.log("SPRBOYS", sprboysArray );
-        // console.log("SPRGIRLS",sprgirlsArray);
-        // console.log("SPROVERALL", sproverallArray);
+        console.log("DISTRICT",districtArray);
+        console.log("SPRBOYS", sprboysArray );
+        console.log("SPRGIRLS",sprgirlsArray);
+        console.log("SPROVERALL", sproverallArray);
 
         let district = districtArray[0];
-        let sprboysPlot = JSON.stringify(sprboysArray[0]);
-        let sprgirlsPlot = JSON.stringify(sprgirlsArray[0]);
-        let sproverallPlot = JSON.stringify(sproverallArray[0]);
+        let sprboysPlot = sprboysArray[0];
+        let sprgirlsPlot =sprgirlsArray[0];
+        let sproverallPlot = sproverallArray[0];
 
         res.send({ district: district, sprboys: sprboysPlot, sprgirls: sprgirlsPlot, sproverall: sproverallPlot })
 

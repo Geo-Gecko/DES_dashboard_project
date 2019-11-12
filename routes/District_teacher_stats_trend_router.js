@@ -3,26 +3,25 @@ var router = express.Router();
 var connection = require('../config/database');
 
 
-router.get('/:name_of_school', function(req, res, next) {
+router.get('/:district', function(req, res, next) {
 
-    // Get school id
-    let nameOfSchool = req.params.name_of_school;
+
+    let nameOfDistrict = req.params.district;
 
 
     // run query where school id
     const limit = 1;
-    const rQuery = `select inspection.date_of_inspection as inspection_date, inspection.established_staffing_as_per_enrollment as enrol, inspection.current_staffing_level as staff,
-    inspection.staff_attendance_on_visit_day as attend,
-     inspection.no_of_teachers_teaching_according_to_timetable as timetable, 
-     details.name_of_school as school FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and  details.name_of_school ='${nameOfSchool}'`;
+    const rQuery = `select distinct(inspection.date_of_inspection), sum(inspection.established_staffing_as_per_enrollment) as enrol, sum(inspection.current_staffing_level) as staff,
+    sum(inspection.staff_attendance_on_visit_day) as attend,
+    sum(inspection.no_of_teachers_teaching_according_to_timetable) as timetable, 
+    details.district FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.district ='${nameOfDistrict}' group by inspection.date_of_inspection order by inspection.date_of_inspection asc`;
 
 
     let enrolArray = [];
-    let schoolsArray = [];
+    let districtsArray = [];
     let staffArray = [];
     let attendArray = [];
     let timetableArray = [];
-    let inspectionArray =[];
 
     connection.query(rQuery, function fillGraph(err, result, ) {
         if (err) throw err;
@@ -30,9 +29,9 @@ router.get('/:name_of_school', function(req, res, next) {
         //let flag = 0;
         for (let i = 0; i < result.length; i++) {
             // School
-            let school = result[i].school;
+            let district = result[i].district;
 
-            schoolsArray.push(school)
+            districtsArray.push(district)
 
             // Processing teacher enrolment for each school and each class
             let teacherenrol = [];
@@ -73,13 +72,13 @@ router.get('/:name_of_school', function(req, res, next) {
         console.log("enrolArray",enrolArray);
         console.log(" attendArray", attendArray);
 
-        let school = schoolsArray[0];
+        let district = districtsArray[0];
         let enrol = enrolArray[0];
         let staff = staffArray[0];
         let attend = attendArray[0];
         let  timetable =  timetableArray[0];
 
-        res.send({ school: school, enrol: enrol, staff: staff, attend:attend, timetable:timetable  })
+        res.send({ district: district, enrol: enrol, staff: staff, attend:attend, timetable:timetable  })
 
     })
 
