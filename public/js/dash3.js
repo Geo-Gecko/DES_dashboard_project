@@ -123,7 +123,7 @@ function ake(regionName) {
     axios.get(`/nationalSPR-stats/${value}`)
         .then(function(response) {
             // handle success
-             console.log(response.data);
+            //  console.log(response.data);
 
             let data = response.data;
             let region = data.region;
@@ -146,7 +146,7 @@ function ake(regionName) {
     axios.get(`/nationalCPR-stats/${value}`)
         .then(function(response) {
             // handle success
-            console.log(response.data);
+            // console.log(response.data);
 
             let data = response.data;
             let region = data.region;
@@ -163,6 +163,57 @@ function ake(regionName) {
         .finally(function() {
             // always executed
         });
+
+      //called for teacher stats for region
+      axios.get(`/nationalTeacher-stats/${value}`)
+      .then(function(response) {
+          // handle success
+          console.log(response.data);
+
+          let data = response.data;
+        let region = data.region;
+        let enrol = data.enrol;
+        let staff = data.staff;
+        let attend = data.attend;
+        let timetable = data.timetable;
+
+          // call the chart function
+          teacher_stats_national(region, enrol, staff, attend, timetable);
+      })
+      .catch(function(error) {
+          // handle error
+          console.log(error);
+      })
+      .finally(function() {
+          // always executed
+      });
+
+      
+         //called for teacher stats Trends for national level
+         axios.get(`/nationalTeacher-Trend-stats/${value}`)
+         .then(function (response) {
+             // handle success
+            //  console.log(response.data);
+                
+             let data = response.data;
+             let region = data.region;
+             let enrol = data.enrol;
+             let staff = data.staff;
+             let attend = data.attend;
+             let timetable = data.timetable;
+             let inspections = data.inspections;
+     
+             // call the chart function
+             teacher_stats_Trend_national(region, enrol, staff, attend, timetable, inspections);
+         })
+         .catch(function (error) {
+             // handle error
+             console.log(error);
+         })
+         .finally(function () {
+             // always executed
+         });
+
 
 
     //chartpillars for district 
@@ -479,6 +530,101 @@ function class_ratio_region(region, cp1top3Plot, cp4top7Plot) {
 }
 
 
+// Teacher stats at region level
+function   teacher_stats_national(region, enrol, staff, attend, timetable) {
+
+    var ctxx = document.getElementById("TeacherChartNational").getContext("2d");
+        var myChart = new Chart(ctxx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    ["Established"," staffting"," as per enrolment"],
+                   [ "Current","staffting"," level"],
+                   [ "Staff attendance"," on visit day"],
+                    ["Number of classes"," taught according"," to timetable"],
+                ],
+                datasets: [
+                    {
+                        label: "",
+                        backgroundColor:  "rgb(38,34,98)",
+                        borderColor:  "rgb(38,34,98)",
+                        borderWidth: 1,
+                        data: [enrol, staff, attend, timetable]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: "top",
+                    display: false
+                },
+                title: {
+                    display: false,
+                    text: region
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+        // Teacher stats trend at national level
+function teacher_stats_Trend_national(region, enrol, staff, attend, timetable, inspections) {
+
+    new Chart(document.getElementById("line-chart-National"), {
+        type: 'line',
+        data: {
+          labels: inspections,
+          datasets: [{ 
+              data: enrol,
+              label: "Established staffting as per enrolment",
+              borderColor: "#901818",
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
+            }, { 
+              data: staff,
+              label: "Current staffting level",
+              borderColor: "#8e5ea2",
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
+            }, { 
+              data:attend,
+              label: "Staff attendance on visit day",
+              borderColor: "#3cba9f",
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
+            }, { 
+              data:timetable,
+              label: "Number of classes taught according to timetable",
+              borderColor: "#e8c3b9",
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
+            }
+          ]
+        },
+        options: {
+          title: {
+            display: false,
+            text:region
+            },
+            legend: {
+            labels : {
+                usePointStyle: true
+            }
+            }
+        }
+      });
+    }
 
 function chartPillarRegion(region, regionConditionalPlot) {
     if (myPillarChart) {

@@ -40,7 +40,8 @@ var nationalTPRRouter = require('./routes/national_TPR_router');
 var nationalSPRRouter = require('./routes/national_SPR_router');
 var nationalCPRRouter = require('./routes/national_CPR_router');
 var nationalPillarsRouter = require('./routes/national_Pillars_router');
-
+var nationalTeacherStatsRouter = require('./routes/National_teacher_stats_router');
+var nationalTeacherStatsTrendRouter = require('./routes/National_teacher_stats_trend_router');
 
 
 var app = express();
@@ -95,7 +96,8 @@ app.use('/nationalTPR-stats', nationalTPRRouter);
 app.use('/nationalSPR-stats', nationalSPRRouter);
 app.use('/nationalCPR-stats', nationalCPRRouter);
 app.use('/nationalPillars-stats', nationalPillarsRouter);
-
+app.use('/nationalTeacher-stats',nationalTeacherStatsRouter)
+app.use('/nationalTeacher-Trend-stats',nationalTeacherStatsTrendRouter)
 
 
 
