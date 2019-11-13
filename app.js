@@ -14,9 +14,10 @@ var trend = require('./routes/schooltrend_router');
 var stancePupil = require('./routes/stancePupil_router');
 var details = require('./routes/schoolDetails_router');
 var attendence_entrolmant_trendRouter = require('./routes/attendance_entolment_trend_router');
+var teacherStatsRouter = require('./routes/teacher_stats_router');
 //sub county 
 var subCountyRouter = require('./routes/subCounty');
-var teacherStatsRouter = require('./routes/teacher_stats_router');
+
 
 //Districts
 var districtsRouter = require('./routes/districts');
