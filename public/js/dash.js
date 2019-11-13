@@ -211,13 +211,13 @@ function ake(nameOfSchool) {
     axios.get(`/teacher-stats/${value}`)
     .then(function (response) {
         // handle success
-        console.log(response);
+        //console.log(response);
         let data = response.data;
-        let school = data.school[0];
-        let enrol = data.enrol[0];
-        let staff = data.staff[0];
-        let attend = data.attend[0];
-        let timetable = data.timetable[0];
+        let school = data.school;
+        let enrol = data.enrol;
+        let staff = data.staff;
+        let attend = data.attend;
+        let timetable = data.timetable;
 
         // call the chart function
         // char_enrollment(school, boysPlot, girlsPlot);
@@ -233,6 +233,30 @@ function ake(nameOfSchool) {
     .finally(function () {
         // always executed
     });
+
+         // Called to get teacher stats for each school
+         axios.get(`/teacher-trend-stats/${value}`)
+         .then(function (response) {
+             // handle success
+             console.log(response);
+             let data = response.data;
+             let school = data.school;
+             let sch_enrol = data.enrol;
+             let sch_staff = data.staff;
+             let sch_attend = data.attend;
+             let sch_timetable = data.timetable;
+             let sch_inspection = data.inspection;
+            
+             teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection);
+     
+         })
+         .catch(function (error) {
+             // handle error
+             console.log(error);
+         })
+         .finally(function () {
+             // always executed
+         });
 
 
 }
@@ -874,4 +898,55 @@ var ctxx = document.getElementById("TeacherChart").getContext("2d");
             }
         }
     });
+
+    // new Chart(document.getElementById("school-line-chart"), {
+//     type: 'line',
+//     data: {
+//       labels: [],
+//       datasets: [{ 
+//           data: [10,58,45,36,]
+//           label: "Established staffting as per enrolment",
+//           borderColor: "#901818",
+//           fill: false,
+//           lineTension: 0,
+//           pointStyle: 'line'
+//         }, { 
+//           data: [45,77,30,50]
+//           label: "Current staffting level",
+//           borderColor: "#8e5ea2",
+//           fill: false,
+//           lineTension: 0,
+//           pointStyle: 'line'
+//         }, { 
+//           data:[70,88,90,20]
+//           label: "Staff attendance on visit day",
+//           borderColor: "#3cba9f",
+//           fill: false,
+//           lineTension: 0,
+//           pointStyle: 'line'
+//         }, { 
+//           data:[59,45,90,30]
+//           label: "Number of classes taught according to timetable",
+//           borderColor: "#e8c3b9",
+//           fill: false,
+//           lineTension: 0,
+//           pointStyle: 'line'
+//         }
+//       ]
+//     },
+//     options: {
+//       title: {
+//         display: false,
+//         text:district
+//         },
+//         legend: {
+//         labels : {
+//             usePointStyle: true
+//         }
+//         }
+//     }
+//   });
+// }
 }
+
+
