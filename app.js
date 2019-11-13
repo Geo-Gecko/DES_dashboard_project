@@ -14,9 +14,8 @@ var trend = require('./routes/schooltrend_router');
 var stancePupil = require('./routes/stancePupil_router');
 var details = require('./routes/schoolDetails_router');
 var attendence_entrolmant_trendRouter = require('./routes/attendance_entolment_trend_router');
-//sub county 
-var subCountyRouter = require('./routes/subCounty');
-var teacherStatsRouter = require('./routes/teacher_stats_router');
+var teacher_stats_Router = require('./routes/Teacher_trends_router');
+
 
 //Districts
 var districtsRouter = require('./routes/districts');
@@ -68,9 +67,8 @@ app.use('/schooldetails-stats', details);
 app.use('/stancePupil-stats', stancePupil);
 app.use('/teacher-stats', teacherStatsRouter);
 app.use('/attend-enrol-trend', attendence_entrolmant_trendRouter);
+app.use('/teacher-trend-stats', teacher_stats_Router),
 
-//sub countys 
-app.use('/subCounty', subCountyRouter);
 
 
 //Districts
