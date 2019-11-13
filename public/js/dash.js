@@ -14,7 +14,7 @@ function ake(nameOfSchool) {
     axios.get(`/attend-enrol-trend/${value}`)
         .then(function (response) {
             // handle success
-            console.log(response);
+           // console.log(response);
             let data = response.data;
             let school = data.school;
             let boysPlotEnrol = data.boysEnrol;
@@ -47,7 +47,7 @@ function ake(nameOfSchool) {
             let boysPlotAttend = data.boysAttend;
             let girlsPlotAttend = data.girlsAttend;
 
-            console.log(girlsPlotAttend, boysPlotEnrol);
+            //console.log(girlsPlotAttend, boysPlotEnrol);
 
 
             // call the chart function
@@ -246,6 +246,8 @@ function ake(nameOfSchool) {
              let sch_attend = data.attend;
              let sch_timetable = data.timetable;
              let sch_inspection = data.inspection;
+
+             console.log(sch_enrol, sch_inspection);
             
              teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection);
      
@@ -329,73 +331,56 @@ function char_enrollment(school, boysPlotEnrol,  girlsPlotEnrol, boysPlotAttend,
 
 
 function attend_enrol_trend(school, boysPlotEnrol, girlsPlotEnrol, boysPlotAttend, girlsPlotAttend, inspectionPlot) {
-    if (myAttendChart) {
-        myAttendChart.destroy();
-    }
-    var ctxx = document.getElementById("chart_attendance").getContext("2d");
-    myAttendChart = new Chart(ctxx, {
+    // if (myAttendChart) {
+    //     myAttendChart.destroy();
+    // }
+    new Chart(document.getElementById("chart_attendance"), {
         type: 'line',
         data: {
-            labels: [["First Term", ['2017']], ["Second Term", ['2017']], ["Third Term", ['2017']], ["First Term", ['2018']], ["Second Term", ['2018']], ["Third Term", ['2018']]],
-            datasets: [
-                {
-                    label: "Enrolment",
-                    backgroundColor: "rgba(255,10,13,0.1)",
-                    borderColor: "red",
-                    fillOpacity: .3,
-                    fill: true,
-                    borderWidth: 1,
-                    data: [boysPlotEnrol, girlsPlotEnrol]
-                },
-                {
-                    label: "Attendence",
-                    backgroundColor: "lightblue",
-                    borderColor: "blue",
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: boysPlotAttend
-                }
-
-            ],
-            datasets: [
-                {
-                    label: "Enrolment",
-                    backgroundColor: "rgba(255,10,13,0.1)",
-                    borderColor: "red",
-                    fillOpacity: .3,
-                    fill: true,
-                    borderWidth: 1,
-                    data: girlsPlotEnrol
-                },
-                {
-                    label: "Attendence",
-                    backgroundColor: "lightblue",
-                    borderColor: "blue",
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: girlsPlotAttend
-                }
-
-            ]
+          labels: inspectionPlot,
+          datasets: [{ 
+              data: boysPlotEnrol,
+              label: "Boys enrolment",
+              borderColor: "#901818",
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
+            }, { 
+              data: girlsPlotEnrol,
+              label: "Girls enrolment",
+              borderColor: "#8e5ea2",
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
+            }, { 
+              data:boysPlotAttend,
+              label: "Boys Attendence",
+              borderColor: "#3cba9f",
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
+            }, { 
+              data:girlsPlotAttend,
+              label: "Grils Attendence",
+              borderColor: "#e8c3b9",
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
+            }
+          ]
         },
         options: {
-            responsive: true,
+          title: {
+            display: false,
+            text:school
+            },
             legend: {
-                position: "top"
-            },
-            title: {
-                display: false,
-                text: school
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
+            labels : {
+                usePointStyle: true
+            }
             }
         }
-    });
+      });
 }
 
 
@@ -857,7 +842,7 @@ function getRandomInt(min, max) {
 }
 
 // Teacher stats plot
-function teacherStats(school, enrol, staff, attend, timetable ) {
+function teacherStats(school, enrol, staff, attend, timetable ){
 
 var ctxx = document.getElementById("TeacherChart").getContext("2d");
     var myChart = new Chart(ctxx, {
@@ -898,55 +883,59 @@ var ctxx = document.getElementById("TeacherChart").getContext("2d");
             }
         }
     });
-
-    // new Chart(document.getElementById("school-line-chart"), {
-//     type: 'line',
-//     data: {
-//       labels: [],
-//       datasets: [{ 
-//           data: [10,58,45,36,]
-//           label: "Established staffting as per enrolment",
-//           borderColor: "#901818",
-//           fill: false,
-//           lineTension: 0,
-//           pointStyle: 'line'
-//         }, { 
-//           data: [45,77,30,50]
-//           label: "Current staffting level",
-//           borderColor: "#8e5ea2",
-//           fill: false,
-//           lineTension: 0,
-//           pointStyle: 'line'
-//         }, { 
-//           data:[70,88,90,20]
-//           label: "Staff attendance on visit day",
-//           borderColor: "#3cba9f",
-//           fill: false,
-//           lineTension: 0,
-//           pointStyle: 'line'
-//         }, { 
-//           data:[59,45,90,30]
-//           label: "Number of classes taught according to timetable",
-//           borderColor: "#e8c3b9",
-//           fill: false,
-//           lineTension: 0,
-//           pointStyle: 'line'
-//         }
-//       ]
-//     },
-//     options: {
-//       title: {
-//         display: false,
-//         text:district
-//         },
-//         legend: {
-//         labels : {
-//             usePointStyle: true
-//         }
-//         }
-//     }
-//   });
-// }
 }
+
+function teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection) {
+    new Chart(document.getElementById("school-line-chart"), {
+    type: 'line',
+    data: {
+      labels: sch_inspection,
+      datasets: [{ 
+          data: sch_enrol,
+          label: "Established staffting as per enrolment",
+          borderColor: "#901818",
+          fill: false,
+          lineTension: 0,
+          pointStyle: 'line'
+        }, { 
+          data: sch_staff,
+          label: "Current staffting level",
+          borderColor: "#8e5ea2",
+          fill: false,
+          lineTension: 0,
+          pointStyle: 'line'
+        }, { 
+          data:sch_attend,
+          label: "Staff attendance on visit day",
+          borderColor: "#3cba9f",
+          fill: false,
+          lineTension: 0,
+          pointStyle: 'line'
+        }, { 
+          data:sch_timetable,
+          label: "Number of classes taught according to timetable",
+          borderColor: "#e8c3b9",
+          fill: false,
+          lineTension: 0,
+          pointStyle: 'line'
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: false,
+        text:school
+        },
+        legend: {
+        labels : {
+            usePointStyle: true
+        }
+        }
+    }
+  });
+
+}
+
+
 
 

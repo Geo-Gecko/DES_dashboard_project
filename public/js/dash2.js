@@ -352,15 +352,7 @@ function  chart_attendance_enrolment_district(district,boysPlotAttend, girlsPlot
 //bar chart but is not dymaic it is hard coded values for district for the attendance 
 function chart_attendance_enrolment_Trend_district(district,enrolPlot, attendPlot,inspectionPlot) {
 
-   
-   
-   
-   
-   
-   
-   
-   
-   
+
     new Chart(document.getElementById("line-chart-trend"), {
         type: 'line',
         data: {
