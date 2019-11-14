@@ -106,7 +106,7 @@ router.get('/:name_of_school', function(req, res, next) {
         console.log("Schools", SchoolArray);
         console.log("inspection", inspectionDataArray); 
 
-        let school = SchoolArray[0];
+        let school = SchoolArray;
         let boysPlotAttend = attendenceBoysArray;
         let girlsPlotAttend = attendenceGirlsArray;
         let boysPlotEnrol = enrolmentGirlsArray;

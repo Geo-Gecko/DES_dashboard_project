@@ -67,20 +67,30 @@ router.get('/:name_of_school', function(req, res, next) {
              }
              timetableArray.push(teacherstaff);
 
+                // processing inspection dates
+                let inspections = [];
+                for (let m = 1; m <= 1; m++) {
+                    let sch_inspection = `inspection_date`;
+                    inspections.push(result[i][sch_inspection]);
+                }
+                inspectionArray.push(inspections);
+
         }
 
         // console.log("staffArray",staffArray);
         // console.log("enrolArray",enrolArray);
         // console.log(" attendArray", attendArray);
 
-        let school = schoolsArray[0];
-        let enrol = enrolArray[0];
-        let staff = staffArray[0];
-        let attend = attendArray[0];
-        let  timetable =  timetableArray[0];
+        let school = schoolsArray;
+        let sch_enrol = enrolArray;
+        let sch_staff = staffArray;
+        let sch_attend = attendArray;
+        let sch_timetable =  timetableArray;
+        let sch_inspection = inspectionArray;
 
-        res.send({ school: school, enrol: enrol, staff: staff, attend:attend, timetable:timetable  })
+        
 
+        res.send({ school: school, enrol: sch_enrol, staff: sch_staff, attend:sch_attend, timetable:sch_timetable, inspection:sch_inspection})
     })
 
 

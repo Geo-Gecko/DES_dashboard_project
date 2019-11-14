@@ -223,11 +223,33 @@ function ake(regionName) {
 
             let data = response.data;
             let region = data.region;
-            // let pillarOne = data.regionConditionalPlot[0];
-            // let pillarTwo = data.regionConditionalPlot[1];
-            // let pillarThree = data.regionConditionalPlot[2];
-            // let pillarFour = data.regionConditionalPlot[3];
-
+            let pillar1D1Array = data.pillar1D1Array;
+            let pillar1D2Array = data.pillar1D2Array;
+            let pillar1D3Array = data.pillar1D3Array;
+            let pillar1D4Array = data.pillar1D4Array;
+            let pillar1D5Array = data.pillar1D5Array;
+            let pillar1D6Array = data.pillar1D6Array;
+            let pillar1D7Array = data.pillar1D7Array;
+            let pillar1D8Array = data.pillar1D8Array;
+            let pillar2D1Array = data.pillar2D1Array;
+            let pillar2D2Array = data.pillar2D2Array;
+            let pillar2D3Array = data.pillar2D3Array;
+            let pillar2D4Array = data.pillar2D4Array;
+            let pillar2D5Array = data.pillar2D5Array;
+            let pillar2D6Array = data.pillar2D6Array;
+            let pillar2D7Array = data.pillar2D7Array;
+            let pillar3D1Array = data.pillar3D1Array;
+            let pillar3D2Array = data.pillar3D2Array;
+            let pillar3D3Array = data.pillar3D3Array;
+            let pillar3D4Array = data.pillar3D4Array;
+            let pillar3D5Array = data.pillar3D5Array;
+            let pillar3D6Array = data.pillar3D6Array;
+            let pillar3D7Array = data.pillar3D7Array;
+            let pillar3D8Array = data.pillar3D8Array;
+            let pillar4D1Array = data.pillar4D1Array;
+            let pillar4D2Array = data.pillar4D2Array;
+            let pillar4D3Array = data.pillar4D3Array;
+            let pillar4D4Array = data.pillar4D4Array;
             
             function generateAverage(array) {
                 var sum = 0;
@@ -248,7 +270,7 @@ function ake(regionName) {
             // let regionConditionalPlot = data.regionConditionalPlot;
             // console.log(conditionalPlot);
             // let girlsPlot = JSON.parse(data.girls).map(myFunction);
-            chartPillarRegion(region)//, pillarOne, pillarTwo, pillarThree, pillarFour, pillarSummary);
+            chartPillarRegion(region,pillar1D1Array, pillar1D2Array,pillar1D3Array, pillar1D4Array, pillar1D5Array, pillar1D6Array,pillar1D7Array,pillar1D8Array,pillar2D1Array,pillar2D2Array,pillar2D3Array,pillar2D4Array,pillar2D5Array,pillar2D6Array,pillar2D7Array,pillar3D1Array,pillar3D2Array,pillar3D3Array,pillar3D4Array,pillar3D5Array,pillar3D6Array,pillar3D7Array,pillar3D8Array,pillar4D1Array,pillar4D2Array,pillar4D3Array,pillar4D4Array);
 
         })
         .catch(function(error) {
@@ -258,6 +280,31 @@ function ake(regionName) {
         .finally(function() {
             // always executed
         });
+
+          // Called for Pillar trends for each region 
+    axios.get(`/nationalPillars-Trends-stats/${value}`)
+    .then(function(response) {
+        // handle success
+        console.log(response.data);
+
+        let data = response.data;
+        let region = data.region;
+        let pillar1Score = data.pillar1Score;
+        let inspections = data.inspections;
+
+
+        // call the chart function
+        national_pillar_trends(region,pillar1Score, inspections);
+
+        // dataCollection('attendence', region, boysPlot, girlsPlot);
+    })
+    .catch(function(error) {
+        // handle error
+        //console.log(error);
+    })
+    .finally(function() {
+        // always executed
+    });
 
 
 }
@@ -626,7 +673,7 @@ function teacher_stats_Trend_national(region, enrol, staff, attend, timetable, i
       });
     }
 
-function chartPillarRegion(region, regionConditionalPlot) {
+function chartPillarRegion(region,pillar1D1Array, pillar1D2Array,pillar1D3Array, pillar1D4Array, pillar1D5Array, pillar1D6Array,pillar1D7Array,pillar1D8Array,pillar2D1Array,pillar2D2Array,pillar2D3Array,pillar2D4Array,pillar2D5Array,pillar2D6Array,pillar2D7Array,pillar3D1Array,pillar3D2Array,pillar3D3Array,pillar3D4Array,pillar3D5Array,pillar3D6Array,pillar3D7Array,pillar3D8Array,pillar4D1Array,pillar4D2Array,pillar4D3Array,pillar4D4Array) {
     if (myPillarChart) {
         myPillarChart.destroy();
     }

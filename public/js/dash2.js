@@ -252,29 +252,53 @@ function ake(districtName) {
 
             let data = response.data;
             let district = data.district;
-            let pillarOne = data.pillar1Array;
-            let pillarTwo = data.pillar2Array;
-            let pillarThree = data.pillar3Array;
-            let pillarFour = data.pillar4Array;
+            let pillar1D1Array = data.pillar1D1Array;
+            let pillar1D2Array = data.pillar1D2Array;
+            let pillar1D3Array = data.pillar1D3Array;
+            let pillar1D4Array = data.pillar1D4Array;
+            let pillar1D5Array = data.pillar1D5Array;
+            let pillar1D6Array = data.pillar1D6Array;
+            let pillar1D7Array = data.pillar1D7Array;
+            let pillar1D8Array = data.pillar1D8Array;
+            let pillar2D1Array = data.pillar2D1Array;
+            let pillar2D2Array = data.pillar2D2Array;
+            let pillar2D3Array = data.pillar2D3Array;
+            let pillar2D4Array = data.pillar2D4Array;
+            let pillar2D5Array = data.pillar2D5Array;
+            let pillar2D6Array = data.pillar2D6Array;
+            let pillar2D7Array = data.pillar2D7Array;
+            let pillar3D1Array = data.pillar3D1Array;
+            let pillar3D2Array = data.pillar3D2Array;
+            let pillar3D3Array = data.pillar3D3Array;
+            let pillar3D4Array = data.pillar3D4Array;
+            let pillar3D5Array = data.pillar3D5Array;
+            let pillar3D6Array = data.pillar3D6Array;
+            let pillar3D7Array = data.pillar3D7Array;
+            let pillar3D8Array = data.pillar3D8Array;
+            let pillar4D1Array = data.pillar4D1Array;
+            let pillar4D2Array = data.pillar4D2Array;
+            let pillar4D3Array = data.pillar4D3Array;
+            let pillar4D4Array = data.pillar4D4Array;
+            console.log(pillar4D4Array)
 
-            function generateAverage(array) {
-                var sum = 0;
-                for (var i = 0; i < array.length; i++) {
-                    if (array[i]) {
-                        sum += parseInt(array[i], 10); //don't forget to add the base
-                    }
-                }
+            // function generateAverage(array) {
+            //     var sum = 0;
+            //     for (var i = 0; i < array.length; i++) {
+            //         if (array[i]) {
+            //             sum += parseInt(array[i], 10); //don't forget to add the base
+            //         }
+            //     }
 
-                var avg = sum / array.length;
-                return avg;
-            }
-            let pillarSummary = [generateAverage(pillarOne), generateAverage(pillarTwo), generateAverage(pillarThree), generateAverage(pillarFour)]
+            //     var avg = sum / array.length;
+            //     return avg;
+            // }
+            // let pillarSummary = [generateAverage(pillar1D1Array), generateAverage( pillar1D2Array), generateAverage(pillar1D3Array), generateAverage(pillar1D4Array)]
 
 
             // let districtConditionalPlot = data.districtConditionalPlot;
             // console.log(conditionalPlot);
             // let girlsPlot = JSON.parse(data.girls).map(myFunction);
-            chartPillarDistrict(district, pillarOne, pillarTwo, pillarThree, pillarFour, pillarSummary);
+            chartPillarDistrict(district,pillar1D1Array, pillar1D2Array,pillar1D3Array, pillar1D4Array, pillar1D5Array, pillar1D6Array,pillar1D7Array,pillar1D8Array,pillar2D1Array,pillar2D2Array,pillar2D3Array,pillar2D4Array,pillar2D5Array,pillar2D6Array,pillar2D7Array,pillar3D1Array,pillar3D2Array,pillar3D3Array,pillar3D4Array,pillar3D5Array,pillar3D6Array,pillar3D7Array,pillar3D8Array,pillar4D1Array,pillar4D2Array,pillar4D3Array,pillar4D4Array);
 
         })
         .catch(function (error) {
@@ -284,6 +308,28 @@ function ake(districtName) {
         .finally(function () {
             // always executed
         });
+
+           //called for teacher stats Trends for district
+           axios.get(`/districtpillar-trend-stats/${value}`)
+           .then(function (response) {
+               // handle success
+            //    console.log(response.data);
+                  
+               let data = response.data;
+               let district = data.district;
+               let pillar1Score = data.pillar1Score;
+               let inspections = data.inspections;
+       
+               // call the chart function
+               district_pillar_trends(district, pillar1Score, inspections);
+           })
+           .catch(function (error) {
+               // handle error
+               console.log(error);
+           })
+           .finally(function () {
+               // always executed
+           });
 
 
 }
@@ -336,6 +382,7 @@ function  chart_attendance_enrolment_district(district,boysPlotAttend, girlsPlot
             scales: {
                 yAxes: [{
                     ticks: {
+
                         beginAtZero: true
                     }
                 }]
@@ -350,6 +397,7 @@ function  chart_attendance_enrolment_district(district,boysPlotAttend, girlsPlot
 
 //bar chart but is not dymaic it is hard coded values for district for the attendance 
 function chart_attendance_enrolment_Trend_district(district,enrolPlot, attendPlot,inspectionPlot) {
+
 
     new Chart(document.getElementById("line-chart-trend"), {
         type: 'line',
@@ -647,7 +695,7 @@ function class_ratio_district(district, cp1top3Plot, cp4top7Plot) {
     ClassroomRatio = new Chart(ctx, config);
 }
 
-function chartPillarDistrict(district, pillarOne, pillarTwo, pillarThree, pillarFour, pillarSummary) {
+function chartPillarDistrict(district,pillar1D1Array, pillar1D2Array,pillar1D3Array, pillar1D4Array, pillar1D5Array, pillar1D6Array,pillar1D7Array,pillar1D8Array,pillar2D1Array,pillar2D2Array,pillar2D3Array,pillar2D4Array,pillar2D5Array,pillar2D6Array,pillar2D7Array,pillar3D1Array,pillar3D2Array,pillar3D3Array,pillar3D4Array,pillar3D5Array,pillar3D6Array,pillar3D7Array,pillar3D8Array,pillar4D1Array,pillar4D2Array,pillar4D3Array,pillar4D4Array) {
     if (myPillarChart) {
         myPillarChart.destroy();
     }
@@ -726,19 +774,19 @@ function chartPillarDistrict(district, pillarOne, pillarTwo, pillarThree, pillar
             datasets: [
                 {
                     label: '25% - 40%',
-                    data: [getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25)],
+                    data: [pillar1D1Array],
                     backgroundColor: "#FF0000"
                 }, {
                     label: '41% - 60%',
-                    data: [getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25)],
+                    data: [ pillar1D2Array],
                     backgroundColor: "#FFA500"
                 }, {
                     label: '61% - 80%',
-                    data: [getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25)],
+                    data: [ pillar1D3Array],
                     backgroundColor: "#FFFF00"
                 }, {
                     label: '81% - 100%',
-                    data: [getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25), getRandomInt(10, 25)],
+                    data: [pillar1D3Array],
                     backgroundColor: "#008000"
                 }]
         },
