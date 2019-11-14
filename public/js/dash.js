@@ -273,6 +273,32 @@ function ake(nameOfSchool) {
         // always executed
     });
 
+         // Called to get teacher stats for each school
+         axios.get(`/teacher-trend-stats/${value}`)
+         .then(function (response) {
+             // handle success
+             console.log(response);
+             let data = response.data;
+             let school = data.school;
+             let sch_enrol = data.enrol;
+             let sch_staff = data.staff;
+             let sch_attend = data.attend;
+             let sch_timetable = data.timetable;
+             let sch_inspection = data.inspection;
+
+             console.log(sch_enrol, sch_inspection);
+            
+             teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection);
+     
+         })
+         .catch(function (error) {
+             // handle error
+             console.log(error);
+         })
+         .finally(function () {
+             // always executed
+         });
+
 
        // Called to get pillar trends for each school
        axios.get(`/chartPiller-Trend-stats/${value}`)
