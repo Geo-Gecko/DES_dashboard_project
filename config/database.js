@@ -4,7 +4,7 @@ var connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
     //password: 'GG_PP_MSQL_ADMIN_19', // Change database password to your owner database credentials
-    password: '', // Change database password to your owner database credentials
+    password: process.env.DB_PASSWORD, // Change database password to your owner database credentials
     database: 'formtools'
 });
 
