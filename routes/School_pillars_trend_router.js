@@ -18,36 +18,30 @@ router.get('/:school', function(req, res, next) {
     inspection.teacher_deployment +
     inspection.disciplinary_policy+
    inspection.inclusive_school_practice+
-   inspection.gender_sensitive_school as pilar1 FROM  ft_form_12  as inspection,  ft_form_11  as details 
-    WHERE details.submission_id=inspection.school_name and details.name_of_school = '${nameOfSchool}' group by inspection.date_of_inspection order by inspection.date_of_inspection asc`;
-
-    const P2Query = `select distinct(name_of_school) as school, inspection.date_of_inspection as inspection_date, inspection.teacher_and_pupil_attendance +
+   inspection.gender_sensitive_school as pilar1, inspection.teacher_and_pupil_attendance +
     inspection.school_improvement_plan_sip +
     inspection.sip_activities + 
     inspection.financial_management+
     inspection.systematic_monitoring_and_evaluation_of_teacher_performance +
-    inspection.continuous_professional_developmen+
-    inspection.systematic_monitoring_of_student_performance as pilar2 FROM  ft_form_12  as inspection,  ft_form_11  as details 
-    WHERE details.submission_id=inspection.school_name and details.name_of_school = '${nameOfSchool}' group by inspection.date_of_inspection order by inspection.date_of_inspection asc`;
-
-    const P3Query = `select distinct(name_of_school) as school, inspection.date_of_inspection as inspection_date,inspection.lesson_planning +
+    inspection.continuous_professional_development+
+    inspection.systematic_monitoring_of_student_performance as pilar2 ,inspection.lesson_planning +
     inspection.lesson_delivery +
     inspection.teaching_and_learning_materials + 
     inspection.learner_participation+
     inspection.learning +
     inspection.teachers_rapport_with_learners+
     inspection.classroom_environment+
-    inspection.pupils_work as pilar3 FROM  ft_form_12  as inspection,  ft_form_11  as details 
-    WHERE details.submission_id=inspection.school_name and details.name_of_school = '${nameOfSchool}' group by inspection.date_of_inspection order by inspection.date_of_inspection asc`;
-
-    const P4Query = `select distinct(name_of_school) as school, inspection.date_of_inspection as inspection_date,  inspection.school_management_committee +
+    inspection.pupils_work as pilar3 ,  inspection.school_management_committee +
     inspection.school_communication_with_parents_community +
     inspection.teacher_communication_with_parents + 
    inspection.involvement_of_parents as pilar4 FROM  ft_form_12  as inspection,  ft_form_11  as details 
-    WHERE details.submission_id=inspection.school_name and details.school = '${nameOfSchool}' group by inspection.date_of_inspection order by inspection.date_of_inspection asc`;
+    WHERE details.submission_id=inspection.school_name and details.name_of_school = '${nameOfSchool}' group by inspection.date_of_inspection order by inspection.date_of_inspection asc`;
 
 
     let pillar1Array = [];
+    let pillar2Array = [];
+    let pillar3Array = [];
+    let pillar4Array = [];
     let inspectionsArray = [];
     let schoolArray =[];
     
@@ -69,6 +63,31 @@ router.get('/:school', function(req, res, next) {
             }
             pillar1Array.push(Pillar1);
 
+             // Processing Pillar2 trend for each district
+             let Pillar2 = [];
+             for (let b = 1; b <= 1; b++) {
+                 let Tpillar2 = `pilar2`;
+                 Pillar2.push(result[i][Tpillar2]);
+             }
+             pillar2Array.push(Pillar2);
+ 
+              // Processing Pillar3 trend for each district
+              let Pillar3 = [];
+              for (let b = 1; b <= 1; b++) {
+                  let Tpillar3 = `pilar3`;
+                  Pillar3.push(result[i][Tpillar3]);
+              }
+              pillar3Array.push(Pillar3);
+ 
+               // Processing Pillar4 trend for each district
+             let Pillar4 = [];
+             for (let b = 1; b <= 1; b++) {
+                 let Tpillar4 = `pilar4`;
+                 Pillar4.push(result[i][Tpillar4]);
+             }
+             pillar4Array.push(Pillar4);
+
+
                 // processing inspection dates
                 let inspections = [];
                 for (let m = 1; m <= 1; m++) {
@@ -85,10 +104,13 @@ router.get('/:school', function(req, res, next) {
 
         let school = schoolArray[0];
         let pillar1Score = pillar1Array;
+        let pillar2Score = pillar2Array;
+        let pillar3Score = pillar3Array;
+        let pillar4Score = pillar4Array;
         let inspections = inspectionsArray;
         
 
-        res.send({school: school, pillar1Score: pillar1Score, inspections: inspections})
+        res.send({school: school, pillar1Score: pillar1Score,  pillar1Score: pillar1Score, pillar2Score: pillar2Score, pillar3Score: pillar3Score, pillar4Score: pillar4Score, inspections: inspections})
     })
 
 

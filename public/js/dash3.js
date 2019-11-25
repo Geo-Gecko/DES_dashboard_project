@@ -249,11 +249,14 @@ function ake(regionName) {
         let data = response.data;
         let region = data.region;
         let pillar1Score = data.pillar1Score;
+        let pillar2Score = data.pillar2Score;
+        let pillar3Score = data.pillar3Score;
+        let pillar4Score = data.pillar4Score;
         let inspections = data.inspections;
 
 
         // call the chart function
-        national_pillar_trends(region,pillar1Score, inspections);
+        national_pillar_trends(region,pillar1Score, pillar2Score,pillar3Score,pillar4Score, inspections);
 
         // dataCollection('attendence', region, boysPlot, girlsPlot);
     })

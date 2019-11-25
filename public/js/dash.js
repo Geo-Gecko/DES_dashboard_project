@@ -304,13 +304,16 @@ function ake(nameOfSchool) {
     axios.get(`/chartPiller-Trend-stats/${value}`)
         .then(function (response) {
             // handle success
-            //console.log(response);
+            console.log(response);
             let data = response.data;
             let school = data.school;
             let pillar1Score = data.pillar1Score;
+            let pillar2Score = data.pillar2Score;
+            let pillar3Score = data.pillar3Score;
+            let pillar4Score = data.pillar4Score;
             let inspections = data.inspections;
 
-            School_Pillar_trends(school, pillar1Score, inspections);
+            School_Pillar_trends(school, pillar1Score,pillar2Score,pillar3Score,pillar4Score, inspections);
 
             // chart_attendance(school);
         })
