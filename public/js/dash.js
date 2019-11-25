@@ -14,7 +14,7 @@ function ake(nameOfSchool) {
     axios.get(`/attend-enrol-trend/${value}`)
         .then(function (response) {
             // handle success
-           // console.log(response);
+            // console.log(response);
             let data = response.data;
             let school = data.school;
             let boysPlotEnrol = data.boysEnrol;
@@ -22,10 +22,10 @@ function ake(nameOfSchool) {
             let boysPlotAttend = data.boysAttend;
             let girlsPlotAttend = data.girlsAttend;
             let inspectionPlot = data.inspectPlot;
-    
-        
+
+
             attend_enrol_trend(school, boysPlotEnrol, girlsPlotEnrol, boysPlotAttend, girlsPlotAttend, inspectionPlot);
-           
+
         })
         .catch(function (error) {
             // handle error
@@ -39,7 +39,7 @@ function ake(nameOfSchool) {
     axios.get(`/chart_attendance/${value}`)
         .then(function (response) {
             // handle success
-    
+
             let data = response.data;
             let school = data.School;
             let boysPlotEnrol = data.boysEnrol;
@@ -51,9 +51,9 @@ function ake(nameOfSchool) {
 
 
             // call the chart function
-          //  chart_attendance(Emis, boysPlot, girlsPlot);
+            //  chart_attendance(Emis, boysPlot, girlsPlot);
 
-            char_enrollment(school, boysPlotEnrol,  girlsPlotEnrol, boysPlotAttend, boysPlotAttend);
+            char_enrollment(school, boysPlotEnrol, girlsPlotEnrol, boysPlotAttend, boysPlotAttend);
         })
         .catch(function (error) {
             // handle error
@@ -134,7 +134,7 @@ function ake(nameOfSchool) {
     axios.get(`/chartPiller-stats/${value}`)
         .then(function (response) {
             // handle success
-            //    console.log(response.data);
+            console.log(response.data);
 
             let data = response.data;
             let school = data.school;
@@ -207,7 +207,7 @@ function ake(nameOfSchool) {
         });
 
 
-        
+
     //called for school details 
     axios.get(`/schooldetails-stats/${value}`)
         .then(function (response) {
@@ -246,109 +246,109 @@ function ake(nameOfSchool) {
         });
 
 
-         // Called to get teacher stats for each school
+    // Called to get teacher stats for each school
     axios.get(`/teacher-stats/${value}`)
-    .then(function (response) {
-        // handle success
-        //console.log(response);
-        let data = response.data;
-        let school = data.school;
-        let enrol = data.enrol;
-        let staff = data.staff;
-        let attend = data.attend;
-        let timetable = data.timetable;
+        .then(function (response) {
+            // handle success
+            //console.log(response);
+            let data = response.data;
+            let school = data.school;
+            let enrol = data.enrol;
+            let staff = data.staff;
+            let attend = data.attend;
+            let timetable = data.timetable;
 
-        // call the chart function
-        // char_enrollment(school, boysPlot, girlsPlot);
+            // call the chart function
+            // char_enrollment(school, boysPlot, girlsPlot);
 
-        teacherStats(school, enrol, staff, attend, timetable );
+            teacherStats(school, enrol, staff, attend, timetable);
 
-        // chart_attendance(school);
-    })
-    .catch(function (error) {
-        // handle error
-        console.log(error);
-    })
-    .finally(function () {
-        // always executed
-    });
+            // chart_attendance(school);
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .finally(function () {
+            // always executed
+        });
 
-         // Called to get teacher stats for each school
-         axios.get(`/teacher-trend-stats/${value}`)
-         .then(function (response) {
-             // handle success
-             console.log(response);
-             let data = response.data;
-             let school = data.school;
-             let sch_enrol = data.enrol;
-             let sch_staff = data.staff;
-             let sch_attend = data.attend;
-             let sch_timetable = data.timetable;
-             let sch_inspection = data.inspection;
+    // Called to get teacher stats for each school
+    axios.get(`/teacher-trend-stats/${value}`)
+        .then(function (response) {
+            // handle success
+            console.log(response);
+            let data = response.data;
+            let school = data.school;
+            let sch_enrol = data.enrol;
+            let sch_staff = data.staff;
+            let sch_attend = data.attend;
+            let sch_timetable = data.timetable;
+            let sch_inspection = data.inspection;
 
-             console.log(sch_enrol, sch_inspection);
-            
-             teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection);
-     
-         })
-         .catch(function (error) {
-             // handle error
-             console.log(error);
-         })
-         .finally(function () {
-             // always executed
-         });
+            console.log(sch_enrol, sch_inspection);
 
+            teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection);
 
-       // Called to get pillar trends for each school
-       axios.get(`/chartPiller-Trend-stats/${value}`)
-       .then(function (response) {
-           // handle success
-           //console.log(response);
-           let data = response.data;
-           let school = data.school;
-           let pillar1Score = data.pillar1Score;
-           let inspections = data.inspections;
-   
-           School_Pillar_trends(school, pillar1Score, inspections);
-   
-           // chart_attendance(school);
-       })
-       .catch(function (error) {
-           // handle error
-           console.log(error);
-       })
-       .finally(function () {
-           // always executed
-       });
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .finally(function () {
+            // always executed
+        });
 
 
+    // Called to get pillar trends for each school
+    axios.get(`/chartPiller-Trend-stats/${value}`)
+        .then(function (response) {
+            // handle success
+            //console.log(response);
+            let data = response.data;
+            let school = data.school;
+            let pillar1Score = data.pillar1Score;
+            let inspections = data.inspections;
 
-         // Called to get teacher stats for each school
-         axios.get(`/teacher-trend-stats/${value}`)
-         .then(function (response) {
-             // handle success
-             console.log(response);
-             let data = response.data;
-             let school = data.school;
-             let sch_enrol = data.enrol;
-             let sch_staff = data.staff;
-             let sch_attend = data.attend;
-             let sch_timetable = data.timetable;
-             let sch_inspection = data.inspection;
+            School_Pillar_trends(school, pillar1Score, inspections);
 
-             console.log(sch_enrol, sch_inspection);
-            
-             teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection);
-     
-         })
-         .catch(function (error) {
-             // handle error
-             console.log(error);
-         })
-         .finally(function () {
-             // always executed
-         });
+            // chart_attendance(school);
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .finally(function () {
+            // always executed
+        });
+
+
+
+    // Called to get teacher stats for each school
+    axios.get(`/teacher-trend-stats/${value}`)
+        .then(function (response) {
+            // handle success
+            console.log(response);
+            let data = response.data;
+            let school = data.school;
+            let sch_enrol = data.enrol;
+            let sch_staff = data.staff;
+            let sch_attend = data.attend;
+            let sch_timetable = data.timetable;
+            let sch_inspection = data.inspection;
+
+            console.log(sch_enrol, sch_inspection);
+
+            teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection);
+
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .finally(function () {
+            // always executed
+        });
 
 
 }
@@ -367,7 +367,7 @@ var data = {
 //charts
 var myEnrolChart, myAttendChart, teacherRatio, StanceRatio, ClassroomRatio, myPillarChart;
 
-function char_enrollment(school, boysPlotEnrol,  girlsPlotEnrol, boysPlotAttend, girlsPlotAttend) {
+function char_enrollment(school, boysPlotEnrol, girlsPlotEnrol, boysPlotAttend, girlsPlotAttend) {
     if (myEnrolChart) {
         myEnrolChart.destroy();
     }
@@ -427,50 +427,50 @@ function attend_enrol_trend(school, boysPlotEnrol, girlsPlotEnrol, boysPlotAtten
     new Chart(document.getElementById("chart_attendance"), {
         type: 'line',
         data: {
-          labels: inspectionPlot,
-          datasets: [{ 
-              data: boysPlotEnrol,
-              label: "Boys enrolment",
-              borderColor: "#901818",
-              fill: false,
-              lineTension: 0,
-              pointStyle: 'line'
-            }, { 
-              data: girlsPlotEnrol,
-              label: "Girls enrolment",
-              borderColor: "#8e5ea2",
-              fill: false,
-              lineTension: 0,
-              pointStyle: 'line'
-            }, { 
-              data:boysPlotAttend,
-              label: "Boys Attendence",
-              borderColor: "#3cba9f",
-              fill: false,
-              lineTension: 0,
-              pointStyle: 'line'
-            }, { 
-              data:girlsPlotAttend,
-              label: "Grils Attendence",
-              borderColor: "#e8c3b9",
-              fill: false,
-              lineTension: 0,
-              pointStyle: 'line'
+            labels: inspectionPlot,
+            datasets: [{
+                data: boysPlotEnrol,
+                label: "Boys enrolment",
+                borderColor: "#901818",
+                fill: false,
+                lineTension: 0,
+                pointStyle: 'line'
+            }, {
+                data: girlsPlotEnrol,
+                label: "Girls enrolment",
+                borderColor: "#8e5ea2",
+                fill: false,
+                lineTension: 0,
+                pointStyle: 'line'
+            }, {
+                data: boysPlotAttend,
+                label: "Boys Attendence",
+                borderColor: "#3cba9f",
+                fill: false,
+                lineTension: 0,
+                pointStyle: 'line'
+            }, {
+                data: girlsPlotAttend,
+                label: "Grils Attendence",
+                borderColor: "#e8c3b9",
+                fill: false,
+                lineTension: 0,
+                pointStyle: 'line'
             }
-          ]
+            ]
         },
         options: {
-          title: {
-            display: false,
-            text:school
+            title: {
+                display: false,
+                text: school
             },
             legend: {
-            labels : {
-                usePointStyle: true
-            }
+                labels: {
+                    usePointStyle: true
+                }
             }
         }
-      });
+    });
 }
 
 
@@ -490,7 +490,7 @@ function ratio_teach(school, p1top3Plot, p4top7Plot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [p1top3Plot,  p4top7Plot, 53],
+                data: [p1top3Plot, p4top7Plot, 53],
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
@@ -544,7 +544,7 @@ function stance_ratio(school, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [sprboysPlot,  sprgirlsPlot, 40],
+                data: [sprboysPlot, sprgirlsPlot, 40],
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
@@ -596,7 +596,7 @@ function class_ratio(school, cp1top3Plot, cp4top7Plot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [ cp1top3Plot, cp4top7Plot,  53],
+                data: [cp1top3Plot, cp4top7Plot, 53],
 
                 backgroundColor: [
                     "rgb(38,34,98)",
@@ -643,19 +643,6 @@ function chartPillar(school, pillarOne, pillarTwo, pillarThree, pillarFour, pill
     if (myPillarChart) {
         myPillarChart.destroy();
     }
-
-
-    var trendPlot = [[], [], [], []];
-
-    trendPlot[0][0] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
-    trendPlot[0][1] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
-    trendPlot[0][2] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
-    trendPlot[0][3] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
-    trendPlot[0][4] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
-
-
-    trendPillar(null, trendPlot);
-
 
     var barOptions_stacked = {
         tooltips: {
@@ -807,33 +794,58 @@ function chartPillar(school, pillarOne, pillarTwo, pillarThree, pillarFour, pill
 
 
 //d3 charts with dimple.js
-function trendPillar(school, trendPlot) {
+function School_Pillar_trends(school, pillar1Score, inspections) {
     if (trendChart) {
         trendChart.destroy();
     }
+
     var trendChart = new Chart(document.getElementById("line-chart"), {
         type: 'line',
         data: {
-            labels: [["First Term", ['2017']], ["Second Term", ['2017']], ["Third Term", ['2017']], ["First Term", ['2018']], ["Second Term", ['2018']], ["Third Term", ['2018']]],
-            datasets: [{
-                data: trendPlot[0][4],
-                lineTension: 0,
-                label: "Pillar Summary",
-                borderColor: "rgb(242,101,34)",
-                fill: false
-            }
-                , {
-                data: [1, 4],
-                label: "hide",
-                borderColor: "rgb(255,255,255)",
-                fill: false
-            }
+            labels: inspections,
+            datasets: [
+                {
+                    data: [8, 14, 22, 30, 32],
+                    label: "hide",
+                    borderColor: "#00000000",
+                    fill: false,
+                    lineTension: 0,
+                    pointStyle: 'line'
+                }, {
+                    data: pillar1Score,
+                    label: "Pillar 1",
+                    borderColor: "#e41a1c",
+                    fill: false,
+                    lineTension: 0,
+                    pointStyle: 'line'
+                }, {
+                    data: pillar1Score,
+                    label: "Pillar 2",
+                    borderColor: "#377eb8",
+                    fill: false,
+                    lineTension: 0,
+                    pointStyle: 'line'
+                }, {
+                    data: pillar1Score,
+                    label: "Pillar 3",
+                    borderColor: "#4daf4a",
+                    fill: false,
+                    lineTension: 0,
+                    pointStyle: 'line'
+                }, {
+                    data: pillar1Score,
+                    label: "Pillar 4",
+                    borderColor: "#984ea3",
+                    fill: false,
+                    lineTension: 0,
+                    pointStyle: 'line'
+                }
             ]
         },
         options: {
             title: {
                 display: true,
-                text: ''
+                text: school
             },
             scales: {
                 xAxes: [{
@@ -850,26 +862,24 @@ function trendPillar(school, trendPlot) {
                         labelString: 'Grade'
                     },
                     ticks: {
-                        min: 0,
-                        max: 5,
-                        stepSize: 1,
-                        suggestedMin: 0.5,
-                        suggestedMax: 5.5,
+                        // min: 0,
+                        // max: 5,
+                        stepSize: 10,
+                        // suggestedMin: 0,
+                        // suggestedMax: 15,
                         callback: function (label, index, labels) {
-                            switch (label) {
-                                case 0:
-                                    return '';
-                                case 1:
-                                    return 'D';
-                                case 2:
-                                    return 'C';
-                                case 3:
-                                    return 'B';
-                                case 4:
-                                    return 'A';
-                                case 5:
-                                    return '';
-                            }
+
+                            if (label < 1) { 
+                                return ""; 
+                            } else if (label <= 16) {
+                                return 'D';
+                            } else if (label > 16 && label < 28) {
+                                return 'C';
+                            } else if (label > 28 && label < 32) {
+                                return 'B';
+                            } else if (label >= 32) {
+                                return 'A';
+                            } else if (label < 1) { return ""; }
                         }
                     },
                     gridLines: {
@@ -890,6 +900,103 @@ function trendPillar(school, trendPlot) {
             }
         }
     });
+    // var trendChart = new Chart(document.getElementById("line-chart"), {
+    //     type: 'line',
+    //     data: {
+    //         labels: [inspections],
+    //         datasets: [{
+    //             data: pillar1Score,
+    //             lineTension: 0,
+    //             label: "Pillar Summary",
+    //             borderColor: "rgb(242,101,34)",
+    //             fill: false
+    //         }
+    //             , {
+    //             data: [1, 4],
+    //             label: "hide",
+    //             borderColor: "rgb(255,255,255)",
+    //             fill: false
+    //         }
+    //         ]
+    //     },
+    //     options: {
+    //         title: {
+    //             display: true,
+    //             text: ''
+    //         },
+    //         scales: {
+    //             xAxes: [{
+    //                 display: true,
+    //                 scaleLabel: {
+    //                     display: true,
+    //                     labelString: 'Period'
+    //                 }
+    //             }],
+    //             yAxes: [{
+    //                 display: true,
+    //                 scaleLabel: {
+    //                     display: true,
+    //                     labelString: 'Grade'
+    //                 },
+    //                 ticks: {
+    //                     // min: 0,
+    //                     // max: 5,
+    //                     // stepSize: 1,
+    //                     // suggestedMin: 0.5,
+    //                     // suggestedMax: 5.5,
+    //                     callback: function (label, index, labels) {
+
+    //                         console.log(label)
+    //                         var maxValue = labels[0],
+    //                             chunkSize = parseInt(maxValue / 1000000);
+
+    //                         if (label <= 16) {
+    //                             return 'D';
+    //                         } else if (label > 16 && label < 28) {
+    //                             return 'C';
+    //                         } else if (label > 28 && label < 32) {
+    //                             return 'B';
+    //                         } else if (label >= 32) {
+    //                             return 'A';
+    //                         } else { return null; }
+    //                     // greater equal 2 32 = A Very Good
+    //                     // 32 and 28 = B Good
+    //                     // 28 and 16 = C Fair
+    //                     // less than 16 is poor = D Poor
+    //                     // switch (true) {
+    //                     //     // case 0:
+    //                     //     //     return '';
+    //                     //     case label <= 16:
+    //                     //         return 'D';
+    //                     //     case label > 16 && label < 28 :
+    //                     //         return 'C';
+    //                     //     case label > 28 && label < 32:
+    //                     //         return 'B';
+    //                     //     case label >= 32:
+    //                     //         return 'A';
+    //                     //     // case 5:
+    //                     //     //     return '';
+    //                     // }
+    //                 }
+    //             },
+    //                 gridLines: {
+    //                 display: true
+    //             }
+    //             }]
+    //     },
+    // legend: {
+    //     display: true,
+    //     position: "bottom",
+    //     labels: {
+    //         // fontColor: '#FFA500'
+    //         filter: function (item, chart) {
+    //             // Logic to remove a particular legend item goes here
+    //             return !item.text.includes('hide');
+    //         }
+    //     }
+    // }
+    // }
+    // });
 
     $(document).on('change', '#pillarsTrend', function () {
         // console.log($(this).val());
@@ -932,23 +1039,23 @@ function getRandomInt(min, max) {
 }
 
 // Teacher stats plot
-function teacherStats(school, enrol, staff, attend, timetable ){
+function teacherStats(school, enrol, staff, attend, timetable) {
 
-var ctxx = document.getElementById("TeacherChart").getContext("2d");
+    var ctxx = document.getElementById("TeacherChart").getContext("2d");
     var myChart = new Chart(ctxx, {
         type: 'bar',
         data: {
             labels: [
-                ["Established staffting"," as per enrolment"],
-                [ "Current","staffting"," level"],
-                [ "Staff attendance"," on visit day"],
-                ["Number of classes"," taught according"," to timetable"],
+                ["Established staffting", " as per enrolment"],
+                ["Current", "staffting", " level"],
+                ["Staff attendance", " on visit day"],
+                ["Number of classes", " taught according", " to timetable"],
             ],
             datasets: [
                 {
                     label: "",
-                    backgroundColor:  "rgb(38,34,98)",
-                    borderColor:  "rgb(38,34,98)",
+                    backgroundColor: "rgb(38,34,98)",
+                    borderColor: "rgb(38,34,98)",
                     borderWidth: 1,
                     data: [enrol, staff, attend, timetable]
                 }
@@ -977,52 +1084,52 @@ var ctxx = document.getElementById("TeacherChart").getContext("2d");
 
 function teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection) {
     new Chart(document.getElementById("school-line-chart"), {
-    type: 'line',
-    data: {
-      labels: sch_inspection,
-      datasets: [{ 
-          data: sch_enrol,
-          label: "Established staffting as per enrolment",
-          borderColor: "#901818",
-          fill: false,
-          lineTension: 0,
-          pointStyle: 'line'
-        }, { 
-          data: sch_staff,
-          label: "Current staffting level",
-          borderColor: "#8e5ea2",
-          fill: false,
-          lineTension: 0,
-          pointStyle: 'line'
-        }, { 
-          data:sch_attend,
-          label: "Staff attendance on visit day",
-          borderColor: "#3cba9f",
-          fill: false,
-          lineTension: 0,
-          pointStyle: 'line'
-        }, { 
-          data:sch_timetable,
-          label: "Number of classes taught according to timetable",
-          borderColor: "#e8c3b9",
-          fill: false,
-          lineTension: 0,
-          pointStyle: 'line'
-        }
-      ]
-    },
-    options: {
-      title: {
-        display: false,
-        text:school
+        type: 'line',
+        data: {
+            labels: sch_inspection,
+            datasets: [{
+                data: sch_enrol,
+                label: "Established staffting as per enrolment",
+                borderColor: "#901818",
+                fill: false,
+                lineTension: 0,
+                pointStyle: 'line'
+            }, {
+                data: sch_staff,
+                label: "Current staffting level",
+                borderColor: "#8e5ea2",
+                fill: false,
+                lineTension: 0,
+                pointStyle: 'line'
+            }, {
+                data: sch_attend,
+                label: "Staff attendance on visit day",
+                borderColor: "#3cba9f",
+                fill: false,
+                lineTension: 0,
+                pointStyle: 'line'
+            }, {
+                data: sch_timetable,
+                label: "Number of classes taught according to timetable",
+                borderColor: "#e8c3b9",
+                fill: false,
+                lineTension: 0,
+                pointStyle: 'line'
+            }
+            ]
         },
-        legend: {
-        labels : {
-            usePointStyle: true
+        options: {
+            title: {
+                display: false,
+                text: school
+            },
+            legend: {
+                labels: {
+                    usePointStyle: true
+                }
+            }
         }
-        }
-    }
-  });
+    });
 
 }
 

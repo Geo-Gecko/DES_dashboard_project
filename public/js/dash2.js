@@ -252,53 +252,12 @@ function ake(districtName) {
 
             let data = response.data;
             let district = data.district;
-            let pillar1D1Array = data.pillar1D1Array;
-            let pillar1D2Array = data.pillar1D2Array;
-            let pillar1D3Array = data.pillar1D3Array;
-            let pillar1D4Array = data.pillar1D4Array;
-            let pillar1D5Array = data.pillar1D5Array;
-            let pillar1D6Array = data.pillar1D6Array;
-            let pillar1D7Array = data.pillar1D7Array;
-            let pillar1D8Array = data.pillar1D8Array;
-            let pillar2D1Array = data.pillar2D1Array;
-            let pillar2D2Array = data.pillar2D2Array;
-            let pillar2D3Array = data.pillar2D3Array;
-            let pillar2D4Array = data.pillar2D4Array;
-            let pillar2D5Array = data.pillar2D5Array;
-            let pillar2D6Array = data.pillar2D6Array;
-            let pillar2D7Array = data.pillar2D7Array;
-            let pillar3D1Array = data.pillar3D1Array;
-            let pillar3D2Array = data.pillar3D2Array;
-            let pillar3D3Array = data.pillar3D3Array;
-            let pillar3D4Array = data.pillar3D4Array;
-            let pillar3D5Array = data.pillar3D5Array;
-            let pillar3D6Array = data.pillar3D6Array;
-            let pillar3D7Array = data.pillar3D7Array;
-            let pillar3D8Array = data.pillar3D8Array;
-            let pillar4D1Array = data.pillar4D1Array;
-            let pillar4D2Array = data.pillar4D2Array;
-            let pillar4D3Array = data.pillar4D3Array;
-            let pillar4D4Array = data.pillar4D4Array;
-            console.log(pillar4D4Array)
+            let pillar1 = [data.pillar1D1Array[0],data.pillar1D2Array[0],data.pillar1D3Array[0],data.pillar1D4Array[0],data.pillar1D5Array[0],data.pillar1D6Array[0],data.pillar1D7Array[0],data.pillar1D8Array[0]];
+            let pillar2 = [data.pillar2D1Array[0],data.pillar2D2Array[0],data.pillar2D3Array[0],data.pillar2D4Array[0],data.pillar2D5Array[0],data.pillar2D6Array[0],data.pillar2D7Array[0]];
+            let pillar3 = [data.pillar3D1Array[0],data.pillar3D2Array[0],data.pillar3D3Array[0],data.pillar3D4Array[0],data.pillar3D5Array[0],data.pillar3D6Array[0],data.pillar3D7Array[0],data.pillar3D8Array[0]];
+            let pillar4 = [data.pillar4D1Array[0],data.pillar4D2Array[0],data.pillar4D3Array[0],data.pillar4D4Array[0]]
 
-            // function generateAverage(array) {
-            //     var sum = 0;
-            //     for (var i = 0; i < array.length; i++) {
-            //         if (array[i]) {
-            //             sum += parseInt(array[i], 10); //don't forget to add the base
-            //         }
-            //     }
-
-            //     var avg = sum / array.length;
-            //     return avg;
-            // }
-            // let pillarSummary = [generateAverage(pillar1D1Array), generateAverage( pillar1D2Array), generateAverage(pillar1D3Array), generateAverage(pillar1D4Array)]
-
-
-            // let districtConditionalPlot = data.districtConditionalPlot;
-            // console.log(conditionalPlot);
-            // let girlsPlot = JSON.parse(data.girls).map(myFunction);
-            chartPillarDistrict(district,pillar1D1Array, pillar1D2Array,pillar1D3Array, pillar1D4Array, pillar1D5Array, pillar1D6Array,pillar1D7Array,pillar1D8Array,pillar2D1Array,pillar2D2Array,pillar2D3Array,pillar2D4Array,pillar2D5Array,pillar2D6Array,pillar2D7Array,pillar3D1Array,pillar3D2Array,pillar3D3Array,pillar3D4Array,pillar3D5Array,pillar3D6Array,pillar3D7Array,pillar3D8Array,pillar4D1Array,pillar4D2Array,pillar4D3Array,pillar4D4Array);
+            chartPillarDistrict(district,pillar1,pillar2,pillar3,pillar4);
 
         })
         .catch(function (error) {
@@ -695,22 +654,36 @@ function class_ratio_district(district, cp1top3Plot, cp4top7Plot) {
     ClassroomRatio = new Chart(ctx, config);
 }
 
-function chartPillarDistrict(district,pillar1D1Array, pillar1D2Array,pillar1D3Array, pillar1D4Array, pillar1D5Array, pillar1D6Array,pillar1D7Array,pillar1D8Array,pillar2D1Array,pillar2D2Array,pillar2D3Array,pillar2D4Array,pillar2D5Array,pillar2D6Array,pillar2D7Array,pillar3D1Array,pillar3D2Array,pillar3D3Array,pillar3D4Array,pillar3D5Array,pillar3D6Array,pillar3D7Array,pillar3D8Array,pillar4D1Array,pillar4D2Array,pillar4D3Array,pillar4D4Array) {
+function chartPillarDistrict(district,pillar1,pillar2,pillar3,pillar4) {
     if (myPillarChart) {
         myPillarChart.destroy();
     }
+
+    function sumArrays(...arrays) {
+        const n = arrays.reduce((max, xs) => Math.max(max, xs.length), 0);
+        const result = Array.from({ length: n });
+        return result.map((_, i) => arrays.map(xs => xs[i] || 0).reduce((sum, x) => sum + x, 0));
+      }
+      
+    let pillarSummary1 = sumArrays(pillar1[0],pillar1[1],pillar1[2],pillar1[3],pillar1[4],pillar1[5],pillar1[6],pillar1[7]);
     
+    let pillarSummary2 = sumArrays(pillar2[0],pillar2[1],pillar2[2],pillar2[3],pillar2[4],pillar2[5],pillar2[6]);
+    
+    let pillarSummary3 = sumArrays(pillar3[0],pillar3[1],pillar3[2],pillar3[3],pillar3[4],pillar3[5],pillar3[6],pillar3[7]);
+    
+    let pillarSummary4 = sumArrays(pillar4[0],pillar4[1],pillar4[2],pillar4[3]);
 
-    var trendPlot = [[], [], [], []];
+    let pillarSummary = [pillarSummary1, pillarSummary2, pillarSummary3, pillarSummary4];
 
-    trendPlot[0][0] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
-    trendPlot[0][1] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
-    trendPlot[0][2] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
-    trendPlot[0][3] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
-    trendPlot[0][4] = [getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4), getRandomInt(1, 4)]
+    function transpose(matrix) {
+        return matrix[0].map((col, c) => matrix.map((row, r) => matrix[r][c]));
+      }
 
-
-    trendPillar(null, trendPlot);
+    let pillarTranspose = transpose(pillarSummary);
+    let pillar1Transpose = transpose(pillar1);
+    let pillar2Transpose = transpose(pillar2);
+    let pillar3Transpose = transpose(pillar3);
+    let pillar4Transpose = transpose(pillar4);
 
     var barOptions_stacked = {
         tooltips: {
@@ -774,19 +747,19 @@ function chartPillarDistrict(district,pillar1D1Array, pillar1D2Array,pillar1D3Ar
             datasets: [
                 {
                     label: '25% - 40%',
-                    data: [pillar1D1Array],
+                    data: pillarTranspose[0],
                     backgroundColor: "#FF0000"
                 }, {
                     label: '41% - 60%',
-                    data: [ pillar1D2Array],
+                    data: pillarTranspose[1],
                     backgroundColor: "#FFA500"
                 }, {
                     label: '61% - 80%',
-                    data: [ pillar1D3Array],
+                    data: pillarTranspose[2],
                     backgroundColor: "#FFFF00"
                 }, {
                     label: '81% - 100%',
-                    data: [pillar1D3Array],
+                    data: pillarTranspose[3],
                     backgroundColor: "#008000"
                 }]
         },
@@ -799,39 +772,33 @@ function chartPillarDistrict(district,pillar1D1Array, pillar1D2Array,pillar1D3Ar
         // console.log($(this).val());
         // Does some stuff and logs the event to the console
 
-        var colourChanged = [];
-
         if ($(this).val() === "0") {
             myPillarChart.data.labels = [["1.Condition of", "school building"], ["2.Classroom", "infrastucture"], ["3.Sanitary", "facilities"], "4.Timetabling", ["5.Teacher", "deployment"], ["6.Disciplinary", "policy"], ["7.Inclusive school", "practice"], ["8.Gender", "Sensitive School"]]
-            myPillarChart.data.labels.forEach(function (d, i) {
-                colourChanged.push(getRandomInt(10, 25));
-                // myPillarChart.data.datasets[i].data
-            })
+            for(var i = 0; i < 4; i++) {
+                myPillarChart.data.datasets[i].data = pillar1Transpose[i];
+            }
         } else if ($(this).val() === "1") {
             myPillarChart.data.labels = ["1.Teacher and pupil attendance", "2.School Improvement plan", "3.SIP activities", "4.Financial management", ["5.Systematic monitoring and", "evaluation of teacher performance"], "6.Continuous professional development", "7.Systematic monitoring of pupil performance"]
-            myPillarChart.data.labels.forEach(function (d, i) {
-                colourChanged.push(getRandomInt(10, 25));
-            })
+            for(var i = 0; i < 4; i++) {
+                myPillarChart.data.datasets[i].data = pillar2Transpose[i];
+            }
         } else if ($(this).val() === "2") {
             myPillarChart.data.labels = ["1.Lesson planning", "2,Lesson delivery", "3.Teaching and learning materials", "4.Learner particiption", "5,Learning", "6.Teachers' rapport with learners", "7.Classroom environment", "8.Pupils' work"]
-            myPillarChart.data.labels.forEach(function (d, i) {
-                colourChanged.push(getRandomInt(10, 25));
-            })
+            for(var i = 0; i < 4; i++) {
+                myPillarChart.data.datasets[i].data = pillar3Transpose[i];
+            }
         } else if ($(this).val() === "3") {
             myPillarChart.data.labels = ["1. School management committee", ["2. School communication", "ith parents/community"], "3. Teacher communication with parents", "4. Involvement of parents"]
-            myPillarChart.data.labels.forEach(function (d, i) {
-                colourChanged.push(getRandomInt(10, 25));
-            })
+            for(var i = 0; i < 4; i++) {
+                myPillarChart.data.datasets[i].data = pillar4Transpose[i];
+            }
         } else if ($(this).val() === "4") {
             myPillarChart.data.labels = [["Pillar 1:", "Learning Environment"], ["Pillar 2:", "School Management", "and HT Performance"], ["Pillar 3:", "Effectiveness of", "Teaching and Learning"], ["Pillar 4:", "Involvement of", "Parents and", "Community"]]
-            myPillarChart.data.labels.forEach(function (d, i) {
-                colourChanged.push(getRandomInt(10, 25));
-            })
+            for(var i = 0; i < 4; i++) {
+                myPillarChart.data.datasets[i].data = pillarTranspose[i];
+            }
         }
 
-        // console.log(districtConditionalPlot)
-
-        // myPillarChart.data.datasets[0].backgroundColor = colourChanged;
         myPillarChart.update();
 
 
@@ -848,36 +815,59 @@ function chartPillarDistrict(district,pillar1D1Array, pillar1D2Array,pillar1D3Ar
 
 }
 
-
-
 //d3 charts with dimple.js
-function trendPillar(school, trendPlot) {
+function district_pillar_trends(district, pillar1Score, inspections) {
     if (trendChart) {
         trendChart.destroy();
     }
+
     var trendChart = new Chart(document.getElementById("district_lineChart"), {
         type: 'line',
         data: {
-            labels: [["First Term", ['2017']], ["Second Term", ['2017']], ["Third Term", ['2017']], ["First Term", ['2018']], ["Second Term", ['2018']], ["Third Term", ['2018']]],
-            datasets: [{
-                data: trendPlot[0][4],
-                lineTension: 0,
-                label: "Pillar Summary",
-                borderColor: "rgb(242,101,34)",
-                fill: false
-            }
-                , {
-                data: [1, 4],
-                label: "hide",
-                borderColor: "rgb(255,255,255)",
-                fill: false
-            }
+            labels: inspections,
+            datasets: [
+                {
+                    data: [8, 14, 22, 30, 32],
+                    label: "hide",
+                    borderColor: "#00000000",
+                    fill: false,
+                    lineTension: 0,
+                    pointStyle: 'line'
+                }, {
+                    data: pillar1Score,
+                    label: "Pillar 1",
+                    borderColor: "#e41a1c",
+                    fill: false,
+                    lineTension: 0,
+                    pointStyle: 'line'
+                }, {
+                    data: pillar1Score,
+                    label: "Pillar 2",
+                    borderColor: "#377eb8",
+                    fill: false,
+                    lineTension: 0,
+                    pointStyle: 'line'
+                }, {
+                    data: pillar1Score,
+                    label: "Pillar 3",
+                    borderColor: "#4daf4a",
+                    fill: false,
+                    lineTension: 0,
+                    pointStyle: 'line'
+                }, {
+                    data: pillar1Score,
+                    label: "Pillar 4",
+                    borderColor: "#984ea3",
+                    fill: false,
+                    lineTension: 0,
+                    pointStyle: 'line'
+                }
             ]
         },
         options: {
             title: {
                 display: true,
-                text: ''
+                text: district
             },
             scales: {
                 xAxes: [{
@@ -894,26 +884,24 @@ function trendPillar(school, trendPlot) {
                         labelString: 'Grade'
                     },
                     ticks: {
-                        min: 0,
-                        max: 5,
-                        stepSize: 1,
-                        suggestedMin: 0.5,
-                        suggestedMax: 5.5,
+                        // min: 0,
+                        // max: 5,
+                        stepSize: 10,
+                        // suggestedMin: 0,
+                        // suggestedMax: 15,
                         callback: function (label, index, labels) {
-                            switch (label) {
-                                case 0:
-                                    return '';
-                                case 1:
-                                    return 'D';
-                                case 2:
-                                    return 'C';
-                                case 3:
-                                    return 'B';
-                                case 4:
-                                    return 'A';
-                                case 5:
-                                    return '';
-                            }
+
+                            if (label < 1) { 
+                                return ""; 
+                            } else if (label <= 16) {
+                                return 'D';
+                            } else if (label > 16 && label < 28) {
+                                return 'C';
+                            } else if (label > 28 && label < 32) {
+                                return 'B';
+                            } else if (label >= 32) {
+                                return 'A';
+                            } else if (label < 1) { return ""; }
                         }
                     },
                     gridLines: {
@@ -935,39 +923,8 @@ function trendPillar(school, trendPlot) {
         }
     });
 
-    $(document).on('change', '#pillarsTrend', function () {
-        // console.log($(this).val());
-        // Does some stuff and logs the event to the console
-
-
-
-        if ($(this).val() === "0") {
-            trendChart.data.datasets[0].data = trendPlot[0][0]
-            trendChart.data.datasets[0].label = "Pillar 1"
-        } else if ($(this).val() === "1") {
-            trendChart.data.datasets[0].data = trendPlot[0][1]
-            trendChart.data.datasets[0].label = "Pillar 2"
-
-        } else if ($(this).val() === "2") {
-            trendChart.data.datasets[0].data = trendPlot[0][2]
-            trendChart.data.datasets[0].label = "Pillar 3"
-
-        } else if ($(this).val() === "3") {
-            trendChart.data.datasets[0].data = trendPlot[0][3]
-            trendChart.data.datasets[0].label = "Pillar 4"
-
-        } else if ($(this).val() === "4") {
-            trendChart.data.datasets[0].data = trendPlot[0][4]
-            trendChart.data.datasets[0].label = "Pillar Summary"
-
-        }
-
-        trendChart.update();
-
-
-    });
-
 }
+
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
