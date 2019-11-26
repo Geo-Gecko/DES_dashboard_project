@@ -819,7 +819,7 @@ function chartPillarDistrict(district,pillar1,pillar2,pillar3,pillar4) {
 }
 
 //d3 charts with dimple.js
-function district_pillar_trends(district, pillar1Score, inspections) {
+function district_pillar_trends(district, pillar1Score,pillar2Score,pillar3Score,pillar4Score, inspections) {
     if (trendChart) {
         trendChart.destroy();
     }
@@ -844,21 +844,21 @@ function district_pillar_trends(district, pillar1Score, inspections) {
                     lineTension: 0,
                     pointStyle: 'line'
                 }, {
-                    data: pillar1Score,
+                    data: pillar2Score,
                     label: "Pillar 2",
                     borderColor: "#377eb8",
                     fill: false,
                     lineTension: 0,
                     pointStyle: 'line'
                 }, {
-                    data: pillar1Score,
+                    data: pillar3Score,
                     label: "Pillar 3",
                     borderColor: "#4daf4a",
                     fill: false,
                     lineTension: 0,
                     pointStyle: 'line'
                 }, {
-                    data: pillar1Score,
+                    data: pillar4Score,
                     label: "Pillar 4",
                     borderColor: "#984ea3",
                     fill: false,

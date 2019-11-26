@@ -797,7 +797,7 @@ function chartPillar(school, pillarOne, pillarTwo, pillarThree, pillarFour, pill
 
 
 //d3 charts with dimple.js
-function School_Pillar_trends(school, pillar1Score, inspections) {
+function School_Pillar_trends(school, pillar1Score,pillar2Score,pillar3Score,pillar4Score, inspections) {
     if (trendChart) {
         trendChart.destroy();
     }
@@ -822,21 +822,21 @@ function School_Pillar_trends(school, pillar1Score, inspections) {
                     lineTension: 0,
                     pointStyle: 'line'
                 }, {
-                    data: pillar1Score,
+                    data: pillar2Score,
                     label: "Pillar 2",
                     borderColor: "#377eb8",
                     fill: false,
                     lineTension: 0,
                     pointStyle: 'line'
                 }, {
-                    data: pillar1Score,
+                    data: pillar3Score,
                     label: "Pillar 3",
                     borderColor: "#4daf4a",
                     fill: false,
                     lineTension: 0,
                     pointStyle: 'line'
                 }, {
-                    data: pillar1Score,
+                    data: pillar4Score,
                     label: "Pillar 4",
                     borderColor: "#984ea3",
                     fill: false,
