@@ -1,9 +1,9 @@
 var mysql = require('mysql')
 var connection = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
+    host: process.env.HOST,
+    user: process.env.USER,
     password: process.env.DB_PASSWORD,
-    database: 'formtools'
+    database: process.env.DATABASE
 });
 
 module.exports = connection;
