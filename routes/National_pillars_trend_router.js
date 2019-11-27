@@ -11,7 +11,7 @@ router.get('/:region', function(req, res, next) {
 
     // run query where school id
     const limit = 1;
-    const P1Query = `select distinct(region) as region, inspection.date_of_inspection as inspection_date, cast(avg(inspection.condition_of_school_building_and_compound) as unsigned) +
+    const P1Query = `select distinct(region) as region, DATE_FORMAT(inspection.date_of_inspection, '%d-%m-%Y') as inspection_date, cast(avg(inspection.condition_of_school_building_and_compound) as unsigned) +
     cast(avg(inspection.classroom_infrastructure) as unsigned) +
     cast(avg(inspection.sanitary_facilities) as unsigned) + 
     cast(avg(inspection.timetabling) as unsigned)+

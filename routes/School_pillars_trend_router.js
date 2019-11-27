@@ -11,7 +11,7 @@ router.get('/:school', function(req, res, next) {
 
     // run query where school id
     const limit = 1;
-    const P1Query = `select distinct(name_of_school) as school, inspection.date_of_inspection as inspection_date, inspection.condition_of_school_building_and_compound +
+    const P1Query = `select distinct(name_of_school) as school, DATE_FORMAT(inspection.date_of_inspection, '%d-%m-%Y') as inspection_date, inspection.condition_of_school_building_and_compound +
    inspection.classroom_infrastructure +
     inspection.sanitary_facilities + 
     inspection.timetabling+

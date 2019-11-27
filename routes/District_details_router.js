@@ -136,7 +136,7 @@ router.get('/:district', function(req, res, next) {
         // console.log("TOTAL BOYS", totalBoysArray);
         // console.log("TOTAL GIRLS", totalGirlArray);
         // console.log("TOTAL INSPECTION", totalGirlArray);
-        console.log("lastet inspection", maxInspectionArray);
+       // console.log("lastet inspection", maxInspectionArray);
 
         let district = districtArray[0];
         let totalSchoolsData = totalSchoolArray[0];

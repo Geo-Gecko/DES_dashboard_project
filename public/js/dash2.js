@@ -30,8 +30,8 @@ function ake(districtName) {
 
             $('#districtDetails').html("<table>" +
                 "<tr><td>District:</td><td>" + district + "</td><tr>" +
-                "<tr><td>Number of Boys:</td><td>" + totalBoysData + "</td><tr>" +
-                "<tr><td>Number of Girls:</td><td>" + totalGrilsData + "</td><tr>" +
+                "<tr><td>Number of Girls Enrolled:</td><td>" + totalBoysData + "</td><tr>" +
+                "<tr><td>Number of Boys Enrolled:</td><td>" + totalGrilsData + "</td><tr>" +
                 "<tr><td>Total  Number of Schools:</td><td>" + totalSchoolsData + "</td><tr>" +
                 "<tr><td>Total  Number of Inspections:</td><td>" + totalInspectionData + "</td><tr>" +
               // "<tr><td>Latest Inspections:</td><td>" + max_inspectionData + "</td><tr>" 
@@ -415,13 +415,13 @@ function ratio_teach_district(district, p1top3Plot, p4top7Plot) {
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "green"
                 ],
             }],
             labels: [
                 "P1-P3",
                 "P4-P7",
-                "National"
+                "National"," Target"
 
             ]
         }, options: {
@@ -564,13 +564,13 @@ function stance_ratio_district(district, sprboysPlot, sprgirlsPlot, sprovrallPlo
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "green"
                 ],
             }],
             labels: [
                 "P1-P3",
                 "P4-P7",
-                "National"
+                "National"," Target"
 
             ]
         },
@@ -619,13 +619,13 @@ function class_ratio_district(district, cp1top3Plot, cp4top7Plot) {
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "green"
                 ],
             }],
             labels: [
                 "P1-P3",
                 "P4-P7",
-                "National"
+                "National"," Target"
             ]
         },
         title: {
@@ -819,7 +819,7 @@ function chartPillarDistrict(district,pillar1,pillar2,pillar3,pillar4) {
 }
 
 //d3 charts with dimple.js
-function district_pillar_trends(district, pillar1Score,pillar2Score,pillar3Score,pillar4Score, inspections) {
+function  district_pillar_trends(district, pillar1Score,pillar2Score,pillar3Score,pillar4Score, inspections) {
     if (trendChart) {
         trendChart.destroy();
     }
@@ -876,8 +876,8 @@ function district_pillar_trends(district, pillar1Score,pillar2Score,pillar3Score
                 xAxes: [{
                     display: true,
                     scaleLabel: {
-                        display: true,
-                        labelString: 'Period'
+                        display: false,
+                        labelString: 'Inspection Date'
                     }
                 }],
                 yAxes: [{

@@ -189,7 +189,7 @@ function ake(nameOfSchool) {
             $('#schooldetails').html("<table>" +
                 "<tr><td>School:</td><td>" + school + "</td><tr>" +
                 "<tr><td>District:</td><td>" + distinctData + "</td><tr>" +
-                "<tr><td>County/Municipality:</td><td>" + countyData + "</td><tr>" +
+                "<tr><td>County:</td><td>" + countyData + "</td><tr>" +
                 "<tr><td>Sub-County/Division:</td><td>" + subcountyData + "</td><tr>" +
                 "<tr><td>Parish/Ward:</td><td>" + parishData + "</td><tr>" +
                 "<tr><td>EMIS CODE:</td><td>" + emisData + "</td><tr>" +
@@ -497,7 +497,7 @@ function ratio_teach(school, p1top3Plot, p4top7Plot) {
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "green"
                 ],
                 // borderColor:[
                 //     "red",
@@ -507,7 +507,7 @@ function ratio_teach(school, p1top3Plot, p4top7Plot) {
             labels: [
                 "P1-P3",
                 "P4-P7 ",
-                "National"
+                "National"," Target"
             ]
         },
         options: {
@@ -551,13 +551,13 @@ function stance_ratio(school, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "green"
                 ],
             }],
             labels: [
                 "P1-P3",
                 "P4-P7 ",
-                "National"
+                "National"," Target"
             ]
         },
         options: {
@@ -604,13 +604,13 @@ function class_ratio(school, cp1top3Plot, cp4top7Plot) {
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "green"
                 ],
             }],
             labels: [
                 "P1-P3",
                 "P4-P7 ",
-                "National"
+                "National"," Target"
             ]
         },
         title: {
@@ -797,7 +797,7 @@ function chartPillar(school, pillarOne, pillarTwo, pillarThree, pillarFour, pill
 
 
 //d3 charts with dimple.js
-function School_Pillar_trends(school, pillar1Score,pillar2Score,pillar3Score,pillar4Score, inspections) {
+function  School_Pillar_trends(school, pillar1Score,pillar2Score,pillar3Score,pillar4Score, inspections) {
     if (trendChart) {
         trendChart.destroy();
     }
@@ -854,8 +854,8 @@ function School_Pillar_trends(school, pillar1Score,pillar2Score,pillar3Score,pil
                 xAxes: [{
                     display: true,
                     scaleLabel: {
-                        display: true,
-                        labelString: 'Period'
+                        display: false,
+                        labelString: 'Inspection Date'
                     }
                 }],
                 yAxes: [{

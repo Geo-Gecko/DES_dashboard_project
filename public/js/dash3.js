@@ -390,13 +390,13 @@ function ratio_teach_region(region, p1top3Plot, p4top7Plot) {
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "green"
                 ],
             }],
             labels: [
                 "P1-P3",
                 "P4-P7",
-                "National"
+                "National"," Target"
 
             ]
         }, options: {
@@ -445,13 +445,13 @@ function stance_ratio_region(region, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "green"
                 ],
             }],
             labels: [
                 "P1-P3",
                 "P4-P7",
-                "National"
+                "National"," Target"
 
             ]
         },
@@ -500,13 +500,13 @@ function class_ratio_region(region, cp1top3Plot, cp4top7Plot) {
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "green"
                 ],
             }],
             labels: [
                 "P1-P3",
                 "P4-P7",
-                "National"
+                "National"," Target"
             ]
         },
         title: {
@@ -792,7 +792,7 @@ function chartPillarRegion(region,pillar1,pillar2,pillar3,pillar4) {
 }
 
 //d3 charts with dimple.js
-function national_pillar_trends(region, pillar1Score,pillar2Score,pillar3Score,pillar4Score, inspections) {
+function  national_pillar_trends(region,pillar1Score, pillar2Score,pillar3Score,pillar4Score, inspections) {
     if (trendChart) {
         trendChart.destroy();
     }
@@ -849,8 +849,8 @@ function national_pillar_trends(region, pillar1Score,pillar2Score,pillar3Score,p
                 xAxes: [{
                     display: true,
                     scaleLabel: {
-                        display: true,
-                        labelString: 'Period'
+                        display: false,
+                        labelString: 'Inspection Date'
                     }
                 }],
                 yAxes: [{
