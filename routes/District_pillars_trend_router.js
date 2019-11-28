@@ -13,7 +13,7 @@ router.get('/:district', function(req, res, next) {
     // run query where school id
     const limit = 1;
     const P1Query = `
-    select distinct(district) as district, DATE_FORMAT(inspection.date_of_inspection, '%d-%m-%Y') as inspection_date, cast(avg(inspection.condition_of_school_building_and_compound) as unsigned) +
+    select distinct(district) as district, inspection.term as inspection_date, cast(avg(inspection.condition_of_school_building_and_compound) as unsigned) +
     cast(avg(inspection.classroom_infrastructure) as unsigned) +
     cast(avg(inspection.sanitary_facilities) as unsigned) + 
     cast(avg(inspection.timetabling) as unsigned)+
@@ -40,7 +40,8 @@ cast(avg(inspection.lesson_delivery) as unsigned) +
     cast(avg(inspection.school_communication_with_parents_community) as unsigned) +
     cast(avg(inspection.teacher_communication_with_parents) as unsigned) + 
     cast(avg(inspection.involvement_of_parents) as unsigned) as pilar4 FROM  ft_form_12  as inspection, ft_form_11  as details 
-    WHERE details.submission_id=inspection.school_name and details.district = '${nameOfDistrict}' group by inspection.date_of_inspection order by inspection.date_of_inspection asc`;
+    WHERE details.submission_id=inspection.school_name and details.district = '${nameOfDistrict}' and
+inspection.term != 'NULL' group by inspection.term order by inspection.term asc`;
 
 
     let pillar1Array = [];
@@ -102,9 +103,7 @@ cast(avg(inspection.lesson_delivery) as unsigned) +
 
         }
 
-        // console.log("staffArray",staffArray);
-        // console.log("enrolArray",enrolArray);
-        // console.log(" attendArray", attendArray);
+        
 
         let district = districtArray[0];
         let pillar1Score = pillar1Array;

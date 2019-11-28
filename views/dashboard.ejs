@@ -83,7 +83,7 @@
 
             <div class="grid-container">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">school details</h5>
@@ -92,7 +92,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">map showing schools in uganda</h5>
@@ -122,12 +122,14 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card">
+                            <div class="card-body">
                             <div class="graph_container1">
                                 <h5 class="card-title">Trend</h5>
                                 <div id="linegraph">
-                                    <canvas id="line-chart"  height="100px"></canvas>
+                                    <canvas id="line-chart" height="185%" ></canvas>
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -155,7 +157,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col">
+                    <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Teacher-pupil ratio</h5>
@@ -171,7 +173,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-md-5">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Stance-pupil ratio</h5>
@@ -186,7 +188,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Classroom-pupil ratio</h5>
@@ -206,22 +208,32 @@
                 <!-- Teacher statistics -->
                
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Teacher Statistics</h5>
-                                <div class="graph_container1">
-                                    <canvas id="TeacherChart"></canvas>
+                                <div class="graph_container1" style="width:60%">
+                                    <canvas id="TeacherChart" width="100%" height="100;"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Teacher Statistics</h5>
+                                <div class="graph_container1" style="width:60%">
+                                    <canvas id="TeacherChart" width="100" height="100;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Trend</h5>
-                                <div id="linegraph">
-                                    <canvas id="school-line-chart"></canvas>
+                                <div id="linegraph" style="width:60%">
+                                    <canvas id="school-line-chart" width="100" height="100;"></canvas>
                                 </div>
                             </div>
                         </div>

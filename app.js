@@ -33,6 +33,7 @@ var districtpillarsTrendRouter = require('./routes/District_pillars_trend_router
 var districtstrendRouter = require('./routes/District_trend_router');
 var districtteacherStatsRouter = require('./routes/District_teacher_stats_router');
 var districtteacherStatsTrendRouter = require('./routes/District_teacher_stats_trend_router');
+var districtteachAccordTTRouter = require('./routes/District_teach_according_to_TT_router');
 
 //National 
 var nationalRouter = require('./routes/national_router');
@@ -46,7 +47,7 @@ var nationalPillarsRouter = require('./routes/national_Pillars_router');
 var nationalPillarsTrendRouter = require('./routes/National_pillars_trend_router');
 var nationalTeacherStatsRouter = require('./routes/National_teacher_stats_router');
 var nationalTeacherStatsTrendRouter = require('./routes/National_teacher_stats_trend_router');
-
+var nationalteachAccordTTRouter = require('./routes/National_teacher_stats_trend_router');
 
 var app = express();
 
@@ -90,6 +91,7 @@ app.use('/districtpillar-trend-stats', districtpillarsTrendRouter);
 app.use('/districttrend-stats', districtstrendRouter);
 app.use('/districtteacher-stats',districtteacherStatsRouter)
 app.use('/districtrteacher_stats-Trend', districtteacherStatsTrendRouter)
+app.use('/districtteachAccordTT', districtteachAccordTTRouter)
 
 
 //National
@@ -104,11 +106,7 @@ app.use('/nationalPillars-stats', nationalPillarsRouter);
 app.use('/nationalPillars-Trends-stats', nationalPillarsTrendRouter)
 app.use('/nationalTeacher-stats',nationalTeacherStatsRouter)
 app.use('/nationalTeacher-Trend-stats',nationalTeacherStatsTrendRouter)
-
-
-
-
-
+app.use('/nationalteachAccordTT', nationalteachAccordTTRouter)
 
 
 // catch 404 and forward to error handler

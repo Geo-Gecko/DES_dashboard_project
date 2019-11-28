@@ -11,7 +11,7 @@ router.get('/:region', function(req, res, next) {
     let nameOfRegion = req.params.region;
 
     const dQuery = `select distinct(details.region) as region,
-    DATE_FORMAT(inspection.date_of_inspection, '%d-%m-%Y') as inspection_date,
+    inspection.term as inspection_date,
     sum(inspection.attendance_of_p1_boys_on_visitation_day)+
     sum(inspection.attendance_of_p1_girls_on_visitation_day)+
     sum(inspection.attendance_of_p2_boys_on_visitation_day) +
@@ -42,7 +42,7 @@ router.get('/:region', function(req, res, next) {
     sum(inspection.number_of_girls_enrolled_in_p7) as enrollment
 FROM  ft_form_12  as inspection,  ft_form_11  as details 
 WHERE details.submission_id=inspection.school_name and details.region='${nameOfRegion}'
- group by details.region, inspection.date_of_inspection`;
+ group by details.region, inspection.term`;
 
    
  let enrolArray = [];

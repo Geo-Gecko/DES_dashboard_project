@@ -11,10 +11,10 @@ router.get('/:name_of_school', function(req, res, next) {
 
     // run query where school id
     const limit = 1;
-    const rQuery = `select DATE_FORMAT(inspection.date_of_inspection, '%d-%b-%Y') as inspection_date, inspection.established_staffing_as_per_enrollment as enrol, inspection.current_staffing_level as staff,
+    const rQuery = `select inspection.term as inspection_date, inspection.established_staffing_as_per_enrollment as enrol, inspection.current_staffing_level as staff,
     inspection.staff_attendance_on_visit_day as attend,
      inspection.no_of_teachers_teaching_according_to_timetable as timetable, 
-     details.name_of_school as school FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and  details.name_of_school ='${nameOfSchool}'`;
+     details.name_of_school as school FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}' order by inspection.term asc`;
 
 
     let enrolArray = [];

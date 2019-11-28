@@ -286,9 +286,9 @@ function ake(nameOfSchool) {
             let sch_timetable = data.timetable;
             let sch_inspection = data.inspection;
 
-            console.log(sch_enrol, sch_inspection);
+            // console.log(sch_enrol, sch_inspection);
 
-            teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection);
+            teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_inspection);
 
         })
         .catch(function (error) {
@@ -507,7 +507,7 @@ function ratio_teach(school, p1top3Plot, p4top7Plot) {
             labels: [
                 "P1-P3",
                 "P4-P7 ",
-                "National"," Target"
+                ["National"," Target"]
             ]
         },
         options: {
@@ -557,7 +557,7 @@ function stance_ratio(school, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
             labels: [
                 "P1-P3",
                 "P4-P7 ",
-                "National"," Target"
+                ["National"," Target"]
             ]
         },
         options: {
@@ -610,7 +610,7 @@ function class_ratio(school, cp1top3Plot, cp4top7Plot) {
             labels: [
                 "P1-P3",
                 "P4-P7 ",
-                "National"," Target"
+                ["National"," Target"]
             ]
         },
         title: {
@@ -855,7 +855,7 @@ function  School_Pillar_trends(school, pillar1Score,pillar2Score,pillar3Score,pi
                     display: true,
                     scaleLabel: {
                         display: false,
-                        labelString: 'Inspection Date'
+                        labelString: 'Term'
                     }
                 }],
                 yAxes: [{
@@ -1049,10 +1049,9 @@ function teacherStats(school, enrol, staff, attend, timetable) {
         type: 'bar',
         data: {
             labels: [
-                ["Established staffting", " as per enrolment"],
+                ["Established"," staffting", " as per enrolment"],
                 ["Current", "staffting", " level"],
-                ["Staff attendance", " on visit day"],
-                ["Number of classes", " taught according", " to timetable"],
+                ["Staff attendance", " on visit day"]
             ],
             datasets: [
                 {
@@ -1060,7 +1059,7 @@ function teacherStats(school, enrol, staff, attend, timetable) {
                     backgroundColor: "rgb(38,34,98)",
                     borderColor: "rgb(38,34,98)",
                     borderWidth: 1,
-                    data: [enrol, staff, attend, timetable]
+                    data: [enrol, staff, attend]
                 }
             ]
         },
@@ -1085,7 +1084,7 @@ function teacherStats(school, enrol, staff, attend, timetable) {
     });
 }
 
-function teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection) {
+function teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_inspection) {
     new Chart(document.getElementById("school-line-chart"), {
         type: 'line',
         data: {
@@ -1111,14 +1110,15 @@ function teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetab
                 fill: false,
                 lineTension: 0,
                 pointStyle: 'line'
-            }, {
-                data: sch_timetable,
-                label: "Number of classes taught according to timetable",
-                borderColor: "#e8c3b9",
-                fill: false,
-                lineTension: 0,
-                pointStyle: 'line'
             }
+            // , {
+            //     data: sch_timetable,
+            //     label: "Number of classes taught according to timetable",
+            //     borderColor: "#e8c3b9",
+            //     fill: false,
+            //     lineTension: 0,
+            //     pointStyle: 'line'
+            // }
             ]
         },
         options: {
