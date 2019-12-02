@@ -15,7 +15,6 @@ function ake(regionName) {
     axios.get(`/nationalDetails-stats/${value}`)
         .then(function(response) {
             // handle success
-            //console.log(response.data);
 
             let data = response.data;
             let region = data.region;
@@ -49,7 +48,6 @@ function ake(regionName) {
     axios.get(`/nationalEnrolAttend-Trend-stats/${value}`)
         .then(function(response) {
             // handle success
-            // console.log(response.data);
 
             let data = response.data;
             let region = data.region;
@@ -74,7 +72,6 @@ function ake(regionName) {
     axios.get(`/nationalAttendance-stats/${value}`)
         .then(function(response) {
             // handle success
-            // console.log(response.data);
 
             let data = response.data;
             let region = data.region;
@@ -101,7 +98,6 @@ function ake(regionName) {
     axios.get(`/nationalTPR-stats/${value}`)
         .then(function(response) {
             // handle success
-            //console.log(response.data);
 
             let data = response.data;
             let region = data.region;
@@ -123,7 +119,6 @@ function ake(regionName) {
     axios.get(`/nationalSPR-stats/${value}`)
         .then(function(response) {
             // handle success
-            //  console.log(response.data);
 
             let data = response.data;
             let region = data.region;
@@ -146,7 +141,6 @@ function ake(regionName) {
     axios.get(`/nationalCPR-stats/${value}`)
         .then(function(response) {
             // handle success
-            // console.log(response.data);
 
             let data = response.data;
             let region = data.region;
@@ -215,7 +209,6 @@ function ake(regionName) {
          axios.get(`/nationalTeacher-Trend-stats/${value}`)
          .then(function (response) {
              // handle success
-            //  console.log(response.data);
                 
              let data = response.data;
              let region = data.region;
@@ -266,7 +259,6 @@ function ake(regionName) {
     axios.get(`/nationalPillars-Trends-stats/${value}`)
     .then(function(response) {
         // handle success
-        console.log(response.data);
 
         let data = response.data;
         let region = data.region;
@@ -352,8 +344,6 @@ function chart_attendance_enrolment_region(region, boysPlotAttend, girlsPlotAtte
     });
 
 }
-
-
 
 
 //line charts for enrol and attend trends at regional level 
@@ -449,12 +439,9 @@ function ratio_teach_region(region, p1top3Plot, p4top7Plot) {
 
 
 
-
 //stance to pupils ratio for region
 function stance_ratio_region(region, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
-    // var randomColorFactor = function () {
-    //     return Math.round(Math.random() * 255);
-    // };
+
     if (StanceRatio) {
         StanceRatio.destroy();
     }
@@ -463,16 +450,18 @@ function stance_ratio_region(region, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [sprboysPlot, sprgirlsPlot, 40],
+                data: [sprboysPlot, sprgirlsPlot, sprovrallPlot, 40],
                 backgroundColor: [
+                    "rgb(38,34,98)",
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
                     "green"
                 ],
             }],
             labels: [
-                "P1-P3",
-                "P4-P7",
+                "Boys",
+                "Girls",
+                "Overall",
                 ["National"," Target"]
 
             ]
@@ -507,9 +496,6 @@ function stance_ratio_region(region, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
 
 //classroom to pupils ratio chart for district 
 function class_ratio_region(region, cp1top3Plot, cp4top7Plot) {
-    // var randomColorFactor = function () {
-    //     return Math.round(Math.random() * 255);
-    // };
     if (ClassroomRatio) {
         ClassroomRatio.destroy();
     }
@@ -632,9 +618,7 @@ function   teacher_stats_national(region, enrol, staff, attend, timetable) {
                 text:region
                 },
                 legend: {
-                labels : {
-                    usePointStyle: true,
-                }
+              display: false
                 }
             }
           });
@@ -671,14 +655,6 @@ function teacher_stats_Trend_national(region, enrol, staff, attend, inspections)
               lineTension: 0,
               pointStyle: 'line'
             }
-            // , { 
-            //   data:timetable,
-            //   label: "Number of classes taught according to timetable",
-            //   borderColor: "#e8c3b9",
-            //   fill: false,
-            //   lineTension: 0,
-            //   pointStyle: 'line'
-            // }
           ]
         },
         options: {

@@ -511,9 +511,7 @@ function  chart_teach_accordToTT_district(district, timetable, inspections) {
             text:district
             },
             legend: {
-            labels : {
-                usePointStyle: true,
-            }
+            display: false
             }
         }
       });
@@ -577,16 +575,18 @@ function stance_ratio_district(district, sprboysPlot, sprgirlsPlot, sprovrallPlo
         type: 'bar',
         data: {
             datasets: [{
-                data: [sprboysPlot, sprgirlsPlot, 40],
+                data: [sprboysPlot, sprgirlsPlot, sprovrallPlot, 40],
                 backgroundColor: [
+                    "rgb(38,34,98)",
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
                     "green"
                 ],
             }],
             labels: [
-                "P1-P3",
-                "P4-P7",
+                "Boys",
+                "Girls",
+                "Overall",
                 ["National"," Target"]
 
             ]
