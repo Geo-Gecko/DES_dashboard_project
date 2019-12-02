@@ -7,7 +7,6 @@ router.get('/:district', function(req, res, next) {
 
     // Get school id
     let nameOfDistrict = req.params.district;
-    console.log('passing through here______')
 
 
     // run query where school id
@@ -29,7 +28,7 @@ router.get('/:district', function(req, res, next) {
     cast(avg(inspection.continuous_professional_development) as unsigned)+
     cast(avg(inspection.systematic_monitoring_of_student_performance) as unsigned) as pilar2,
     cast(avg(inspection.lesson_planning) as unsigned) +
-cast(avg(inspection.lesson_delivery) as unsigned) +
+    cast(avg(inspection.lesson_delivery) as unsigned) +
     cast(avg(inspection.teaching_and_learning_materials) as unsigned) + 
     cast(avg(inspection.learner_participation) as unsigned)+
     cast(avg(inspection.learning) as unsigned) +
