@@ -36,7 +36,7 @@ router.get('/:district', function(req, res, next) {
     let nameOfDistrict = req.params.district;
 
     const dQuery = `select distinct(details.district) as district, 
-    count(details.name_of_school) as Totalschools,
+    (select count(name_of_school) from ft_form_11 where district = '${nameOfDistrict}')  as Totalschools,
     sum(inspection.number_of_boys_enrolled_in_p1)+
     sum(inspection.number_of_girls_enrolled_in_p1)+
     sum(inspection.number_of_boys_enrolled_in_p2)+
@@ -136,7 +136,7 @@ router.get('/:district', function(req, res, next) {
         // console.log("TOTAL BOYS", totalBoysArray);
         // console.log("TOTAL GIRLS", totalGirlArray);
         // console.log("TOTAL INSPECTION", totalGirlArray);
-        console.log("lastet inspection", maxInspectionArray);
+       // console.log("lastet inspection", maxInspectionArray);
 
         let district = districtArray[0];
         let totalSchoolsData = totalSchoolArray[0];

@@ -83,7 +83,7 @@
 
             <div class="grid-container">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">school details</h5>
@@ -92,7 +92,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">map showing schools in uganda</h5>
@@ -123,11 +123,13 @@
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
+                            <div class="graph_container1">
                                 <h5 class="card-title">Trend</h5>
                                 <div id="linegraph">
-                                    <canvas id="line-chart"></canvas>
+                                    <canvas id="line-chart" height="185%" ></canvas>
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -155,12 +157,12 @@
                 </div>
 
                 <div class="row">
-                    <div class="col">
+                    <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Teacher-pupil ratio</h5>
-                                <div id="canvas-holder" style="width:60%">
-                                    <canvas id="chart-area" width="100" height="100;"></canvas>
+                                <div id="canvas-holder">
+                                    <canvas id="chart-area" height="180%"></canvas>
                                 </div>
                                 <!-- <span style="font-size: small;">Outer Circle : Ratio for P1 to P3</span><br>
 
@@ -171,12 +173,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Stance-pupil ratio</h5>
-                                <div id="canvas-holder" style="width:60%">
-                                    <canvas id="nasted2" width="100" height="100;"></canvas>
+                                <div id="canvas-holder">
+                                    <canvas id="nasted2" height="180%"></canvas>
                                 </div>
                                 <!-- <span style="font-size: small;">Outer Circle : Ratio for P1 to P3</span><br>
 
@@ -186,12 +188,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Classroom-pupil ratio</h5>
-                                <div id="canvas-holder" style="width:60%">
-                                    <canvas id="nasted3" width="100" height="100;"></canvas>
+                                <div id="canvas-holder">
+                                    <canvas id="nasted3"  height="180%"></canvas>
                                 </div>
                                 <!-- <span style="font-size: small;">Outer Circle : Ratio for P1 to P3</span><br>
 
@@ -206,22 +208,32 @@
                 <!-- Teacher statistics -->
                
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Teacher Statistics</h5>
-                                <div class="graph_container1">
-                                    <canvas id="TeacherChart"></canvas>
+                                <div class="graph_container1" >
+                                    <canvas id="TeacherChart" height="205%"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Trend</h5>
+                                <h5 class="card-title">Teacher Statictical Trend</h5>
+                                <div class="graph_container1" >
+                                    <canvas id="school-line-chart" height="205%"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Classes Taught According to timetable</h5>
                                 <div id="linegraph">
-                                    <canvas id="school-line-chart"></canvas>
+                                    <canvas id="line-chart_timetable"  height="180%"></canvas>
                                 </div>
                             </div>
                         </div>

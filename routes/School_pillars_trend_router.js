@@ -11,7 +11,7 @@ router.get('/:school', function(req, res, next) {
 
     // run query where school id
     const limit = 1;
-    const P1Query = `select distinct(name_of_school) as school, inspection.date_of_inspection as inspection_date, inspection.condition_of_school_building_and_compound +
+    const P1Query = `select distinct(name_of_school) as school, inspection.term as inspection_date, inspection.condition_of_school_building_and_compound +
    inspection.classroom_infrastructure +
     inspection.sanitary_facilities + 
     inspection.timetabling+
@@ -35,7 +35,8 @@ router.get('/:school', function(req, res, next) {
     inspection.school_communication_with_parents_community +
     inspection.teacher_communication_with_parents + 
    inspection.involvement_of_parents as pilar4 FROM  ft_form_12  as inspection,  ft_form_11  as details 
-    WHERE details.submission_id=inspection.school_name and details.name_of_school = '${nameOfSchool}' group by inspection.date_of_inspection order by inspection.date_of_inspection asc`;
+    WHERE details.submission_id=inspection.school_name and details.name_of_school = '${nameOfSchool}'
+    and inspection.term != 'NULL' group by inspection.term order by inspection.term asc`;
 
 
     let pillar1Array = [];
@@ -98,9 +99,6 @@ router.get('/:school', function(req, res, next) {
 
         }
 
-        // console.log("staffArray",staffArray);
-        // console.log("enrolArray",enrolArray);
-        // console.log(" attendArray", attendArray);
 
         let school = schoolArray[0];
         let pillar1Score = pillar1Array;

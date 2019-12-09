@@ -30,8 +30,8 @@ function ake(districtName) {
 
             $('#districtDetails').html("<table>" +
                 "<tr><td>District:</td><td>" + district + "</td><tr>" +
-                "<tr><td>Number of Boys:</td><td>" + totalBoysData + "</td><tr>" +
-                "<tr><td>Number of Girls:</td><td>" + totalGrilsData + "</td><tr>" +
+                "<tr><td>Number of Girls Enrolled:</td><td>" + totalBoysData + "</td><tr>" +
+                "<tr><td>Number of Boys Enrolled:</td><td>" + totalGrilsData + "</td><tr>" +
                 "<tr><td>Total  Number of Schools:</td><td>" + totalSchoolsData + "</td><tr>" +
                 "<tr><td>Total  Number of Inspections:</td><td>" + totalInspectionData + "</td><tr>" +
               // "<tr><td>Latest Inspections:</td><td>" + max_inspectionData + "</td><tr>" 
@@ -76,42 +76,36 @@ function ake(districtName) {
             // always executed
         });
 
-    // // Called for chart_enrolment for each district 
-    // axios.get(`/districtenrolment-stats/${value}`)
-    //     .then(function (response) {
-    //         // handle success
-    //         //console.log(response.data);
+    // Called for teaching according to timetable for each district 
+    axios.get(`/districtteachAccordTT/${value}`)
+        .then(function (response) {
+            // handle success
+        
+            let data = response.data;
+            let district = data.district;
+            let timetable = data.timetable;
+            let inspections = data.inspections;
 
-    //         let data = response.data;
-    //         let district = data.district;
-    //         let boysPlot = data.boys;
-    //         let girlsPlot = data.girls;
-
-    //         // call the chart function
-    //         chart_attendance_district(district, boysPlot, girlsPlot);
-
-    //         // dataCollection('enrollment', district, boysPlot, girlsPlot);
-    //     })
-    //     .catch(function (error) {
-    //         // handle error
-    //         console.log(error);
-    //     })
-    //     .finally(function () {
-    //         // always executed
-    //     });
+            // call the chart function
+            chart_teach_accordToTT_district(district, timetable, inspections);
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .finally(function () {
+            // always executed
+        });
 
            // Called for district attendance and enrolment stats for each district 
     axios.get(`/districttrend-stats/${value}`)
     .then(function (response) {
         // handle success
-     
-
         let data = response.data;
         let district = data.district;
         let enrolPlot = data.enrol;
         let attendPlot = data.attend;
         let inspectionPlot = data.inspection;
-        console.log( 'inspectionPlot', inspectionPlot);
 
         // call the chart function
         chart_attendance_enrolment_Trend_district(district,enrolPlot, attendPlot,inspectionPlot);
@@ -199,7 +193,6 @@ function ake(districtName) {
     axios.get(`/districtteacher-stats/${value}`)
     .then(function (response) {
         // handle success
-        // console.log(response.data);
 
         let data = response.data;
         let district = data.district;
@@ -415,13 +408,13 @@ function ratio_teach_district(district, p1top3Plot, p4top7Plot) {
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "green"
                 ],
             }],
             labels: [
                 "P1-P3",
                 "P4-P7",
-                "National"
+                ["National"," Target"]
 
             ]
         }, options: {
@@ -458,10 +451,9 @@ function   teacher_stats_district(district, enrol, staff, attend, timetable) {
             type: 'bar',
             data: {
                 labels: [
-                    ["Established"," staffting"," as per enrolment"],
+                    ["Established"," staffting"," as per ","enrolment"],
                    [ "Current","staffting"," level"],
-                   [ "Staff attendance"," on visit day"],
-                    ["Number of classes"," taught according"," to timetable"],
+                   [ "Staff ","attendance"," on visit day"]
                 ],
                 datasets: [
                     {
@@ -469,7 +461,7 @@ function   teacher_stats_district(district, enrol, staff, attend, timetable) {
                         backgroundColor:  "rgb(38,34,98)",
                         borderColor:  "rgb(38,34,98)",
                         borderWidth: 1,
-                        data: [enrol, staff, attend, timetable]
+                        data: [enrol, staff, attend]
                     }
                 ]
             },
@@ -494,6 +486,36 @@ function   teacher_stats_district(district, enrol, staff, attend, timetable) {
         });
     }
 
+
+    
+    // Teacher stats trend at district level (teach according to timetable)
+function  chart_teach_accordToTT_district(district, timetable, inspections) {
+
+    new Chart(document.getElementById("line-chart_timetable"), {
+        type: 'line',
+        data: {
+          labels: inspections,
+          datasets: [{ 
+              data: timetable,
+            //   label: "Classes taught according to timetable",
+              borderColor: "#901818",
+              fill: false,
+              lineTension: 0,
+              pointStyle: 'line'
+            }
+          ]
+        },
+        options: {
+          title: {
+            display: false,
+            text:district
+            },
+            legend: {
+            display: false
+            }
+        }
+      });
+    }
 
     // Teacher stats trend at district level
 function teacher_stats_Trend_district(district, enrol, staff, attend, timetable, inspections) {
@@ -520,13 +542,6 @@ function teacher_stats_Trend_district(district, enrol, staff, attend, timetable,
               data:attend,
               label: "Staff attendance on visit day",
               borderColor: "#3cba9f",
-              fill: false,
-              lineTension: 0,
-              pointStyle: 'line'
-            }, { 
-              data:timetable,
-              label: "Number of classes taught according to timetable",
-              borderColor: "#e8c3b9",
               fill: false,
               lineTension: 0,
               pointStyle: 'line'
@@ -560,17 +575,19 @@ function stance_ratio_district(district, sprboysPlot, sprgirlsPlot, sprovrallPlo
         type: 'bar',
         data: {
             datasets: [{
-                data: [sprboysPlot, sprgirlsPlot, 40],
+                data: [sprboysPlot, sprgirlsPlot, sprovrallPlot, 40],
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "rgb(38,34,98)",
+                    "green"
                 ],
             }],
             labels: [
-                "P1-P3",
-                "P4-P7",
-                "National"
+                "Boys",
+                "Girls",
+                "Overall",
+                ["National"," Target"]
 
             ]
         },
@@ -619,13 +636,13 @@ function class_ratio_district(district, cp1top3Plot, cp4top7Plot) {
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "green"
                 ],
             }],
             labels: [
                 "P1-P3",
                 "P4-P7",
-                "National"
+                ["National"," Target"]
             ]
         },
         title: {
@@ -819,7 +836,7 @@ function chartPillarDistrict(district,pillar1,pillar2,pillar3,pillar4) {
 }
 
 //d3 charts with dimple.js
-function district_pillar_trends(district, pillar1Score,pillar2Score,pillar3Score,pillar4Score, inspections) {
+function  district_pillar_trends(district, pillar1Score,pillar2Score,pillar3Score,pillar4Score, inspections) {
     if (trendChart) {
         trendChart.destroy();
     }
@@ -876,8 +893,8 @@ function district_pillar_trends(district, pillar1Score,pillar2Score,pillar3Score
                 xAxes: [{
                     display: true,
                     scaleLabel: {
-                        display: true,
-                        labelString: 'Period'
+                        display: false,
+                        labelString: 'Term'
                     }
                 }],
                 yAxes: [{

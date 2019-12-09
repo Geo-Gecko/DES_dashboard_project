@@ -11,7 +11,7 @@ router.get('/:name_of_school', function(req, res, next) {
     let nameOfSchool = req.params.name_of_school;
 
     const aQuery = `SELECT inspection.school_name, details.name_of_school as name_of_school, 
-    inspection.date_of_inspection as date_of_inspection, inspection.attendance_of_p1_boys_on_visitation_day +
+    inspection.term as date_of_inspection, inspection.attendance_of_p1_boys_on_visitation_day +
     inspection.attendance_of_p2_boys_on_visitation_day  +
     inspection.attendance_of_p3_boys_on_visitation_day +
     inspection.attendance_of_p4_boys_on_visitation_day  +
@@ -39,7 +39,7 @@ router.get('/:name_of_school', function(req, res, next) {
         inspection.number_of_girls_enrolled_in_p5 +
         inspection.number_of_girls_enrolled_in_p6  +   inspection.number_of_girls_enrolled_in_p7  as girls_enrol
          FROM ft_form_12 as inspection, ft_form_11 as details 
-         WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}'`;
+         WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}' and inspection.term != 'NULL' group by inspection.term order by inspection.term`;
 
 
     connection.query(aQuery, function fill(err, result, ) {
@@ -99,14 +99,7 @@ router.get('/:name_of_school', function(req, res, next) {
 
         }
 
-        console.log("Attendence", attendenceBoysArray);
-        console.log("Attendence girls", attendenceGirlsArray);
-        console.log("Enrolment Girls",  enrolmentGirlsArray);
-        console.log("Enrolment Boys", enrolmentBoysArray);
-        console.log("Schools", SchoolArray);
-        console.log("inspection", inspectionDataArray); 
-
-        let school = SchoolArray;
+        let school = SchoolArray[0];
         let boysPlotAttend = attendenceBoysArray;
         let girlsPlotAttend = attendenceGirlsArray;
         let boysPlotEnrol = enrolmentGirlsArray;

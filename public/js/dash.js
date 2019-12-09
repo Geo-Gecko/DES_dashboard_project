@@ -7,7 +7,7 @@ function ake(nameOfSchool) {
     //let e = document.getElementById("sel");
 
 
-    let value = nameOfSchool ? nameOfSchool : 'Adranga P.S';
+    let value = nameOfSchool ? nameOfSchool : 'Aanga P.S';
 
 
     // Called to get enrollment for each school
@@ -67,7 +67,6 @@ function ake(nameOfSchool) {
     axios.get(`/teacher-to-pupil-ratio/stats/${value}`)
         .then(function (response) {
             // handle success
-            //console.log(response.data);
 
             let data = response.data;
             let school = data.school;
@@ -134,7 +133,6 @@ function ake(nameOfSchool) {
     axios.get(`/chartPiller-stats/${value}`)
         .then(function (response) {
             // handle success
-            console.log(response.data);
 
             let data = response.data;
             let school = data.school;
@@ -166,46 +164,6 @@ function ake(nameOfSchool) {
         .finally(function () {
             // always executed
         });
-
-
-
-    //called for school details 
-    axios.get(`/schooldetails-stats/${value}`)
-        .then(function (response) {
-            // handle success
-            //console.log(response.data);
-
-            let data = response.data;
-            let school = data.school;
-            let distinctData = data.district[0];
-            let countyData = data.county[0];
-            let subcountyData = data.subcounty[0];
-            let parishData = data.parish[0];
-            let emisData = data.emisNumber[0];
-            let regionData = data.region[0];
-            let inspectionData = data.inspection[0];
-            let max_inspectionData = data.max_inspection[0];
-
-            $('#schooldetails').html("<table>" +
-                "<tr><td>School:</td><td>" + school + "</td><tr>" +
-                "<tr><td>District:</td><td>" + distinctData + "</td><tr>" +
-                "<tr><td>County/Municipality:</td><td>" + countyData + "</td><tr>" +
-                "<tr><td>Sub-County/Division:</td><td>" + subcountyData + "</td><tr>" +
-                "<tr><td>Parish/Ward:</td><td>" + parishData + "</td><tr>" +
-                "<tr><td>EMIS CODE:</td><td>" + emisData + "</td><tr>" +
-                "<tr><td>Region:</td><td>" + regionData + "</td><tr>" +
-                "<tr><td>No. of Inspections:</td><td>" + inspectionData + "</td><tr>" +
-                "<tr><td>Latest Inspections:</td><td>" + max_inspectionData + "</td><tr>" + "</table>")
-
-        })
-        .catch(function (error) {
-            // handle error
-            console.log(error);
-        })
-        .finally(function () {
-            // always executed
-        });
-
 
 
     //called for school details 
@@ -250,18 +208,15 @@ function ake(nameOfSchool) {
     axios.get(`/teacher-stats/${value}`)
         .then(function (response) {
             // handle success
-            //console.log(response);
+
             let data = response.data;
             let school = data.school;
             let enrol = data.enrol;
             let staff = data.staff;
             let attend = data.attend;
-            let timetable = data.timetable;
 
             // call the chart function
-            // char_enrollment(school, boysPlot, girlsPlot);
-
-            teacherStats(school, enrol, staff, attend, timetable);
+            teacherStats(school, enrol, staff, attend);
 
             // chart_attendance(school);
         })
@@ -277,18 +232,15 @@ function ake(nameOfSchool) {
     axios.get(`/teacher-trend-stats/${value}`)
         .then(function (response) {
             // handle success
-            console.log(response);
+            
             let data = response.data;
             let school = data.school;
             let sch_enrol = data.enrol;
             let sch_staff = data.staff;
             let sch_attend = data.attend;
-            let sch_timetable = data.timetable;
             let sch_inspection = data.inspection;
-
-            console.log(sch_enrol, sch_inspection);
-
-            teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection);
+           
+            teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_inspection);
 
         })
         .catch(function (error) {
@@ -300,11 +252,31 @@ function ake(nameOfSchool) {
         });
 
 
+         // Called for teaching according to timetable for each school 
+    axios.get(`/teach-Accord-TT-stats/${value}`)
+    .then(function (response) {
+        // handle success
+    
+        let data = response.data;
+        let school = data.school;
+        let timetable = data.timetable;
+        let inspections = data.inspection;
+
+        // call the chart function
+        chart_teach_accordToTT_school(school, timetable, inspections);
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error);
+    })
+    .finally(function () {
+        // always executed
+    });
+
     // Called to get pillar trends for each school
     axios.get(`/chartPiller-Trend-stats/${value}`)
         .then(function (response) {
             // handle success
-            console.log(response);
             let data = response.data;
             let school = data.school;
             let pillar1Score = data.pillar1Score;
@@ -328,30 +300,27 @@ function ake(nameOfSchool) {
 
 
     // Called to get teacher stats for each school
-    axios.get(`/teacher-trend-stats/${value}`)
-        .then(function (response) {
-            // handle success
-            console.log(response);
-            let data = response.data;
-            let school = data.school;
-            let sch_enrol = data.enrol;
-            let sch_staff = data.staff;
-            let sch_attend = data.attend;
-            let sch_timetable = data.timetable;
-            let sch_inspection = data.inspection;
+    // axios.get(`/teacher-trend-stats/${value}`)
+    //     .then(function (response) {
+    //         // handle success
+    //         let data = response.data;
+    //         let school = data.school;
+    //         let sch_enrol = data.enrol;
+    //         let sch_staff = data.staff;
+    //         let sch_attend = data.attend;
+    //         let sch_timetable = data.timetable;
+    //         let sch_inspection = data.inspection;
 
-            console.log(sch_enrol, sch_inspection);
+    //         teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection);
 
-            teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection);
-
-        })
-        .catch(function (error) {
-            // handle error
-            console.log(error);
-        })
-        .finally(function () {
-            // always executed
-        });
+    //     })
+    //     .catch(function (error) {
+    //         // handle error
+    //         console.log(error);
+    //     })
+    //     .finally(function () {
+    //         // always executed
+    //     });
 
 
 }
@@ -477,9 +446,6 @@ function attend_enrol_trend(school, boysPlotEnrol, girlsPlotEnrol, boysPlotAtten
 }
 
 
-
-
-
 //teacher to pupils ratio 
 function ratio_teach(school, p1top3Plot, p4top7Plot) {
     if (teacherRatio) {
@@ -497,7 +463,7 @@ function ratio_teach(school, p1top3Plot, p4top7Plot) {
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "green"
                 ],
                 // borderColor:[
                 //     "red",
@@ -507,7 +473,7 @@ function ratio_teach(school, p1top3Plot, p4top7Plot) {
             labels: [
                 "P1-P3",
                 "P4-P7 ",
-                "National"
+                ["National"," Target"]
             ]
         },
         options: {
@@ -547,17 +513,19 @@ function stance_ratio(school, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
         type: 'bar',
         data: {
             datasets: [{
-                data: [sprboysPlot, sprgirlsPlot, 40],
+                data: [sprboysPlot, sprgirlsPlot,sprovrallPlot, 40],
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "rgb(38,34,98)",
+                    "green"
                 ],
             }],
             labels: [
-                "P1-P3",
-                "P4-P7 ",
-                "National"
+                "Boys",
+                "Girls",
+                "Overall",
+                ["National"," Target"]
             ]
         },
         options: {
@@ -604,13 +572,13 @@ function class_ratio(school, cp1top3Plot, cp4top7Plot) {
                 backgroundColor: [
                     "rgb(38,34,98)",
                     "rgb(38,34,98)",
-                    "rgb(38,34,98)"
+                    "green"
                 ],
             }],
             labels: [
                 "P1-P3",
                 "P4-P7 ",
-                "National"
+                ["National"," Target"]
             ]
         },
         title: {
@@ -797,7 +765,7 @@ function chartPillar(school, pillarOne, pillarTwo, pillarThree, pillarFour, pill
 
 
 //d3 charts with dimple.js
-function School_Pillar_trends(school, pillar1Score,pillar2Score,pillar3Score,pillar4Score, inspections) {
+function  School_Pillar_trends(school, pillar1Score,pillar2Score,pillar3Score,pillar4Score, inspections) {
     if (trendChart) {
         trendChart.destroy();
     }
@@ -854,8 +822,8 @@ function School_Pillar_trends(school, pillar1Score,pillar2Score,pillar3Score,pil
                 xAxes: [{
                     display: true,
                     scaleLabel: {
-                        display: true,
-                        labelString: 'Period'
+                        display: false,
+                        labelString: 'Term'
                     }
                 }],
                 yAxes: [{
@@ -1049,10 +1017,9 @@ function teacherStats(school, enrol, staff, attend, timetable) {
         type: 'bar',
         data: {
             labels: [
-                ["Established staffting", " as per enrolment"],
+                ["Established"," staffting", " as per"," enrolment"],
                 ["Current", "staffting", " level"],
-                ["Staff attendance", " on visit day"],
-                ["Number of classes", " taught according", " to timetable"],
+                ["Staff ","attendance", " on visit day"]
             ],
             datasets: [
                 {
@@ -1060,7 +1027,7 @@ function teacherStats(school, enrol, staff, attend, timetable) {
                     backgroundColor: "rgb(38,34,98)",
                     borderColor: "rgb(38,34,98)",
                     borderWidth: 1,
-                    data: [enrol, staff, attend, timetable]
+                    data: [enrol, staff, attend]
                 }
             ]
         },
@@ -1085,7 +1052,7 @@ function teacherStats(school, enrol, staff, attend, timetable) {
     });
 }
 
-function teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection) {
+function teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_inspection) {
     new Chart(document.getElementById("school-line-chart"), {
         type: 'line',
         data: {
@@ -1111,13 +1078,6 @@ function teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetab
                 fill: false,
                 lineTension: 0,
                 pointStyle: 'line'
-            }, {
-                data: sch_timetable,
-                label: "Number of classes taught according to timetable",
-                borderColor: "#e8c3b9",
-                fill: false,
-                lineTension: 0,
-                pointStyle: 'line'
             }
             ]
         },
@@ -1135,6 +1095,38 @@ function teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetab
     });
 
 }
+
+
+
+    // Teacher stats trend at school level (teach according to timetable)
+    function  chart_teach_accordToTT_school(school, timetable, inspections) {
+
+        new Chart(document.getElementById("line-chart_timetable"), {
+            type: 'line',
+            data: {
+              labels: inspections,
+              datasets: [{ 
+                  data: timetable,
+                //   label: "Classes taught according to timetable",
+                  borderColor: "#901818",
+                  fill: false,
+                  lineTension: 0,
+                  pointStyle: 'line'
+                }
+              ]
+            },
+            options: {
+              title: {
+                display: false,
+                text:school
+                },
+                legend: {
+                    display: false
+                }
+            }
+          });
+        }
+    
 
 
 

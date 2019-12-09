@@ -11,10 +11,10 @@ router.get('/:region', function(req, res, next) {
 
     // run query where school id
     const limit = 1;
-    const rQuery = `select distinct(DATE_FORMAT(inspection.date_of_inspection, '%d-%m-%Y')) as inspection_date, sum(inspection.established_staffing_as_per_enrollment) as enrol, sum(inspection.current_staffing_level) as staff,
+    const rQuery = `select inspection.term as inspection_date, sum(inspection.established_staffing_as_per_enrollment) as enrol, sum(inspection.current_staffing_level) as staff,
     sum(inspection.staff_attendance_on_visit_day) as attend,
     sum(inspection.no_of_teachers_teaching_according_to_timetable) as timetable, 
-    details.region as region FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.region ='${nameOfRegion}' group by inspection.date_of_inspection order by inspection.date_of_inspection asc`;
+    details.region as region FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.region ='${nameOfRegion}' group by inspection.term order by inspection.term asc`;
 
 
     let enrolArray = [];

@@ -3,13 +3,7 @@ var router = express.Router();
 var connection = require('../config/database');
 
 
-
-
-
-
 router.get('/:name_of_school', function(req, res, next) {
-
-
 
     let nameOfSchool = req.params.name_of_school;
 
@@ -100,11 +94,6 @@ router.get('/:name_of_school', function(req, res, next) {
 
         }
 
-        // console.log("SCHOOL", schoolArray);
-        // console.log("PILLAR1", pillar1Array);
-        // console.log("PILLAR2", pillar2Array);
-        // console.log("PILLAR3", pillar3Array);
-        // console.log("PILLAR4", pillar4Array);
 
 
         let school = schoolArray[0];
@@ -113,11 +102,6 @@ router.get('/:name_of_school', function(req, res, next) {
         let pillar3Data = pillar3Array[0];
         let pillar4Data = pillar4Array[0];
 
-
-
-        // let school = schoolsArray[0];
-        //let conditionalPlot = JSON.stringify( conditionalArray[0]);
-        // let girlsPlot = JSON.stringify(attendenceGirlsArray[0]);
 
         res.send({ school: school, pillar1: pillar1Data, pillar2: pillar2Data, pillar3: pillar3Data, pillar4: pillar4Data });
 

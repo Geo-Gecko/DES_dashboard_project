@@ -31,14 +31,14 @@ router.get('/:region', function(req, res, next) {
 
     let nameOfRegion = req.params.region;
 
-    const dQuery = `select distinct(details.region) as region, count(details.name_of_school) as Totalschools,
+    const dQuery = `select distinct(details.region) as region, (select count(name_of_school) from ft_form_11 where region = '${nameOfRegion}')  as Totalschools,
     sum(inspection.number_of_boys_enrolled_in_p1)+sum(inspection.number_of_girls_enrolled_in_p1)+sum(inspection.number_of_boys_enrolled_in_p2)+
     sum(inspection.number_of_girls_enrolled_in_p2)+sum(inspection.number_of_boys_enrolled_in_p3)+sum(inspection.number_of_girls_enrolled_in_p3)+
     sum(inspection.number_of_boys_enrolled_in_p4)+sum(inspection.number_of_girls_enrolled_in_p4)+sum(inspection.number_of_boys_enrolled_in_p5)+
     sum(inspection.number_of_girls_enrolled_in_p5)+sum(inspection.number_of_boys_enrolled_in_p6)+sum(inspection.number_of_girls_enrolled_in_p6)+sum(inspection.number_of_boys_enrolled_in_p7) +sum(inspection.number_of_girls_enrolled_in_p7) as Total, sum(inspection.number_of_boys_enrolled_in_p1)+sum(inspection.number_of_boys_enrolled_in_p2)+sum(inspection.number_of_boys_enrolled_in_p3)+sum(inspection.number_of_boys_enrolled_in_p4)+
     sum(inspection.number_of_boys_enrolled_in_p5)+sum(inspection.number_of_boys_enrolled_in_p6)+sum(inspection.number_of_boys_enrolled_in_p7) as TotalBoys, sum(inspection.number_of_girls_enrolled_in_p1)+sum(inspection.number_of_girls_enrolled_in_p2)+sum(inspection.number_of_girls_enrolled_in_p3)+
     sum(inspection.number_of_girls_enrolled_in_p4)+sum(inspection.number_of_girls_enrolled_in_p5)+sum(inspection.number_of_girls_enrolled_in_p6)+sum(inspection.number_of_girls_enrolled_in_p7)  as TotalGirls, count(inspection.date_of_inspection) as inspection_number,
-    DATE_FORMAT(max(inspection.date_of_inspection), '%D-%b-%Y') as last_inspection  FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name group by details.region`;
+    DATE_FORMAT(max(inspection.date_of_inspection), '%D-%b-%Y') as last_inspection  FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.region='${nameOfRegion}' group by details.region`;
 
 
 

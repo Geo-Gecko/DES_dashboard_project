@@ -11,17 +11,16 @@ router.get('/:name_of_school', function(req, res, next) {
 
     // run query where school id
     const limit = 1;
-    const rQuery = `select DATE_FORMAT(inspection.date_of_inspection, '%d-%b-%Y') as inspection_date, inspection.established_staffing_as_per_enrollment as enrol, inspection.current_staffing_level as staff,
-    inspection.staff_attendance_on_visit_day as attend,
-     inspection.no_of_teachers_teaching_according_to_timetable as timetable, 
-     details.name_of_school as school FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and  details.name_of_school ='${nameOfSchool}'`;
+    const rQuery = `select inspection.term as inspection_date, sum(inspection.established_staffing_as_per_enrollment) as enrol, 
+    sum(inspection.current_staffing_level) as staff,
+    sum(inspection.staff_attendance_on_visit_day) as attend,
+     details.name_of_school as school FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}' and inspection.term != 'NUL' group by inspection.term order by inspection.term asc`;
 
 
     let enrolArray = [];
     let schoolsArray = [];
     let staffArray = [];
     let attendArray = [];
-    let timetableArray = [];
     let inspectionArray =[];
 
     connection.query(rQuery, function fillGraph(err, result, ) {
@@ -59,14 +58,6 @@ router.get('/:name_of_school', function(req, res, next) {
              }
              attendArray.push(teacherattend);
 
-             // Processing number of teachers teaching according to the timetable for each school and each class
-             let teachertimetable = [];
-             for (let g = 1; g <= 1; g++) {
-                 let Ttime = `timetable`;
-                 teachertimetable.push(result[i][Ttime]);
-             }
-             timetableArray.push(teacherstaff);
-
                 // processing inspection dates
                 let inspections = [];
                 for (let m = 1; m <= 1; m++) {
@@ -77,20 +68,15 @@ router.get('/:name_of_school', function(req, res, next) {
 
         }
 
-        // console.log("staffArray",staffArray);
-        // console.log("enrolArray",enrolArray);
-        // console.log(" attendArray", attendArray);
-
-        let school = schoolsArray;
+        let school_name = schoolsArray[0];
         let sch_enrol = enrolArray;
         let sch_staff = staffArray;
         let sch_attend = attendArray;
-        let sch_timetable =  timetableArray;
         let sch_inspection = inspectionArray;
-
+        console.log("sch_enrol",sch_enrol);
         
 
-        res.send({ school: school, enrol: sch_enrol, staff: sch_staff, attend:sch_attend, timetable:sch_timetable, inspection:sch_inspection})
+        res.send({ school: school_name, enrol: sch_enrol, staff: sch_staff, attend:sch_attend,  inspection:sch_inspection})
     })
 
 
