@@ -16,7 +16,7 @@ router.get('/:district', function(req, res, next) {
 
     const aQuery = `select distinct(details.district) as district,
     inspection.term as inspection_date,
-    sum(inspection.attendance_of_p1_boys_on_visitation_day)+
+    round((sum(inspection.attendance_of_p1_boys_on_visitation_day)+
     sum(inspection.attendance_of_p1_girls_on_visitation_day)+
     sum(inspection.attendance_of_p2_boys_on_visitation_day) +
     sum(inspection.attendance_of_p2_girls_on_visitation_day)+
@@ -29,8 +29,8 @@ router.get('/:district', function(req, res, next) {
     sum(inspection.attendance_of_p6_boys_on_visitation_day) +
     sum(inspection.attendance_of_p6_girls_on_visitation_day) + 
     sum(inspection.attendance_of_p7_boys_on_visitation_day) +
-    sum(inspection.attendance_of_p7_girls_on_visitation_day) as attendance,
-    sum(inspection.number_of_boys_enrolled_in_p1)+
+    sum(inspection.attendance_of_p7_girls_on_visitation_day))/
+    (sum(inspection.number_of_boys_enrolled_in_p1)+
     sum(inspection.number_of_girls_enrolled_in_p1)+
     sum(inspection.number_of_boys_enrolled_in_p2)+
     sum(inspection.number_of_girls_enrolled_in_p2)+
@@ -43,7 +43,35 @@ router.get('/:district', function(req, res, next) {
     sum(inspection.number_of_boys_enrolled_in_p6)+
     sum(inspection.number_of_girls_enrolled_in_p6)+
     sum(inspection.number_of_boys_enrolled_in_p7) +
-    sum(inspection.number_of_girls_enrolled_in_p7) as enrollment
+    sum(inspection.number_of_girls_enrolled_in_p7)),2)*100 as attendance,
+    round((sum(inspection.number_of_boys_enrolled_in_p1)+
+    sum(inspection.number_of_girls_enrolled_in_p1)+
+    sum(inspection.number_of_boys_enrolled_in_p2)+
+    sum(inspection.number_of_girls_enrolled_in_p2)+
+    sum(inspection.number_of_boys_enrolled_in_p3)+
+    sum(inspection.number_of_girls_enrolled_in_p3)+
+    sum(inspection.number_of_boys_enrolled_in_p4)+
+    sum(inspection.number_of_girls_enrolled_in_p4)+
+    sum(inspection.number_of_boys_enrolled_in_p5)+
+    sum(inspection.number_of_girls_enrolled_in_p5)+
+    sum(inspection.number_of_boys_enrolled_in_p6)+
+    sum(inspection.number_of_girls_enrolled_in_p6)+
+    sum(inspection.number_of_boys_enrolled_in_p7) +
+    sum(inspection.number_of_girls_enrolled_in_p7))/
+    (sum(inspection.number_of_boys_enrolled_in_p1)+
+    sum(inspection.number_of_girls_enrolled_in_p1)+
+    sum(inspection.number_of_boys_enrolled_in_p2)+
+    sum(inspection.number_of_girls_enrolled_in_p2)+
+    sum(inspection.number_of_boys_enrolled_in_p3)+
+    sum(inspection.number_of_girls_enrolled_in_p3)+
+    sum(inspection.number_of_boys_enrolled_in_p4)+
+    sum(inspection.number_of_girls_enrolled_in_p4)+
+    sum(inspection.number_of_boys_enrolled_in_p5)+
+    sum(inspection.number_of_girls_enrolled_in_p5)+
+    sum(inspection.number_of_boys_enrolled_in_p6)+
+    sum(inspection.number_of_girls_enrolled_in_p6)+
+    sum(inspection.number_of_boys_enrolled_in_p7) +
+    sum(inspection.number_of_girls_enrolled_in_p7)),2)*100 as enrollment
 FROM  ft_form_12  as inspection,  ft_form_11  as details 
 WHERE details.submission_id=inspection.school_name and details.district='${nameOfDistrict}' and
 inspection.term != 'NULL' group by details.district, inspection.term`;
