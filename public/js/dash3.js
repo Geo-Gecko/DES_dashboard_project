@@ -586,8 +586,8 @@ function class_ratio_region(region, cp1top3Plot, cp4top7Plot) {
     }
   };
 
-  var ctx = document.getElementById("region_3").getContext("2d");
-  ClassroomRatio = new Chart(ctx, config);
+    var ctx = document.getElementById("region_3").getContext("2d");
+    new Chart(ctx, config);
 }
 
 // Teacher stats at region level
