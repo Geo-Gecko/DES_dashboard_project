@@ -12,8 +12,8 @@ router.get('/stats/:name_of_school', function(req, res, next) {
     // run query where school id
     const limit = 1;
     const rQuery = `select distinct(inspection.school_name),  details.name_of_school as school,
-    inspection.teacher_to_pupil_ratio_in_lower_primaryp1p3 as tprp1p3,
-    inspection.teacher_to_pupil_ratio_in_upper_primaryp4p7 as tprp4p7 
+    round(inspection.teacher_to_pupil_ratio_in_lower_primaryp1p3) as tprp1p3,
+    round(inspection.teacher_to_pupil_ratio_in_upper_primaryp4p7) as tprp4p7 
      FROM  ft_form_12  as inspection,  ft_form_11  as details
       WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}'`;
 

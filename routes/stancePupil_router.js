@@ -15,9 +15,9 @@ router.get('/:name_of_school', function(req, res, next) {
     // run query where school id
     const limit = 1;
     const cQuery = `select distinct(inspection.school_name) as school,
-    inspection.stance_to_pupilboys_ratio as sprboys,  
-    inspection.stance_to_pupilgirls_ratio as sprgirls,
-     inspection.stance_to_pupiloverall_ratio as spr_overall 
+    round(inspection.stance_to_pupilboys_ratio) as sprboys,  
+    round(inspection.stance_to_pupilgirls_ratio) as sprgirls,
+    round(inspection.stance_to_pupiloverall_ratio) as spr_overall 
      FROM  ft_form_12  as inspection,  ft_form_11  as details 
      WHERE details.submission_id=inspection.school_name and name_of_school = '${nameOfSchool}' `;
        
@@ -61,11 +61,6 @@ router.get('/:name_of_school', function(req, res, next) {
             }
             sproverallArray.push(srRatiop7);
         }
-
-        // console.log("SCHOOLS",schoolArray);
-        // console.log("SPRBOYS", sprboysArray );
-        // console.log("SPRGIRLS",sprgirlsArray);
-        // console.log("SPROVERALL", sproverallArray);
 
         let school = schoolArray[0];
         let sprboysPlot = JSON.stringify(sprboysArray[0]);

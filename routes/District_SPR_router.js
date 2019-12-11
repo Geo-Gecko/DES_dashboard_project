@@ -14,9 +14,9 @@ router.get('/:district', function(req, res, next) {
     // run query where school id
 
     const dQuery = `select distinct(details.district) as district,
-    avg(inspection.stance_to_pupilboys_ratio) as sprboys,  
-   avg(inspection.stance_to_pupilgirls_ratio) as sprgirls,
-     avg(inspection.stance_to_pupiloverall_ratio) as spr_overall 
+    round(avg(inspection.stance_to_pupilboys_ratio)) as sprboys,  
+    round(avg(inspection.stance_to_pupilgirls_ratio)) as sprgirls,
+    round(avg(inspection.stance_to_pupiloverall_ratio)) as spr_overall 
      FROM  ft_form_12  as inspection,  ft_form_11  as details 
      WHERE details.submission_id=inspection.school_name and details.district ='${nameOfDistrict}'
       group by details.district`;
@@ -61,11 +61,6 @@ router.get('/:district', function(req, res, next) {
             }
             sproverallArray.push(srRatiop7);
         }
-
-        console.log("DISTRICT",districtArray);
-        console.log("SPRBOYS", sprboysArray );
-        console.log("SPRGIRLS",sprgirlsArray);
-        console.log("SPROVERALL", sproverallArray);
 
         let district = districtArray[0];
         let sprboysPlot = sprboysArray[0];

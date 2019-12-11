@@ -14,8 +14,8 @@ router.get('/:district', function(req, res, next) {
     // run query where school id
 
     const dQuery = `select distinct(details.district) as district,
-    avg(inspection.teacher_to_pupil_ratio_in_lower_primaryp1p3) as tprp1p3,
-    avg(inspection.teacher_to_pupil_ratio_in_upper_primaryp4p7) as tprp4p7 
+    round(avg(inspection.teacher_to_pupil_ratio_in_lower_primaryp1p3)) as tprp1p3,
+    round(avg(inspection.teacher_to_pupil_ratio_in_upper_primaryp4p7)) as tprp4p7 
      FROM  ft_form_12  as inspection,  ft_form_11  as details
       WHERE details.submission_id=inspection.school_name and details.district ='${nameOfDistrict}' 
        group by details.district`;
