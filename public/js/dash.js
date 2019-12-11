@@ -62,7 +62,7 @@ function ake(nameOfSchool) {
         boysPlotEnrol,
         girlsPlotEnrol,
         boysPlotAttend,
-        boysPlotAttend
+        girlsPlotAttend
       );
     })
     .catch(function(error) {
@@ -213,10 +213,10 @@ function ake(nameOfSchool) {
           "<tr><td>School:</td><td>" +
           school +
           "</td><tr>" +
-          "<tr><td>District:</td><td>" +
+          "<tr><td>District/Municipality:</td><td>" +
           distinctData +
           "</td><tr>" +
-          "<tr><td>County/Municipality:</td><td>" +
+          "<tr><td>County:</td><td>" +
           countyData +
           "</td><tr>" +
           "<tr><td>Sub-County/Division:</td><td>" +
@@ -355,29 +355,6 @@ function ake(nameOfSchool) {
     .finally(function() {
       // always executed
     });
-
-  // Called to get teacher stats for each school
-  // axios.get(`/teacher-trend-stats/${value}`)
-  //     .then(function (response) {
-  //         // handle success
-  //         let data = response.data;
-  //         let school = data.school;
-  //         let sch_enrol = data.enrol;
-  //         let sch_staff = data.staff;
-  //         let sch_attend = data.attend;
-  //         let sch_timetable = data.timetable;
-  //         let sch_inspection = data.inspection;
-
-  //         teacher_sch_trend(school, sch_enrol, sch_staff, sch_attend, sch_timetable, sch_inspection);
-
-  //     })
-  //     .catch(function (error) {
-  //         // handle error
-  //         console.log(error);
-  //     })
-  //     .finally(function () {
-  //         // always executed
-  //     });
 }
 
 function myFunction(num) {
@@ -388,19 +365,6 @@ var data = {
   attendance: { values: [] },
   enrollment: { values: [] }
 };
-
-function generateTooltip(label) {
-  switch (true) {
-    case label == "Pillar 1":
-      return "Learning Environment";
-    case label == "Pillar 2":
-      return "School Management and HT Performance";
-    case label == "Pillar 3":
-      return "Effectiveness of Teaching and Learning";
-    case label == "Pillar 4":
-      return "Involvement of Parents and Community";
-  }
-}
 
 //charts
 var myEnrolChart,
@@ -439,7 +403,7 @@ function char_enrollment(
           backgroundColor: "pink",
           borderColor: "red",
           borderWidth: 1,
-          data: [girlsPlotAttend, girlsPlotAttend]
+          data: [girlsPlotEnrol, girlsPlotAttend]
         }
       ]
     },
@@ -453,15 +417,25 @@ function char_enrollment(
         text: school
       },
       scales: {
-        xAxes: [{ stacked: false }],
         yAxes: [
           {
-            stacked: false,
+            scaleLabel: {
+              display: true,
+              labelString: "Percentage"
+            },
             ticks: {
               beginAtZero: true
             }
           }
         ]
+      },
+      tooltips: {
+        mode: "label",
+        callbacks: {
+          label: function(tooltipItems, data) {
+            return tooltipItems.yLabel + "%";
+          }
+        }
       }
     }
   });
@@ -525,6 +499,27 @@ function attend_enrol_trend(
       legend: {
         labels: {
           usePointStyle: true
+        }
+      },
+      scales: {
+        yAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: "Percentage"
+            },
+            ticks: {
+              beginAtZero: true
+            }
+          }
+        ]
+      },
+      tooltips: {
+        mode: "label",
+        callbacks: {
+          label: function(tooltipItems, data) {
+            return tooltipItems.yLabel + "%";
+          }
         }
       }
     }
@@ -675,239 +670,239 @@ function class_ratio(school, cp1top3Plot, cp4top7Plot) {
 }
 
 function chartPillar(
-  school,
-  pillarOne,
-  pillarTwo,
-  pillarThree,
-  pillarFour,
-  pillarSummary
-) {
-  if (myPillarChart) {
-    myPillarChart.destroy();
-  }
-
-  var barOptions_stacked = {
-    tooltips: {
-        mode: "index",
-      callbacks: {
-        // Use the footer callback to display the sum of the items showing in the tooltip
-        label: function(tooltipItem, data) {
-          return data.tooltips[tooltipItem.index];
+    school,
+    pillarOne,
+    pillarTwo,
+    pillarThree,
+    pillarFour,
+    pillarSummary
+  ) {
+    if (myPillarChart) {
+      myPillarChart.destroy();
+    }
+  
+    var barOptions_stacked = {
+      tooltips: {
+          mode: "index",
+        callbacks: {
+          // Use the footer callback to display the sum of the items showing in the tooltip
+          label: function(tooltipItem, data) {
+            return data.tooltips[tooltipItem.index];
+          }
+        }
+      },
+      hover: {
+        animationDuration: 10
+      },
+      scales: {
+        xAxes: [
+          {
+            label: "Duration",
+            ticks: {
+              beginAtZero: true,
+              fontFamily: "'Open Sans Bold', sans-serif",
+              fontSize: 0
+            },
+            scaleLabel: {
+              display: false
+            },
+            gridLines: {
+              display: false
+            },
+            stacked: true
+          }
+        ],
+        yAxes: [
+          {
+            gridLines: {
+              display: false,
+              color: "#fff",
+              zeroLineColor: "#fff",
+              zeroLineWidth: 0
+            },
+            ticks: {
+              fontFamily: "'Open Sans Bold', sans-serif",
+              fontSize: 11
+            },
+            stacked: true
+          }
+        ]
+      },
+      legend: {
+        display: true,
+        position: "bottom",
+        labels: {
+          // fontColor: '#FFA500'
+          filter: function(item, chart) {
+            // Logic to remove a particular legend item goes here
+            return !item.text.includes("hide");
+          }
         }
       }
-    },
-    hover: {
-      animationDuration: 10
-    },
-    scales: {
-      xAxes: [
-        {
-          label: "Duration",
-          ticks: {
-            beginAtZero: true,
-            fontFamily: "'Open Sans Bold', sans-serif",
-            fontSize: 0
-          },
-          scaleLabel: {
-            display: false
-          },
-          gridLines: {
-            display: false
-          },
-          stacked: true
-        }
-      ],
-      yAxes: [
-        {
-          gridLines: {
-            display: false,
-            color: "#fff",
-            zeroLineColor: "#fff",
-            zeroLineWidth: 0
-          },
-          ticks: {
-            fontFamily: "'Open Sans Bold', sans-serif",
-            fontSize: 11
-          },
-          stacked: true
-        }
-      ]
-    },
-    legend: {
-      display: true,
-      position: "bottom",
-      labels: {
-        // fontColor: '#FFA500'
-        filter: function(item, chart) {
-          // Logic to remove a particular legend item goes here
-          return !item.text.includes("hide");
-        }
+    };
+  
+    function colourPicker(d) {
+      if (d === 4) {
+        return "#008000";
+      } else if (d === 3) {
+        return "#FFFF00";
+      } else if (d === 2) {
+        return "#FFA500";
+      } else if (d === 1) {
+        return "#FF0000";
       }
     }
-  };
-
-  function colourPicker(d) {
-    if (d === 4) {
-      return "#008000";
-    } else if (d === 3) {
-      return "#FFFF00";
-    } else if (d === 2) {
-      return "#FFA500";
-    } else if (d === 1) {
-      return "#FF0000";
-    }
-  }
-
-  var chosenColours = [];
-  pillarSummary.forEach(function(d, i) {
-    chosenColours.push(colourPicker(parseInt(d)));
-  });
-
-  var ctx = document.getElementById("mypillars");
-  myPillarChart = new Chart(ctx, {
-    type: "horizontalBar",
-    data: {
-      labels: ["Pillar 1", "Pillar 2", "Pillar 3", "Pillar 4"],
-      tooltips: [
-        "Learning Environment",
-        "School Management and HT Performance",
-        "Effectiveness of Teaching and Learning",
-        "Involvement of Parents and Community"
-      ],
-      datasets: [
-        {
-          label: "hide",
-          data: [1, 1, 1, 1, 1, 1, 1, 1],
-          backgroundColor: chosenColours
-        },
-        {
-          label: "A - (81% - 100%)",
-          backgroundColor: "#008000"
-        },
-        {
-          label: "B - (61% - 80%)",
-          backgroundColor: "#FFFF00"
-        },
-        {
-          label: "C - (41% - 60%)",
-          backgroundColor: "#FFA500"
-        },
-        {
-          label: "D - (25% - 40%)",
-          backgroundColor: "#FF0000"
-        }
-      ]
-    },
-    options: barOptions_stacked
-  });
-
-  $(document).on("change", "#pillars", function() {
-    // Does some stuff and logs the event to the console
-
-    var colourChanged = [];
-
-    if ($(this).val() === "1") {
-      myPillarChart.data.labels = [
-        "SP: 1",
-        "SP: 2",
-        "SP: 3",
-        "SP: 4",
-        "SP: 5",
-        "SP: 6",
-        "SP: 7",
-        "SP: 8"
-      ];
-      myPillarChart.data.tooltips = [
-        "Condition of school building",
-        "Classroom infrastucture",
-        "Sanitary facilities",
-        "Timetabling",
-        "Teacher deployment",
-        "Disciplinary policy",
-        "Inclusive school practice",
-        "Gender Sensitive School"
-      ];
-      pillarOne.forEach(function(d, i) {
-        colourChanged.push(colourPicker(parseInt(d)));
-      });
-    } else if ($(this).val() === "2") {
-      myPillarChart.data.labels = [
-        "SP: 1",
-        "SP: 2",
-        "SP: 3",
-        "SP: 4",
-        "SP: 5",
-        "SP: 6",
-        "SP: 7"
-      ];
-      myPillarChart.data.tooltips = [
-        "Teacher and pupil attendance",
-        "School Improvement plan",
-        "SIP activities",
-        "Financial management",
-        "Systematic monitoring and evaluation of teacher performance",
-        "Continuous professional development",
-        "Systematic monitoring of pupil performance"
-      ];
-      pillarTwo.forEach(function(d, i) {
-        colourChanged.push(colourPicker(parseInt(d)));
-      });
-    } else if ($(this).val() === "3") {
-      myPillarChart.data.labels = [
-        "SP: 1",
-        "SP: 2",
-        "SP: 3",
-        "SP: 4",
-        "SP: 5",
-        "SP: 6",
-        "SP: 7",
-        "SP: 8"
-      ];
-      myPillarChart.data.tooltips = [
-        "Lesson planning",
-        "Lesson delivery",
-        "Teaching and learning materials",
-        "Learner particiption",
-        "Learning",
-        "Teachers' rapport with learners",
-        "Classroom environment",
-        "Pupils' work"
-      ];
-      pillarThree.forEach(function(d, i) {
-        colourChanged.push(colourPicker(parseInt(d)));
-      });
-    } else if ($(this).val() === "4") {
-      myPillarChart.data.labels = ["SP: 1", "SP: 2", "SP: 3", "SP: 4"];
-      myPillarChart.data.tooltips = [
-        "School management committee",
-        "School communication with parents/community",
-        "Teacher communication with parents",
-        "Involvement of parents"
-      ];
-      pillarFour.forEach(function(d, i) {
-        colourChanged.push(colourPicker(parseInt(d)));
-      });
-    } else if ($(this).val() === "5") {
-      myPillarChart.data.labels = [
-        "Pillar 1",
-        "Pillar 2",
-        "Pillar 3",
-        "Pillar 4"
-      ];
-      myPillarChart.data.tooltips = [
-        "Learning Environment",
-        "School Management and HT Performance",
-        "Effectiveness of Teaching and Learning",
-        "Involvement of Parents and Community"
-      ];
-      pillarSummary.forEach(function(d, i) {
-        colourChanged.push(colourPicker(parseInt(d)));
-      });
-    }
-
-    myPillarChart.data.datasets[0].backgroundColor = colourChanged;
-    myPillarChart.update();
-  });
+  
+    var chosenColours = [];
+    pillarSummary.forEach(function(d, i) {
+      chosenColours.push(colourPicker(parseInt(d)));
+    });
+  
+    var ctx = document.getElementById("mypillars");
+    myPillarChart = new Chart(ctx, {
+      type: "horizontalBar",
+      data: {
+        labels: ["Pillar 1", "Pillar 2", "Pillar 3", "Pillar 4"],
+        tooltips: [
+          "Learning Environment",
+          "School Management and HT Performance",
+          "Effectiveness of Teaching and Learning",
+          "Involvement of Parents and Community"
+        ],
+        datasets: [
+          {
+            label: "hide",
+            data: [1, 1, 1, 1, 1, 1, 1, 1],
+            backgroundColor: chosenColours
+          },
+          {
+            label: "A - (81% - 100%)",
+            backgroundColor: "#008000"
+          },
+          {
+            label: "B - (61% - 80%)",
+            backgroundColor: "#FFFF00"
+          },
+          {
+            label: "C - (41% - 60%)",
+            backgroundColor: "#FFA500"
+          },
+          {
+            label: "D - (25% - 40%)",
+            backgroundColor: "#FF0000"
+          }
+        ]
+      },
+      options: barOptions_stacked
+    });
+  
+    $(document).on("change", "#pillars", function() {
+      // Does some stuff and logs the event to the console
+  
+      var colourChanged = [];
+  
+      if ($(this).val() === "1") {
+        myPillarChart.data.labels = [
+          "SP: 1",
+          "SP: 2",
+          "SP: 3",
+          "SP: 4",
+          "SP: 5",
+          "SP: 6",
+          "SP: 7",
+          "SP: 8"
+        ];
+        myPillarChart.data.tooltips = [
+          "Condition of school building",
+          "Classroom infrastucture",
+          "Sanitary facilities",
+          "Timetabling",
+          "Teacher deployment",
+          "Disciplinary policy",
+          "Inclusive school practice",
+          "Gender Sensitive School"
+        ];
+        pillarOne.forEach(function(d, i) {
+          colourChanged.push(colourPicker(parseInt(d)));
+        });
+      } else if ($(this).val() === "2") {
+        myPillarChart.data.labels = [
+          "SP: 1",
+          "SP: 2",
+          "SP: 3",
+          "SP: 4",
+          "SP: 5",
+          "SP: 6",
+          "SP: 7"
+        ];
+        myPillarChart.data.tooltips = [
+          "Teacher and pupil attendance",
+          "School Improvement plan",
+          "SIP activities",
+          "Financial management",
+          "Systematic monitoring and evaluation of teacher performance",
+          "Continuous professional development",
+          "Systematic monitoring of pupil performance"
+        ];
+        pillarTwo.forEach(function(d, i) {
+          colourChanged.push(colourPicker(parseInt(d)));
+        });
+      } else if ($(this).val() === "3") {
+        myPillarChart.data.labels = [
+          "SP: 1",
+          "SP: 2",
+          "SP: 3",
+          "SP: 4",
+          "SP: 5",
+          "SP: 6",
+          "SP: 7",
+          "SP: 8"
+        ];
+        myPillarChart.data.tooltips = [
+          "Lesson planning",
+          "Lesson delivery",
+          "Teaching and learning materials",
+          "Learner particiption",
+          "Learning",
+          "Teachers' rapport with learners",
+          "Classroom environment",
+          "Pupils' work"
+        ];
+        pillarThree.forEach(function(d, i) {
+          colourChanged.push(colourPicker(parseInt(d)));
+        });
+      } else if ($(this).val() === "4") {
+        myPillarChart.data.labels = ["SP: 1", "SP: 2", "SP: 3", "SP: 4"];
+        myPillarChart.data.tooltips = [
+          "School management committee",
+          "School communication with parents/community",
+          "Teacher communication with parents",
+          "Involvement of parents"
+        ];
+        pillarFour.forEach(function(d, i) {
+          colourChanged.push(colourPicker(parseInt(d)));
+        });
+      } else if ($(this).val() === "5") {
+        myPillarChart.data.labels = [
+          "Pillar 1",
+          "Pillar 2",
+          "Pillar 3",
+          "Pillar 4"
+        ];
+        myPillarChart.data.tooltips = [
+          "Learning Environment",
+          "School Management and HT Performance",
+          "Effectiveness of Teaching and Learning",
+          "Involvement of Parents and Community"
+        ];
+        pillarSummary.forEach(function(d, i) {
+          colourChanged.push(colourPicker(parseInt(d)));
+        });
+      }
+  
+      myPillarChart.data.datasets[0].backgroundColor = colourChanged;
+      myPillarChart.update();
+    });
 
   // this part to make the tooltip only active on your real dataset
   var originalGetElementAtEvent = myPillarChart.getElementAtEvent;
@@ -1041,103 +1036,6 @@ function School_Pillar_trends(
       }
     }
   });
-  // var trendChart = new Chart(document.getElementById("line-chart"), {
-  //     type: 'line',
-  //     data: {
-  //         labels: [inspections],
-  //         datasets: [{
-  //             data: pillar1Score,
-  //             lineTension: 0,
-  //             label: "Pillar Summary",
-  //             borderColor: "rgb(242,101,34)",
-  //             fill: false
-  //         }
-  //             , {
-  //             data: [1, 4],
-  //             label: "hide",
-  //             borderColor: "rgb(255,255,255)",
-  //             fill: false
-  //         }
-  //         ]
-  //     },
-  //     options: {
-  //         title: {
-  //             display: true,
-  //             text: ''
-  //         },
-  //         scales: {
-  //             xAxes: [{
-  //                 display: true,
-  //                 scaleLabel: {
-  //                     display: true,
-  //                     labelString: 'Period'
-  //                 }
-  //             }],
-  //             yAxes: [{
-  //                 display: true,
-  //                 scaleLabel: {
-  //                     display: true,
-  //                     labelString: 'Grade'
-  //                 },
-  //                 ticks: {
-  //                     // min: 0,
-  //                     // max: 5,
-  //                     // stepSize: 1,
-  //                     // suggestedMin: 0.5,
-  //                     // suggestedMax: 5.5,
-  //                     callback: function (label, index, labels) {
-
-  //                         console.log(label)
-  //                         var maxValue = labels[0],
-  //                             chunkSize = parseInt(maxValue / 1000000);
-
-  //                         if (label <= 16) {
-  //                             return 'D';
-  //                         } else if (label > 16 && label < 28) {
-  //                             return 'C';
-  //                         } else if (label > 28 && label < 32) {
-  //                             return 'B';
-  //                         } else if (label >= 32) {
-  //                             return 'A';
-  //                         } else { return null; }
-  //                     // greater equal 2 32 = A Very Good
-  //                     // 32 and 28 = B Good
-  //                     // 28 and 16 = C Fair
-  //                     // less than 16 is poor = D Poor
-  //                     // switch (true) {
-  //                     //     // case 0:
-  //                     //     //     return '';
-  //                     //     case label <= 16:
-  //                     //         return 'D';
-  //                     //     case label > 16 && label < 28 :
-  //                     //         return 'C';
-  //                     //     case label > 28 && label < 32:
-  //                     //         return 'B';
-  //                     //     case label >= 32:
-  //                     //         return 'A';
-  //                     //     // case 5:
-  //                     //     //     return '';
-  //                     // }
-  //                 }
-  //             },
-  //                 gridLines: {
-  //                 display: true
-  //             }
-  //             }]
-  //     },
-  // legend: {
-  //     display: true,
-  //     position: "bottom",
-  //     labels: {
-  //         // fontColor: '#FFA500'
-  //         filter: function (item, chart) {
-  //             // Logic to remove a particular legend item goes here
-  //             return !item.text.includes('hide');
-  //         }
-  //     }
-  // }
-  // }
-  // });
 
   $(document).on("change", "#pillarsTrend", function() {
     // console.log($(this).val());
@@ -1204,11 +1102,25 @@ function teacherStats(school, enrol, staff, attend, timetable) {
       scales: {
         yAxes: [
           {
+            display: true,
             ticks: {
+              suggestedMax: 100, // maximum will be 0, unless there is a lower value.
               beginAtZero: true
+            },
+            scaleLabel: {
+              display: true,
+              labelString: "Percentage"
             }
           }
         ]
+      },
+      tooltips: {
+        mode: "label",
+        callbacks: {
+          label: function(tooltipItems, data) {
+            return tooltipItems.yLabel + "%";
+          }
+        }
       }
     }
   });
@@ -1261,6 +1173,29 @@ function teacher_sch_trend(
         labels: {
           usePointStyle: true
         }
+      },
+      tooltips: {
+        mode: "label",
+        callbacks: {
+          label: function(tooltipItems, data) {
+            return tooltipItems.yLabel + "%";
+          }
+        }
+      },
+      scales: {
+        yAxes: [
+          {
+            display: true,
+            ticks: {
+              suggestedMax: 100, // maximum will be 0, unless there is a lower value.
+              beginAtZero: true
+            },
+            scaleLabel: {
+              display: true,
+              labelString: "Percentage"
+            }
+          }
+        ]
       }
     }
   });
@@ -1276,7 +1211,7 @@ function chart_teach_accordToTT_school(school, timetable, inspections) {
         {
           data: timetable,
           //   label: "Classes taught according to timetable",
-          borderColor: "#901818",
+          borderColor: "yellow",
           fill: false,
           lineTension: 0,
           pointStyle: "line"
@@ -1290,6 +1225,21 @@ function chart_teach_accordToTT_school(school, timetable, inspections) {
       },
       legend: {
         display: false
+      },
+      scales: {
+        yAxes: [
+          {
+            display: true,
+            ticks: {
+              suggestedMax: 100, // maximum will be 0, unless there is a lower value.
+              beginAtZero: true
+            },
+            scaleLabel: {
+              display: true,
+              labelString: "Percentage"
+            }
+          }
+        ]
       }
     }
   });
