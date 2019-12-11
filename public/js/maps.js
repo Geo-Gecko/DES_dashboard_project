@@ -114,15 +114,15 @@ info1.onAdd = function (mymap) {
 info1.update = function (props) {
     this._div.innerHTML = 
     "<div id='legend' style=''>" +
-        "<svg class='head' width='100' height='100'>" +
+        "<svg class='head' width='150' height='100'>" +
             "<circle cy='30' cx='10' r='0.4em' style='fill: #008000;'></circle>" +
             "<circle cy='50' cx='10' r='0.4em' style='fill: #FFFF00;'></circle>" +
             "<circle cy='70' cx='10' r='0.4em' style='fill: #FFA500;'></circle>" +
             "<circle cy='90' cx='10' r='0.4em' style='fill: #FF0000;'></circle>" +
-            "<text class='legend-text' x='25' y='25' dy='0.8em' style='color: white;'>Grade A</text>" +
-            "<text class='legend-text' x='25' y='45' dy='0.8em' style='color: white;'>Grade B</text>" +
-            "<text class='legend-text' x='25' y='65' dy='0.8em' style='color: white;'>Grade C</text>" +
-            "<text class='legend-text' x='25' y='85' dy='0.8em' style='color: white;'>Grade D</text>" +
+            "<text class='legend-text' x='25' y='25' dy='0.8em' style='color: white;'>A - (81% - 100%)</text>" +
+            "<text class='legend-text' x='25' y='45' dy='0.8em' style='color: white;'>B - (61% - 80%)</text>" +
+            "<text class='legend-text' x='25' y='65' dy='0.8em' style='color: white;'>C - (41% - 60%)</text>" +
+            "<text class='legend-text' x='25' y='85' dy='0.8em' style='color: white;'>D - (25% - 40%)</text>" +
             "<text class='legend-title' x='0' y='0' font-weight='bold' dy='0.8em'>Legend</text>" +
         "</svg>" +
     "</div>";
