@@ -55,7 +55,6 @@ function ake(nameOfSchool) {
       //console.log(girlsPlotAttend, boysPlotEnrol);
 
       // call the chart function
-      //  chart_attendance(Emis, boysPlot, girlsPlot);
 
       char_enrollment(
         school,
@@ -123,7 +122,6 @@ function ake(nameOfSchool) {
     .get(`/stancePupil-stats/${value}`)
     .then(function(response) {
       // handle success
-      //console.log(response.data);
 
       let data = response.data;
       let school = data.school;

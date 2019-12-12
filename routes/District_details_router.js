@@ -96,11 +96,12 @@ router.get('/:district', function(req, res, next) {
     WHERE
         term = 'Term3' AND district = '${nameOfDistrict}'
 ) AS inspection_number3,
-    DATE_FORMAT(max(inspection.date_of_inspection), '%D-%b-%Y') as last_inspection  FROM  ft_form_12 
+    DATE_FORMAT(max(inspection.date_of_inspection), '%D-%b-%Y') as last_inspection, details.region as region  FROM  ft_form_12 
      as inspection, ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.district ='${nameOfDistrict}' group by details.district`;
 
 
     let districtArray = [];
+    let regionArray =[];
     let totalSchoolArray = [];
     let totalBoysArray = [];
     let totalGirlArray = [];
@@ -113,10 +114,13 @@ router.get('/:district', function(req, res, next) {
         if (err) throw err;
         //let flag = 0;
         for (let i = 0; i < result.length; i++) {
-            // School
+            // District and region
             let district = result[i].district;
+            let region = result[i].region;
 
-            districtArray.push(district)
+            districtArray.push(district);
+            regionArray.push(region);
+         
 
             // Processing total schools  for each district
             let sdistrict = [];
@@ -174,13 +178,11 @@ router.get('/:district', function(req, res, next) {
             }
             maxInspectionArray.push(latestInspection);
 
-
-
-
         }
 
 
-        let district = districtArray[0];
+        let district_req = districtArray[0];
+        let region_req = regionArray[0];
         let totalSchoolsData = totalSchoolArray[0];
         let totalBoysData = totalBoysArray[0];
         let totalGrilsData = totalGirlArray[0];
@@ -188,9 +190,10 @@ router.get('/:district', function(req, res, next) {
         let inspectionData2 = inspectionArray2[0];
         let inspectionData3 = inspectionArray3[0];
         let max_inspectionData = maxInspectionArray[0];
+        console.log(region_req)
 
 
-        res.send({ district: district, school: totalSchoolsData, Boys: totalBoysData, Grils: totalGrilsData, inspection1: inspectionData1,inspection2: inspectionData2,inspection3: inspectionData3, max_inspection: max_inspectionData })
+        res.send({ district: district_req, region: region_req, school: totalSchoolsData, Boys: totalBoysData, Grils: totalGrilsData, inspection1: inspectionData1,inspection2: inspectionData2,inspection3: inspectionData3, max_inspection: max_inspectionData })
 
     })
 

@@ -92,7 +92,7 @@ router.get('/:region', function(req, res, next) {
     WHERE
         term = 'Term3' AND region = '${nameOfRegion}'
 ) AS inspection_number3,
-    DATE_FORMAT(max(inspection.date_of_inspection), '%D-%b-%Y') as last_inspection  FROM  ft_form_12 
+    DATE_FORMAT(max(inspection.date_of_inspection), '%D-%b-%Y') as last_inspection, details.region as region  FROM  ft_form_12 
      as inspection, ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.region ='${nameOfRegion}' group by details.region`;
 
 

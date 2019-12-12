@@ -28,12 +28,16 @@ function ake(districtName) {
       let inspectionData1 = data.inspection1[0];
       let inspectionData2 = data.inspection2[0];
       let inspectionData3 = data.inspection3[0];
-      let max_inspectionData = data.max_inspection[0];
+      let region = data.region;
+      console.log(region)
 
       $("#districtDetails").html(
         "<table>" +
           "<tr><td>District:</td><td>" +
           district +
+          "</td><tr>" +
+          "<tr><td>Region:</td><td>" +
+          region +
           "</td><tr>" +
           "<tr><td>Number of Girls Enrolled:</td><td>" +
           totalBoysData +
