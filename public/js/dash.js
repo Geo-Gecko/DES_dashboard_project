@@ -205,7 +205,9 @@ function ake(nameOfSchool) {
       let parishData = data.parish[0];
       let emisData = data.emisNumber[0];
       let regionData = data.region[0];
-      let inspectionData = data.inspection[0];
+      let inspectionData1 = data.inspection1[0];
+      let inspectionData2 = data.inspection2[0];
+      let inspectionData3 = data.inspection3[0];
       let max_inspectionData = data.max_inspection[0];
 
       $("#schooldetails").html(
@@ -231,8 +233,14 @@ function ake(nameOfSchool) {
           "<tr><td>Region:</td><td>" +
           regionData +
           "</td><tr>" +
-          "<tr><td>No. of Inspections:</td><td>" +
-          inspectionData +
+          "<tr><td>No. of Inspections in Term1:</td><td>" +
+          inspectionData1 +
+          "</td><tr>" +
+          "<tr><td>No. of Inspections in Term2:</td><td>" +
+          inspectionData2 +
+          "</td><tr>" +
+          "<tr><td>No. of Inspections in Term3:</td><td>" +
+          inspectionData3 +
           "</td><tr>" +
           "<tr><td>Latest Inspections:</td><td>" +
           max_inspectionData +
