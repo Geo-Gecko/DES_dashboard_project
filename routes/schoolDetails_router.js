@@ -10,14 +10,53 @@ router.get('/:name_of_school', function(req, res, next) {
 
     let nameOfSchool = req.params.name_of_school;
 
-    const scQuery = `SELECT distinct(details.name_of_school) as  schools,
-     details.emis_number as emis_number, inspection.school_location as location,
-      details.region as region, details.district as district, details.county as county,
-       details.sub_county as sub_county, details.parish_ward as parish, 
-       DATE_FORMAT(MAX(inspection.date_of_inspection) ,'%d-%b-%Y') as  last_inspection, 
-       count(inspection.date_of_inspection) as inspection_number FROM  ft_form_12  as inspection,  
-       ft_form_11  as details WHERE details.submission_id=inspection.school_name 
-        and details.name_of_school = '${nameOfSchool}' group by details.name_of_school`;
+    const scQuery = `SELECT DISTINCT
+    (details.name_of_school) AS schools,
+    details.emis_number AS emis_number,
+    inspection.school_location AS location,
+    details.region AS region,
+    details.district AS district,
+    details.county AS county,
+    details.sub_county AS sub_county,
+    details.parish_ward AS parish,
+    DATE_FORMAT(
+        MAX(inspection.date_of_inspection),
+        '%d-%b-%Y'
+    ) AS last_inspection,
+    (
+    SELECT
+        COUNT(date_of_inspection)
+    FROM
+        ft_form_12 AS inspection,
+        ft_form_11 AS details
+    WHERE
+        term = 'Term1' AND name_of_school = '${nameOfSchool}'
+) AS inspection_number1,
+(
+    SELECT
+        COUNT(date_of_inspection)
+    FROM
+        ft_form_12 AS inspection,
+        ft_form_11 AS details
+    WHERE
+        term = 'Term2' AND name_of_school = '${nameOfSchool}'
+) AS inspection_number2,
+(
+    SELECT
+        COUNT(date_of_inspection)
+    FROM
+        ft_form_12 AS inspection,
+        ft_form_11 AS details
+    WHERE
+        term = 'Term3' AND name_of_school = '${nameOfSchool}'
+) AS inspection_number3
+FROM
+    ft_form_12 AS inspection,
+    ft_form_11 AS details
+WHERE
+    details.submission_id = inspection.school_name AND details.name_of_school = '${nameOfSchool}'
+GROUP BY
+    details.name_of_school`;
 
 
 
@@ -28,7 +67,9 @@ router.get('/:name_of_school', function(req, res, next) {
     let parishArray = [];
     let emisArray = [];
     let regionOfSchoolArray = [];
-    let inspectionArray = [];
+    let inspectionArray1 = [];
+    let inspectionArray2 = [];
+    let inspectionArray3 = [];
     let maxinspectionArray = [];
 
     connection.query(scQuery, function fill(err, result, ) {
@@ -98,27 +139,33 @@ router.get('/:name_of_school', function(req, res, next) {
             regionOfSchoolArray.push(sRegion);
 
 
-            //processing inspection of school for all school
-            let sInspection = [];
+            //processing inspection of school for all school term1
+            let sInspection1 = [];
             for (let e = 1; e <= 1; e++) {
-                let inspection = `inspection_number`;
-                sInspection.push(result[i][inspection]);
+                let inspection1 = `inspection_number1`;
+                sInspection1.push(result[i][inspection1]);
             }
-            inspectionArray.push(sInspection);
+            inspectionArray1.push(sInspection1);
+
+             //processing inspection of school for all school term2
+             let sInspection2 = [];
+             for (let e = 1; e <= 1; e++) {
+                 let inspection2 = `inspection_number2`;
+                 sInspection2.push(result[i][inspection2]);
+             }
+             inspectionArray2.push(sInspection2);
+
+              //processing inspection of school for all school term3
+            let sInspection3 = [];
+            for (let e = 1; e <= 1; e++) {
+                let inspection3 = `inspection_number3`;
+                sInspection3.push(result[i][inspection3]);
+            }
+            inspectionArray3.push(sInspection3);
 
 
 
         }
-
-        // console.log("SCHOOLS", schoolArray);
-        // console.log("DISTRICT", districtArray);
-        // console.log("COUNTY", countyArray);
-        // console.log("SUBCOUNTY", subcountyArray);
-        // console.log("EMIS NUMBER", emisArray);
-        // console.log("PARISH", parishArray);
-        // console.log("REGION", regionOfSchoolArray)
-        // console.log("INSPECTION", inspectionArray);
-        // console.log("lastest inspection", maxinspectionArray);
 
         let school = schoolArray[0];
         let distinctData = districtArray[0];
@@ -127,11 +174,13 @@ router.get('/:name_of_school', function(req, res, next) {
         let parishData = parishArray[0];
         let emisData = emisArray[0];
         let regionData = regionOfSchoolArray[0];
-        let inspectionData = inspectionArray[0];
+        let inspectionData1 = inspectionArray1[0];
+        let inspectionData2 = inspectionArray2[0];
+        let inspectionData3 = inspectionArray3[0];
         let maxinspectionData = maxinspectionArray[0];
 
 
-        res.send({ school: school, district: distinctData, county: countyData, subcounty: subcountyData, parish: parishData, emisNumber: emisData, region: regionData, inspection: inspectionData, max_inspection: maxinspectionData })
+        res.send({ school: school, district: distinctData, county: countyData, subcounty: subcountyData, parish: parishData, emisNumber: emisData, region: regionData, inspection1: inspectionData1,inspection2: inspectionData2,inspection3: inspectionData3, max_inspection: maxinspectionData })
 
     })
 

@@ -65,26 +65,62 @@ router.get('/:district', function(req, res, next) {
     sum(inspection.number_of_girls_enrolled_in_p5)+
     sum(inspection.number_of_girls_enrolled_in_p6)+
     sum(inspection.number_of_girls_enrolled_in_p7)  as TotalGirls, 
-    count(inspection.date_of_inspection) as inspection_number,
-    DATE_FORMAT(max(inspection.date_of_inspection), '%D-%b-%Y') as last_inspection  FROM  ft_form_12 
+    DATE_FORMAT(
+        MAX(inspection.date_of_inspection),
+        '%d-%b-%Y'
+    ) AS last_inspection,
+    (
+    SELECT
+        COUNT(date_of_inspection)
+    FROM
+        ft_form_12 AS inspection,
+        ft_form_11 AS details
+    WHERE
+        term = 'Term1' AND district = '${nameOfDistrict}'
+) AS inspection_number1,
+(
+    SELECT
+        COUNT(date_of_inspection)
+    FROM
+        ft_form_12 AS inspection,
+        ft_form_11 AS details
+    WHERE
+        term = 'Term2' AND district = '${nameOfDistrict}'
+) AS inspection_number2,
+(
+    SELECT
+        COUNT(date_of_inspection)
+    FROM
+        ft_form_12 AS inspection,
+        ft_form_11 AS details
+    WHERE
+        term = 'Term3' AND district = '${nameOfDistrict}'
+) AS inspection_number3,
+    DATE_FORMAT(max(inspection.date_of_inspection), '%D-%b-%Y') as last_inspection, details.region as region  FROM  ft_form_12 
      as inspection, ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.district ='${nameOfDistrict}' group by details.district`;
 
 
     let districtArray = [];
+    let regionArray =[];
     let totalSchoolArray = [];
     let totalBoysArray = [];
     let totalGirlArray = [];
-    let totalInspectionArray = [];
+    let inspectionArray1 = [];
+    let inspectionArray2 = [];
+    let inspectionArray3 = [];
     let maxInspectionArray = [];
 
     connection.query(dQuery, function fill(err, result, ) {
         if (err) throw err;
         //let flag = 0;
         for (let i = 0; i < result.length; i++) {
-            // School
+            // District and region
             let district = result[i].district;
+            let region = result[i].region;
 
-            districtArray.push(district)
+            districtArray.push(district);
+            regionArray.push(region);
+         
 
             // Processing total schools  for each district
             let sdistrict = [];
@@ -110,13 +146,29 @@ router.get('/:district', function(req, res, next) {
             }
             totalGirlArray.push(districtGilrs);
 
-            // Processing total number of inspection in each district 
-            let districtInspection = [];
-            for (let s = 1; s <= 1; s++) {
-                let dinspection = `inspection_number`;
-                districtInspection.push(result[i][dinspection]);
+            //processing inspection of school for each district term1
+            let sInspection1 = [];
+            for (let e = 1; e <= 1; e++) {
+                let inspection1 = `inspection_number1`;
+                sInspection1.push(result[i][inspection1]);
             }
-            totalInspectionArray.push(districtInspection);
+            inspectionArray1.push(sInspection1);
+
+             //processing inspection of schools for each district term2
+             let sInspection2 = [];
+             for (let e = 1; e <= 1; e++) {
+                 let inspection2 = `inspection_number2`;
+                 sInspection2.push(result[i][inspection2]);
+             }
+             inspectionArray2.push(sInspection2);
+
+              //processing inspection of school for each district term3
+            let sInspection3 = [];
+            for (let e = 1; e <= 1; e++) {
+                let inspection3 = `inspection_number3`;
+                sInspection3.push(result[i][inspection3]);
+            }
+            inspectionArray3.push(sInspection3);
 
             // Processing latest inspection in each district 
             let latestInspection = [];
@@ -126,27 +178,22 @@ router.get('/:district', function(req, res, next) {
             }
             maxInspectionArray.push(latestInspection);
 
-
-
-
         }
 
-        // console.log("DISTRICT",districtArray);
-        // console.log("TOTAL SCHOOLS", totalSchoolArray );
-        // console.log("TOTAL BOYS", totalBoysArray);
-        // console.log("TOTAL GIRLS", totalGirlArray);
-        // console.log("TOTAL INSPECTION", totalGirlArray);
-       // console.log("lastet inspection", maxInspectionArray);
 
-        let district = districtArray[0];
+        let district_req = districtArray[0];
+        let region_req = regionArray[0];
         let totalSchoolsData = totalSchoolArray[0];
         let totalBoysData = totalBoysArray[0];
         let totalGrilsData = totalGirlArray[0];
-        let totalInspection = totalInspectionArray[0];
+        let inspectionData1 = inspectionArray1[0];
+        let inspectionData2 = inspectionArray2[0];
+        let inspectionData3 = inspectionArray3[0];
         let max_inspectionData = maxInspectionArray[0];
+        console.log(region_req)
 
 
-        res.send({ district: district, school: totalSchoolsData, Boys: totalBoysData, Grils: totalGrilsData, inspection: totalInspection, max_inspection: max_inspectionData })
+        res.send({ district: district_req, region: region_req, school: totalSchoolsData, Boys: totalBoysData, Grils: totalGrilsData, inspection1: inspectionData1,inspection2: inspectionData2,inspection3: inspectionData3, max_inspection: max_inspectionData })
 
     })
 

@@ -6,7 +6,7 @@ var connection = require('../config/database');
 router.get('/', function(req, res, next) {
 
     const schoolsQuery = "select distinct(details.name_of_school) as school  FROM  ft_form_12  as inspection, ft_form_11 as details  WHERE details.submission_id = inspection.school_name ";
-
+  
     connection.query(schoolsQuery, function(err, result) {
 
         let allSchools = [];
@@ -80,18 +80,7 @@ router.get('/enrollment-stats/:name_of_school', function(req, res, next) {
             }
             schoolGirlsArray.push(girlsArray);
 
-            // let sEmis = [];
-            // for (let e = 1; e <= 1; e++) {
-            //     let emis_numer = `emis_number`;
-            //     sEmis.push(result[i][emis_numer]);
-            // }
-            // emisArray.push(sEmis);
-
         }
-
-        console.log("boys", schoolBoysArray);
-        console.log("girls", schoolGirlsArray);
-       // console.log("EMIS", emisArray);
 
         let school = schoolsArray[0];
         let boysPlot = JSON.stringify(schoolBoysArray[0]);
