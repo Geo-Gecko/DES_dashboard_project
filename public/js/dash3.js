@@ -115,9 +115,6 @@ function ake(regionName) {
       // always executed
     });
 
-  // Called for teacher pupil ratio for each district
-  axios
-    .get(`/nationalTPR-stats/${value}`)
   // Called for chart_enrolment for each region
   axios
     .get(`/nationalEnrolAttend-Trend-stats/${value}`)
@@ -137,7 +134,7 @@ function ake(regionName) {
         attendPlot,
         inspectionPlot
       );
-      //    / dataCollection('enrollment', region, boysPlot, girlsPlot);
+     
     })
     .catch(function(error) {
       // handle error
@@ -168,8 +165,6 @@ function ake(regionName) {
         boysPlotEnrol,
         girlsPlotEnrol
       );
-
-      // dataCollection('attendence', region, boysPlot, girlsPlot);
     })
     .catch(function(error) {
       // handle error
@@ -179,7 +174,7 @@ function ake(regionName) {
       // always executed
     });
 
-  // Called for teacher pupil ratio for each district
+  // Called for teacher pupil ratio for each region
   axios
     .get(`/nationalTPR-stats/${value}`)
     .then(function(response) {
@@ -191,11 +186,11 @@ function ake(regionName) {
       let p4top7Plot = data.p4top7;
 
       // call the chart function
-      stance_ratio_region(region, sprboysPlot, sprgirlsPlot, sprovrallPlot);
+      ratio_teach_region(region, p1top3Plot, p4top7Plot);
     })
     .catch(function(error) {
       // handle error
-      //console.log(error);
+      console.log(error);
     })
     .finally(function() {
       // always executed
@@ -397,11 +392,10 @@ function ake(regionName) {
         inspections
       );
 
-      // dataCollection('attendence', region, boysPlot, girlsPlot);
     })
     .catch(function(error) {
       // handle error
-      //console.log(error);
+      console.log(error);
     })
     .finally(function() {
       // always executed
@@ -554,10 +548,6 @@ function chart_enrol_attend_trend_region(
 
 //teacher to pupils ratio for the region
 function ratio_teach_region(region, p1top3Plot, p4top7Plot) {
-  if (teacherRatio) {
-    teacherRatio.destroy();
-  }
-
   var config = {
     type: "bar",
     data: {
@@ -572,7 +562,6 @@ function ratio_teach_region(region, p1top3Plot, p4top7Plot) {
     options: {
       legend: {
         display: false
-        // position: "bottom",
       },
       scales: {
         yAxes: [
@@ -591,7 +580,7 @@ function ratio_teach_region(region, p1top3Plot, p4top7Plot) {
   };
 
   var ctx = document.getElementById("region_1").getContext("2d");
-  teacherRatio = new Chart(ctx, config);
+   new Chart(ctx, config);
 }
 
 //stance to pupils ratio for region
@@ -619,7 +608,6 @@ function stance_ratio_region(region, sprboysPlot, sprgirlsPlot, sprovrallPlot) {
     options: {
       legend: {
         display: false
-        // position: "bottom",
       },
       scales: {
         yAxes: [
@@ -657,12 +645,10 @@ function class_ratio_region(region, cp1top3Plot, cp4top7Plot) {
     },
     title: {
       display: false
-      // text: district
     },
     options: {
       legend: {
         display: false
-        // position: "bottom",
       },
       scales: {
         yAxes: [
@@ -751,7 +737,6 @@ function chart_teach_accordToTT_region(region, timetable, inspections) {
       datasets: [
         {
           data: timetable,
-          //   label: "Classes taught according to timetable",
           borderColor: "yellow",
           fill: false,
           lineTension: 0,
