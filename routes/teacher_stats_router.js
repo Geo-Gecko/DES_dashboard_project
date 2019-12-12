@@ -11,13 +11,43 @@ router.get('/:name_of_school', function(req, res, next) {
 
     // run query where school id
     const limit = 1;
-    const rQuery = `select distinct(inspection.school_name) , details.name_of_school as school,
-    inspection.established_staffing_as_per_enrollment as enrol,
-    inspection.current_staffing_level as staff,
-    inspection.staff_attendance_on_visit_day as attend,
-    inspection.no_of_teachers_teaching_according_to_timetable as timetable
-     FROM  ft_form_12  as inspection,  ft_form_11  as details
-      WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}'`;
+    const rQuery = `SELECT DISTINCT
+    (inspection.school_name),
+    details.name_of_school AS school,
+    (
+        (
+            inspection.established_staffing_as_per_enrollment
+        ) /(
+            inspection.established_staffing_as_per_enrollment
+        )
+    ) * 100 AS enrol,
+    (
+        (
+            inspection.current_staffing_level
+        ) /(
+            inspection.established_staffing_as_per_enrollment
+        )
+    ) * 100 AS staff,
+    (
+        (
+            inspection.staff_attendance_on_visit_day
+        ) /(
+            inspection.established_staffing_as_per_enrollment
+        )
+    ) * 100 AS attend,
+    (
+        (
+            inspection.no_of_teachers_teaching_according_to_timetable
+        ) /(
+            inspection.established_staffing_as_per_enrollment
+        )
+    ) * 100 AS timetable
+FROM
+    ft_form_12 AS inspection,
+    ft_form_11 AS details
+WHERE
+    details.submission_id = inspection.school_name AND 
+    details.name_of_school ='${nameOfSchool}'`;
 
 
     let enrolArray = [];

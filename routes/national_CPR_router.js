@@ -14,8 +14,8 @@ router.get('/:region', function(req, res, next) {
     // run query where school id
 
     const dQuery = `select distinct(details.region) as region,
-   avg(inspection.classroom_to_pupil_ratio_in_lower_primaryp1p3) as cprp1p3,
-     avg(inspection.classroom_to_pupil_ratio_in_upper_primaryp4p7) as cprp4p7  
+    round(avg(inspection.classroom_to_pupil_ratio_in_lower_primaryp1p3)) as cprp1p3,
+    round(avg(inspection.classroom_to_pupil_ratio_in_upper_primaryp4p7)) as cprp4p7  
      FROM  ft_form_12  as inspection,  ft_form_11  as details 
      WHERE details.submission_id=inspection.school_name and details.region='${nameOfRegion}' group by details.region`;
 
@@ -53,10 +53,6 @@ router.get('/:region', function(req, res, next) {
             cpP4top7Array.push(cpRatiop7);
 
         }
-
-        // console.log("REGION", regionArray);
-        // console.log("CP1TOP3", cpP1top3Array );
-        console.log("CP4TOP7",cpP4top7Array);
 
         let region = regionArray[0];
         let cp1top3Plot = cpP1top3Array[0];

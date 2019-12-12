@@ -14,9 +14,9 @@ router.get('/:region', function(req, res, next) {
     // run query where school id
 
     const dQuery = `select distinct(details.region) as region,
-    avg(inspection.stance_to_pupilboys_ratio) as sprboys,  
-    avg(inspection.stance_to_pupilgirls_ratio) as sprgirls,
-     avg(inspection.stance_to_pupiloverall_ratio) as spr_overall 
+    round(avg(inspection.stance_to_pupilboys_ratio)) as sprboys,  
+    round(avg(inspection.stance_to_pupilgirls_ratio)) as sprgirls,
+    round(avg(inspection.stance_to_pupiloverall_ratio)) as spr_overall 
      FROM  ft_form_12  as inspection,  ft_form_11  as details 
      WHERE details.submission_id=inspection.school_name and details.region='${nameOfRegion}' group by details.region`;
 
@@ -61,10 +61,6 @@ router.get('/:region', function(req, res, next) {
             sproverallArray.push(srRatiop7);
         }
 
-        // console.log("REGION", regionArray);
-        // console.log("SPRBOYS", sprboysArray );
-        // console.log("SPRGIRLS",sprgirlsArray);
-        // console.log("SPROVERALL", sproverallArray);
 
         let region = regionArray[0];
         let sprboysPlot = sprboysArray[0];

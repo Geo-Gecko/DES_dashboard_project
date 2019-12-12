@@ -424,7 +424,7 @@ router.get('/:district', function(req, res, next) {
             pillar4D4Array:pillar4D4Array
         };
         // let girlsPlot = JSON.stringify(attendenceGirlsArray[0]);
-        console.log('districtConditionalPlot', districtConditionalPlot)
+        // console.log('districtConditionalPlot', districtConditionalPlot)
         res.send(districtConditionalPlot);
 
     })

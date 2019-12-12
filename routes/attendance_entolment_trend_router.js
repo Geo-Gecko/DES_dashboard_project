@@ -11,33 +11,63 @@ router.get('/:name_of_school', function(req, res, next) {
     let nameOfSchool = req.params.name_of_school;
 
     const aQuery = `SELECT inspection.school_name, details.name_of_school as name_of_school, 
-    inspection.term as date_of_inspection, inspection.attendance_of_p1_boys_on_visitation_day +
-    inspection.attendance_of_p2_boys_on_visitation_day  +
-    inspection.attendance_of_p3_boys_on_visitation_day +
-    inspection.attendance_of_p4_boys_on_visitation_day  +
-    inspection.attendance_of_p5_boys_on_visitation_day +
-    inspection.attendance_of_p6_boys_on_visitation_day  +
-    inspection.attendance_of_p7_boys_on_visitation_day  as boys_vd,
-    inspection.attendance_of_p1_girls_on_visitation_day +
-     inspection.attendance_of_p2_girls_on_visitation_day +
-      inspection.attendance_of_p3_girls_on_visitation_day +
-       inspection.attendance_of_p4_girls_on_visitation_day +
-        inspection.attendance_of_p5_girls_on_visitation_day +
-         inspection.attendance_of_p6_girls_on_visitation_day +
-         inspection.attendance_of_p7_girls_on_visitation_day as girls_vd, 
-        inspection.number_of_boys_enrolled_in_p1+
-        inspection.number_of_boys_enrolled_in_p2  +
-        inspection.number_of_boys_enrolled_in_p3 +
-        inspection.number_of_boys_enrolled_in_p4 +
-        inspection.number_of_boys_enrolled_in_p5 +
-        inspection.number_of_boys_enrolled_in_p6  + 
-        inspection.number_of_boys_enrolled_in_p7  as boys_enrol,
-        inspection. number_of_girls_enrolled_in_p1 + 
-        inspection.number_of_girls_enrolled_in_p2  +     
-       inspection.number_of_girls_enrolled_in_p3  +   
-       inspection.number_of_girls_enrolled_in_p4  +   
-        inspection.number_of_girls_enrolled_in_p5 +
-        inspection.number_of_girls_enrolled_in_p6  +   inspection.number_of_girls_enrolled_in_p7  as girls_enrol
+    inspection.term as date_of_inspection,  
+    round((sum(inspection.attendance_of_p1_boys_on_visitation_day) +
+    sum(inspection.attendance_of_p2_boys_on_visitation_day)  +
+    sum(inspection.attendance_of_p3_boys_on_visitation_day) +
+    sum(inspection.attendance_of_p4_boys_on_visitation_day)  +
+    sum(inspection.attendance_of_p5_boys_on_visitation_day) +
+    sum(inspection.attendance_of_p6_boys_on_visitation_day)  +
+    sum(inspection.attendance_of_p7_boys_on_visitation_day))/
+    (sum(inspection.number_of_boys_enrolled_in_p1)+
+    sum(inspection.number_of_boys_enrolled_in_p2)  +
+    sum(inspection.number_of_boys_enrolled_in_p3) +
+    sum(inspection.number_of_boys_enrolled_in_p4) +
+    sum(inspection.number_of_boys_enrolled_in_p5) +
+    sum(inspection.number_of_boys_enrolled_in_p6)  + 
+    sum(inspection.number_of_boys_enrolled_in_p7)),2)*100  as boys_vd,
+    round((sum(inspection.attendance_of_p1_girls_on_visitation_day) +
+     sum(inspection.attendance_of_p2_girls_on_visitation_day) +
+      sum(inspection.attendance_of_p3_girls_on_visitation_day) +
+       sum(inspection.attendance_of_p4_girls_on_visitation_day) +
+        sum(inspection.attendance_of_p5_girls_on_visitation_day) +
+         sum(inspection.attendance_of_p6_girls_on_visitation_day) +
+         sum(inspection.attendance_of_p7_girls_on_visitation_day))/
+         (sum(inspection.number_of_girls_enrolled_in_p1) + 
+         sum(inspection.number_of_girls_enrolled_in_p2)  +     
+        sum(inspection.number_of_girls_enrolled_in_p3)  +   
+        sum(inspection.number_of_girls_enrolled_in_p4)  +   
+         sum(inspection.number_of_girls_enrolled_in_p5) +
+         sum(inspection.number_of_girls_enrolled_in_p6)  +
+         sum(inspection.number_of_girls_enrolled_in_p7)),2)*100 as girls_vd, 
+        round((sum(inspection.number_of_boys_enrolled_in_p1)+
+        sum(inspection.number_of_boys_enrolled_in_p2)  +
+        sum(inspection.number_of_boys_enrolled_in_p3) +
+        sum(inspection.number_of_boys_enrolled_in_p4) +
+        sum(inspection.number_of_boys_enrolled_in_p5) +
+        sum(inspection.number_of_boys_enrolled_in_p6)  + 
+        sum(inspection.number_of_boys_enrolled_in_p7))/
+        (sum(inspection.number_of_boys_enrolled_in_p1)+
+        sum(inspection.number_of_boys_enrolled_in_p2)  +
+        sum(inspection.number_of_boys_enrolled_in_p3) +
+        sum(inspection.number_of_boys_enrolled_in_p4) +
+        sum(inspection.number_of_boys_enrolled_in_p5) +
+        sum(inspection.number_of_boys_enrolled_in_p6)  + 
+        sum(inspection.number_of_boys_enrolled_in_p7)),2)*100  as boys_enrol,
+        round((sum(inspection.number_of_girls_enrolled_in_p1) + 
+        sum(inspection.number_of_girls_enrolled_in_p2)  +     
+       sum(inspection.number_of_girls_enrolled_in_p3)  +   
+       sum(inspection.number_of_girls_enrolled_in_p4)  +   
+        sum(inspection.number_of_girls_enrolled_in_p5) +
+        sum(inspection.number_of_girls_enrolled_in_p6)  +
+        sum(inspection.number_of_girls_enrolled_in_p7))/
+        (sum(inspection.number_of_girls_enrolled_in_p1) + 
+        sum(inspection.number_of_girls_enrolled_in_p2)  +     
+       sum(inspection.number_of_girls_enrolled_in_p3)  +   
+       sum(inspection.number_of_girls_enrolled_in_p4)  +   
+        sum(inspection.number_of_girls_enrolled_in_p5) +
+        sum(inspection.number_of_girls_enrolled_in_p6)  +
+        sum(inspection.number_of_girls_enrolled_in_p7)),2)*100  as girls_enrol
          FROM ft_form_12 as inspection, ft_form_11 as details 
          WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}' and inspection.term != 'NULL' group by inspection.term order by inspection.term`;
 

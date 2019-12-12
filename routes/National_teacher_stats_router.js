@@ -11,13 +11,53 @@ router.get('/:region', function(req, res, next) {
 
     // run query where school id
     const limit = 1;
-    const rQuery = `select details.region as region,
-    sum(inspection.established_staffing_as_per_enrollment) as enrol,
-    sum(inspection.current_staffing_level) as staff,
-    sum(inspection.staff_attendance_on_visit_day) as attend,
-    sum(inspection.no_of_teachers_teaching_according_to_timetable) as timetable
-     FROM  ft_form_12  as inspection,  ft_form_11  as details
-      WHERE details.submission_id=inspection.school_name and details.region ='${nameOfRegion}' group by details.region`;
+    const rQuery = `SELECT
+    details.region AS region,
+    ROUND(
+        (
+            SUM(
+                inspection.established_staffing_as_per_enrollment
+            ) / SUM(
+                inspection.established_staffing_as_per_enrollment
+            )
+        ),
+        2
+    ) * 100 AS enrol,
+    ROUND(
+        (
+            SUM(
+                inspection.current_staffing_level
+            ) / SUM(
+                inspection.established_staffing_as_per_enrollment
+            )
+        ),
+        2
+    ) * 100 AS staff,
+    ROUND(
+        (
+            SUM(
+                inspection.staff_attendance_on_visit_day
+            ) / SUM(
+                inspection.established_staffing_as_per_enrollment
+            )
+        ),
+        2
+    ) * 100 AS attend,
+    ROUND(
+        (
+            SUM(
+                inspection.no_of_teachers_teaching_according_to_timetable
+            ) / SUM(
+                inspection.established_staffing_as_per_enrollment
+            )
+        ),
+        2
+    ) * 100 AS timetable
+FROM
+    ft_form_12 AS inspection,
+    ft_form_11 AS details
+WHERE
+    details.submission_id = inspection.school_name AND details.region ='${nameOfRegion}' group by details.region`;
 
 
     let enrolArray = [];
