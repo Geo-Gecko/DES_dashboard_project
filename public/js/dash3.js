@@ -22,7 +22,9 @@ function ake(regionName) {
       let totalSchoolsData = data.school[0];
       let totalBoysData = data.Boys[0];
       let totalGrilsData = data.Grils[0];
-      let totalInspectionData = data.Inspection[0];
+      let inspectionData1 = data.inspection1[0];
+      let inspectionData2 = data.inspection2[0];
+      let inspectionData3 = data.inspection3[0];
       let max_inspectionData = data.Max_inspection[0];
 
       $("#regiondetails").html(
@@ -39,10 +41,15 @@ function ake(regionName) {
           "<tr><td>Total Number of Schools:</td><td>" +
           totalSchoolsData +
           "</td><tr>" +
-          "<tr><td>Total Number of Inspections:</td><td>" +
-          totalInspectionData +
+          "<tr><td>No. of Inspections in Term1:</td><td>" +
+          inspectionData1 +
           "</td><tr>" +
-          // "<tr><td>Latest Inspections:</td><td>" + max_inspectionData + "</td><tr>"
+          "<tr><td>No. of Inspections in Term2:</td><td>" +
+          inspectionData2 +
+          "</td><tr>" +
+          "<tr><td>No. of Inspections in Term3:</td><td>" +
+          inspectionData3 +
+          "</td><tr>" +
           "</table>"
       );
     })

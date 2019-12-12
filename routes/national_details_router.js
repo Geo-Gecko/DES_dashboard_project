@@ -31,14 +31,69 @@ router.get('/:region', function(req, res, next) {
 
     let nameOfRegion = req.params.region;
 
-    const dQuery = `select distinct(details.region) as region, (select count(name_of_school) from ft_form_11 where region = '${nameOfRegion}')  as Totalschools,
-    sum(inspection.number_of_boys_enrolled_in_p1)+sum(inspection.number_of_girls_enrolled_in_p1)+sum(inspection.number_of_boys_enrolled_in_p2)+
-    sum(inspection.number_of_girls_enrolled_in_p2)+sum(inspection.number_of_boys_enrolled_in_p3)+sum(inspection.number_of_girls_enrolled_in_p3)+
-    sum(inspection.number_of_boys_enrolled_in_p4)+sum(inspection.number_of_girls_enrolled_in_p4)+sum(inspection.number_of_boys_enrolled_in_p5)+
-    sum(inspection.number_of_girls_enrolled_in_p5)+sum(inspection.number_of_boys_enrolled_in_p6)+sum(inspection.number_of_girls_enrolled_in_p6)+sum(inspection.number_of_boys_enrolled_in_p7) +sum(inspection.number_of_girls_enrolled_in_p7) as Total, sum(inspection.number_of_boys_enrolled_in_p1)+sum(inspection.number_of_boys_enrolled_in_p2)+sum(inspection.number_of_boys_enrolled_in_p3)+sum(inspection.number_of_boys_enrolled_in_p4)+
-    sum(inspection.number_of_boys_enrolled_in_p5)+sum(inspection.number_of_boys_enrolled_in_p6)+sum(inspection.number_of_boys_enrolled_in_p7) as TotalBoys, sum(inspection.number_of_girls_enrolled_in_p1)+sum(inspection.number_of_girls_enrolled_in_p2)+sum(inspection.number_of_girls_enrolled_in_p3)+
-    sum(inspection.number_of_girls_enrolled_in_p4)+sum(inspection.number_of_girls_enrolled_in_p5)+sum(inspection.number_of_girls_enrolled_in_p6)+sum(inspection.number_of_girls_enrolled_in_p7)  as TotalGirls, count(inspection.date_of_inspection) as inspection_number,
-    DATE_FORMAT(max(inspection.date_of_inspection), '%D-%b-%Y') as last_inspection  FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.region='${nameOfRegion}' group by details.region`;
+    const dQuery = `select distinct(details.district) as district, 
+    (select count(name_of_school) from ft_form_11 where region = '${nameOfRegion}')  as Totalschools,
+    sum(inspection.number_of_boys_enrolled_in_p1)+
+    sum(inspection.number_of_girls_enrolled_in_p1)+
+    sum(inspection.number_of_boys_enrolled_in_p2)+
+    sum(inspection.number_of_girls_enrolled_in_p2)+
+    sum(inspection.number_of_boys_enrolled_in_p3)+
+    sum(inspection.number_of_girls_enrolled_in_p3)+
+    sum(inspection.number_of_boys_enrolled_in_p4)+
+    sum(inspection.number_of_girls_enrolled_in_p4)+
+    sum(inspection.number_of_boys_enrolled_in_p5)+
+    sum(inspection.number_of_girls_enrolled_in_p5)+
+    sum(inspection.number_of_boys_enrolled_in_p6)+
+    sum(inspection.number_of_girls_enrolled_in_p6)+
+    sum(inspection.number_of_boys_enrolled_in_p7) +
+    sum(inspection.number_of_girls_enrolled_in_p7) as Total, 
+    sum(inspection.number_of_boys_enrolled_in_p1)+
+    sum(inspection.number_of_boys_enrolled_in_p2)+
+    sum(inspection.number_of_boys_enrolled_in_p3)+
+    sum(inspection.number_of_boys_enrolled_in_p4)+
+    sum(inspection.number_of_boys_enrolled_in_p5)+
+    sum(inspection.number_of_boys_enrolled_in_p6)+
+    sum(inspection.number_of_boys_enrolled_in_p7) as TotalBoys,
+     sum(inspection.number_of_girls_enrolled_in_p1)+
+     sum(inspection.number_of_girls_enrolled_in_p2)+
+     sum(inspection.number_of_girls_enrolled_in_p3)+
+    sum(inspection.number_of_girls_enrolled_in_p4)+
+    sum(inspection.number_of_girls_enrolled_in_p5)+
+    sum(inspection.number_of_girls_enrolled_in_p6)+
+    sum(inspection.number_of_girls_enrolled_in_p7)  as TotalGirls, 
+    DATE_FORMAT(
+        MAX(inspection.date_of_inspection),
+        '%d-%b-%Y'
+    ) AS last_inspection,
+    (
+    SELECT
+        COUNT(date_of_inspection)
+    FROM
+        ft_form_12 AS inspection,
+        ft_form_11 AS details
+    WHERE
+        term = 'Term1' AND region = '${nameOfRegion}'
+) AS inspection_number1,
+(
+    SELECT
+        COUNT(date_of_inspection)
+    FROM
+        ft_form_12 AS inspection,
+        ft_form_11 AS details
+    WHERE
+        term = 'Term2' AND region = '${nameOfRegion}'
+) AS inspection_number2,
+(
+    SELECT
+        COUNT(date_of_inspection)
+    FROM
+        ft_form_12 AS inspection,
+        ft_form_11 AS details
+    WHERE
+        term = 'Term3' AND region = '${nameOfRegion}'
+) AS inspection_number3,
+    DATE_FORMAT(max(inspection.date_of_inspection), '%D-%b-%Y') as last_inspection  FROM  ft_form_12 
+     as inspection, ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.region ='${nameOfRegion}' group by details.region`;
 
 
 
@@ -46,7 +101,9 @@ router.get('/:region', function(req, res, next) {
     let totalSchoolArray = [];
     let totalBoysArray = [];
     let totalGirlArray = [];
-    let totalInspection = [];
+    let inspectionArray1 = [];
+    let inspectionArray2 = [];
+    let inspectionArray3 = [];
     let maxinspectionArray = [];
 
     connection.query(dQuery, function fill(err, result, ) {
@@ -92,35 +149,47 @@ router.get('/:region', function(req, res, next) {
             totalGirlArray.push(regionGilrs);
 
 
-            // Processing total number of inspection in each region
-            let regionInspection = [];
-            for (let s = 1; s <= 1; s++) {
-                let rinspection = `inspection_number`;
-                regionInspection.push(result[i][rinspection]);
+            //processing inspection of school for each region term1
+            let sInspection1 = [];
+            for (let e = 1; e <= 1; e++) {
+                let inspection1 = `inspection_number1`;
+                sInspection1.push(result[i][inspection1]);
             }
-            totalInspection.push(regionInspection);
+            inspectionArray1.push(sInspection1);
+
+             //processing inspection of schools for each region term2
+             let sInspection2 = [];
+             for (let e = 1; e <= 1; e++) {
+                 let inspection2 = `inspection_number2`;
+                 sInspection2.push(result[i][inspection2]);
+             }
+             inspectionArray2.push(sInspection2);
+
+              //processing inspection of school for each region term3
+            let sInspection3 = [];
+            for (let e = 1; e <= 1; e++) {
+                let inspection3 = `inspection_number3`;
+                sInspection3.push(result[i][inspection3]);
+            }
+            inspectionArray3.push(sInspection3);
+
 
 
 
         }
-
-        // console.log("NATIONAL", regionArray);
-        // console.log("TOTAL SCHOOLS", totalSchoolArray );
-        // console.log("TOTAL BOYS", totalBoysArray);
-        // console.log("TOTAL GIRLS", totalGirlArray);
-        // console.log("TOTAL NUMBER OF INSPECTION", totalInspection )
-        //console.log("the latest inspection",  maxinspectionArray);
 
 
         let region = regionArray[0];
         let totalSchoolsData = totalSchoolArray[0];
         let totalBoysData = totalBoysArray[0];
         let totalGrilsData = totalGirlArray[0];
-        let totalInspectionData = totalInspection[0];
+        let inspectionData1 = inspectionArray1[0];
+        let inspectionData2 = inspectionArray2[0];
+        let inspectionData3 = inspectionArray3[0];
         let max_inspectionData = maxinspectionArray[0];
 
-        let response = { region: region, school: totalSchoolsData, Boys: totalBoysData, Grils: totalGrilsData, Inspection: totalInspectionData, Max_inspection: max_inspectionData }
-        // console.log('response', response)
+        let response = { region: region, school: totalSchoolsData, Boys: totalBoysData, Grils: totalGrilsData, inspection1: inspectionData1,inspection2: inspectionData2,inspection3: inspectionData3, Max_inspection: max_inspectionData }
+   
         res.send(response)
 
     })

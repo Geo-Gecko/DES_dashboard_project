@@ -184,7 +184,6 @@ router.get('/:district', function(req, res, next) {
         let totalSchoolsData = totalSchoolArray[0];
         let totalBoysData = totalBoysArray[0];
         let totalGrilsData = totalGirlArray[0];
-        let regionData = regionOfSchoolArray[0];
         let inspectionData1 = inspectionArray1[0];
         let inspectionData2 = inspectionArray2[0];
         let inspectionData3 = inspectionArray3[0];
