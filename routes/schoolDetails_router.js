@@ -24,31 +24,36 @@ router.get('/:name_of_school', function(req, res, next) {
         '%d-%b-%Y'
     ) AS last_inspection,
     (
-    SELECT
-        COUNT(date_of_inspection)
-    FROM
-        ft_form_12 AS inspection,
-        ft_form_11 AS details
-    WHERE
-        term = 'Term1' AND name_of_school = '${nameOfSchool}'
+    (
+    SELECT DISTINCT
+    COUNT(inspection.date_of_inspection) AS inspection_number
+FROM
+    ft_form_12 AS inspection,
+    ft_form_11 AS details
+WHERE
+    details.submission_id = inspection.school_name and inspection.term='Term1' and details.name_of_school='${nameOfSchool}'
+GROUP BY details.name_of_school
+)
 ) AS inspection_number1,
 (
-    SELECT
-        COUNT(date_of_inspection)
-    FROM
-        ft_form_12 AS inspection,
-        ft_form_11 AS details
-    WHERE
-        term = 'Term2' AND name_of_school = '${nameOfSchool}'
+     SELECT DISTINCT
+    COUNT(inspection.date_of_inspection) AS inspection_number
+FROM
+    ft_form_12 AS inspection,
+    ft_form_11 AS details
+WHERE
+    details.submission_id = inspection.school_name and inspection.term='Term2' and details.name_of_school='${nameOfSchool}'
+GROUP BY details.name_of_school
 ) AS inspection_number2,
 (
-    SELECT
-        COUNT(date_of_inspection)
-    FROM
-        ft_form_12 AS inspection,
-        ft_form_11 AS details
-    WHERE
-        term = 'Term3' AND name_of_school = '${nameOfSchool}'
+     SELECT DISTINCT
+    COUNT(inspection.date_of_inspection) AS inspection_number
+FROM
+    ft_form_12 AS inspection,
+    ft_form_11 AS details
+WHERE
+    details.submission_id = inspection.school_name and inspection.term='Term3' and details.name_of_school='${nameOfSchool}'
+GROUP BY details.name_of_school
 ) AS inspection_number3
 FROM
     ft_form_12 AS inspection,

@@ -31,7 +31,8 @@ router.get('/:region', function(req, res, next) {
 
     let nameOfRegion = req.params.region;
 
-    const dQuery = `select distinct(details.district) as district, 
+    const dQuery = `SELECT DISTINCT
+    (details.region) AS region,
     (select count(name_of_school) from ft_form_11 where region = '${nameOfRegion}')  as Totalschools,
     sum(inspection.number_of_boys_enrolled_in_p1)+
     sum(inspection.number_of_girls_enrolled_in_p1)+
@@ -61,39 +62,47 @@ router.get('/:region', function(req, res, next) {
     sum(inspection.number_of_girls_enrolled_in_p5)+
     sum(inspection.number_of_girls_enrolled_in_p6)+
     sum(inspection.number_of_girls_enrolled_in_p7)  as TotalGirls, 
-    DATE_FORMAT(
+     DATE_FORMAT(
         MAX(inspection.date_of_inspection),
         '%d-%b-%Y'
     ) AS last_inspection,
     (
-    SELECT
-        COUNT(date_of_inspection)
-    FROM
-        ft_form_12 AS inspection,
-        ft_form_11 AS details
-    WHERE
-        term = 'Term1' AND region = '${nameOfRegion}'
+    SELECT DISTINCT
+    COUNT(inspection.date_of_inspection) AS inspection_number
+FROM
+    ft_form_12 AS inspection,
+    ft_form_11 AS details
+WHERE
+    details.submission_id = inspection.school_name and inspection.term='Term1' and details.region='${nameOfRegion}'
+GROUP BY details.region
 ) AS inspection_number1,
 (
-    SELECT
-        COUNT(date_of_inspection)
-    FROM
-        ft_form_12 AS inspection,
-        ft_form_11 AS details
-    WHERE
-        term = 'Term2' AND region = '${nameOfRegion}'
+   SELECT DISTINCT
+    COUNT(inspection.date_of_inspection) AS inspection_number
+FROM
+    ft_form_12 AS inspection,
+    ft_form_11 AS details
+WHERE
+    details.submission_id = inspection.school_name and inspection.term='Term2' and details.region='${nameOfRegion}'
+GROUP BY details.region
 ) AS inspection_number2,
 (
-    SELECT
-        COUNT(date_of_inspection)
-    FROM
-        ft_form_12 AS inspection,
-        ft_form_11 AS details
-    WHERE
-        term = 'Term3' AND region = '${nameOfRegion}'
-) AS inspection_number3,
-    DATE_FORMAT(max(inspection.date_of_inspection), '%D-%b-%Y') as last_inspection, details.region as region  FROM  ft_form_12 
-     as inspection, ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.region ='${nameOfRegion}' group by details.region`;
+   SELECT DISTINCT
+    COUNT(inspection.date_of_inspection) AS inspection_number
+FROM
+    ft_form_12 AS inspection,
+    ft_form_11 AS details
+WHERE
+    details.submission_id = inspection.school_name and inspection.term='Term3' and details.region='${nameOfRegion}'
+GROUP BY details.region
+) AS inspection_number3
+FROM
+    ft_form_12 AS inspection,
+    ft_form_11 AS details
+WHERE
+    details.submission_id = inspection.school_name AND details.region = '${nameOfRegion}'
+GROUP BY
+    details.region`;
 
 
 
