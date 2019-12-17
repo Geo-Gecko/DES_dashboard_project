@@ -3,7 +3,7 @@ function loadStats() {
 }
 
 $(document).ready(function() {
-  ake("Elgon");
+  ake("West Nile");
 });
 
 function ake(regionName) {
@@ -236,7 +236,6 @@ function ake(regionName) {
       let region = data.region;
       let cp1top3Plot = data.cp1top3;
       let cp4top7Plot = data.cp4top7;
-      console.log(cp1top3Plot);
       // call the chart function
       class_ratio_region(region, cp1top3Plot, cp4top7Plot);
     })
@@ -1029,19 +1028,23 @@ function chartPillarRegion(region, pillar1, pillar2, pillar3, pillar4) {
         datasets: [
           {
               label: "A - (81% - 100%)",
-              backgroundColor: "#008000"
+              backgroundColor: "#008000",
+              data: pillarTranspose[0]
             },
             {
               label: "B - (61% - 80%)",
-              backgroundColor: "#FFFF00"
+              backgroundColor: "#FFFF00",
+              data: pillarTranspose[1]
             },
             {
               label: "C - (41% - 60%)",
-              backgroundColor: "#FFA500"
+              backgroundColor: "#FFA500",
+              data: pillarTranspose[2]
             },
             {
               label: "D - (25% - 40%)",
-              backgroundColor: "#FF0000"
+              backgroundColor: "#FF0000",
+              data: pillarTranspose[3]
             }
         ]
       },
