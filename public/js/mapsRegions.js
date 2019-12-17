@@ -162,11 +162,11 @@ function zoomToFeature(e, check) {
     ake(RegionStringD)
 }
 
-let allRegions = [];
+let allRegions = ["West-Nile", "Elgon"];
 
 function onEachFeature(feature, layer) {
     // console.log(layer)
-    allRegions.push(layer.feature.properties.REGION);
+    // allRegions.push(layer.feature.properties.REGION);
     layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
@@ -181,7 +181,7 @@ geojson = L.geoJson(regions, {
 
 var select = $('<select name="options" id="options" style="width: 100%;"></select>');
 $.each(allRegions, function (index, value) {
-    if (value.key !== "CENTRAL") {
+    if (value.key !== "Elgon") {
         var option = $('<option></option>');
         option.attr('value', value);
         option.text(value);

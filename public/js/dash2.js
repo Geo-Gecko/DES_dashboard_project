@@ -29,7 +29,6 @@ function ake(districtName) {
       let inspectionData2 = data.inspection2[0];
       let inspectionData3 = data.inspection3[0];
       let region = data.region;
-      console.log(region)
 
       $("#districtDetails").html(
         "<table>" +
@@ -918,6 +917,8 @@ function chartPillarDistrict(district, pillar1, pillar2, pillar3, pillar4) {
     let pillar2Transpose = transpose(pillar2);
     let pillar3Transpose = transpose(pillar3);
     let pillar4Transpose = transpose(pillar4);
+
+    console.log(pillarTranspose);
   
     var barOptions_stacked = {
       tooltips: {
@@ -1015,19 +1016,23 @@ function chartPillarDistrict(district, pillar1, pillar2, pillar3, pillar4) {
         datasets: [
           {
             label: "A - (81% - 100%)",
-            backgroundColor: "#008000"
+            backgroundColor: "#008000",
+            data: pillarTranspose[0]
           },
           {
             label: "B - (61% - 80%)",
-            backgroundColor: "#FFFF00"
+            backgroundColor: "#FFFF00",
+            data: pillarTranspose[1]
           },
           {
             label: "C - (41% - 60%)",
-            backgroundColor: "#FFA500"
+            backgroundColor: "#FFA500",
+            data: pillarTranspose[2]
           },
           {
             label: "D - (25% - 40%)",
-            backgroundColor: "#FF0000"
+            backgroundColor: "#FF0000",
+            data: pillarTranspose[3]
           }
         ]
       },

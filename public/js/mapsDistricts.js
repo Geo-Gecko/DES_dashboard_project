@@ -22,7 +22,7 @@ info.onAdd = function (mymap) {
 
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
-    this._div.innerHTML = (props ? 'District: <b>' + props.DNAME2014 + '</b><br/>' +
+    this._div.innerHTML = (props ? 'District: <b>' + props.DName2019 + '</b><br/>' +
         'Region: <b>' + props.REGION + '</b>'
         : 'Hover over a district');
 };
@@ -89,10 +89,10 @@ var schoolCount = 0;
 function zoomToFeature(e, check) {
     if (check == undefined) {
         mymap.fitBounds(e.target.getBounds());
-        var selectedDistrict = e.target.feature.properties.DNAME2014;
+        var selectedDistrict = e.target.feature.properties.DName2019;
     } else {
         mymap.fitBounds(e.getBounds());
-        var selectedDistrict = e.feature.properties.DNAME2014;
+        var selectedDistrict = e.feature.properties.DName2019;
     }
 
     let letterD = selectedDistrict.charAt(0);
@@ -165,7 +165,7 @@ function zoomToFeature(e, check) {
 
 }
 
-let allDistricts = ["KALIRO", "IBANDA", "GULU", "TORORO", "SOROTI", "JINJA", "KAMPALA", "RAKAI", "KAPCHORWA", "MOROTO", "MBARARA", "KAKUMIRO", "IGANGA", "LIRA", "KABALE", "HOIMA", "BUDUDA", "SHEEMA", "ADJUMANI", "MBALE", "NTOROKO", "LWENGO", "BUVUMA", "YUMBE", "MASINDI", "KIBAALE", "MANAFWA", "APAC", "AMURU", "DOKOLO", "BUTALEJA"]
+let allDistricts = ["KALIRO", "IBANDA", "GULU", "TORORO", "SOROTI", "MARACHA", "MADI-OKOLLO", "JINJA", "KAMPALA", "RAKAI", "KAPCHORWA", "MOROTO", "MBARARA", "KAKUMIRO", "IGANGA", "LIRA", "KABALE", "HOIMA", "BUDUDA", "SHEEMA", "ADJUMANI", "MBALE", "NTOROKO", "LWENGO", "BUVUMA", "YUMBE", "MASINDI", "KIBAALE", "MANAFWA", "APAC", "AMURU", "DOKOLO", "BUTALEJA"]
 
 function onEachFeature(feature, layer) {
     layer.on({
@@ -203,7 +203,7 @@ $('#options').change(function () {
             "color": '#000',
             "fillOpacity": 0.3
         })
-        if (l.feature.properties.DNAME2014 === $(this).val()) {
+        if (l.feature.properties.DName2019 === $(this).val()) {
             zoomToFeature(l, false);
             // l.setStyle({
             //     "fillColor": "#0f0",
@@ -218,7 +218,9 @@ $('#options').change(function () {
     let letter = $(this).val().charAt(0);
     let remaining = $(this).val().substr(1);
 
-    let districtString = letter + remaining
+    let districtString = letter + remaining;
+
+    console.log(districtString)
 
     ake(districtString)
 })
