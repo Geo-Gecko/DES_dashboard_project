@@ -105,7 +105,10 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-body">
+                            <button class="btn btnSave" onClick="downloadChart(this)" >
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
+                            <div class="card-body" style="padding-top: 0%;" id="downloadPillars">
                                 <h5 class="card-title">pillars</h5>
                                 <select id='pillars' name="cars">
                                     <option value="5">- Pillars Summary -</option>
@@ -114,7 +117,7 @@
                                     <option value="3">Pillar3:Effectiveness of Teaching and Learning</option>
                                     <option value="4">Pillar4:Involvement of Parents and Community</option>
                                 </select>
-                                <div class="graph_container1">
+                                <div class="graph_container1" id="graph_container1">
                                     <canvas id="mypillars"></canvas>
                                 </div>
                             </div>
@@ -122,7 +125,10 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-body">
+                            <button class="btn btnSave" onClick="downloadChart(this)" >
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
+                            <div class="card-body" style="padding-top: 0%;" id="downloadTrends">
                             <div class="graph_container1">
                                 <h5 class="card-title">Trend</h5>
                                 <div id="linegraph">
@@ -136,7 +142,10 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-body">
+                            <button class="btn btnSave" onClick="downloadChart(this)" >
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
+                            <div class="card-body" style="padding-top: 0%;" id="downloadEnrolmentAttendance">
                                 <h5 class="card-title">enrolment & attendence</h5>
                                 <div class="maps">
                                     <canvas id="mySuperChart"></canvas>
@@ -146,7 +155,10 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-body">
+                            <button class="btn btnSave" onClick="downloadChart(this)" >
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
+                            <div class="card-body" style="padding-top: 0%;" id="downloadEATrends">
                                 <h5 class="card-title">Trend</h5>
                                 <div class="maps">
                                     <canvas id="chart_attendance"></canvas>
@@ -159,7 +171,10 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card">
-                            <div class="card-body">
+                            <button class="btn btnSave" onClick="downloadChart(this)" >
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
+                            <div class="card-body" style="padding-top: 0%;" id="downloadTPRatio">
                                 <h5 class="card-title">Teacher-pupil ratio</h5>
                                 <div id="canvas-holder">
                                     <canvas id="chart-area" height="180%"></canvas>
@@ -175,7 +190,10 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card">
-                            <div class="card-body">
+                            <button class="btn btnSave" onClick="downloadChart(this)" >
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
+                            <div class="card-body" style="padding-top: 0%;" id="downloadSPRatio">
                                 <h5 class="card-title">Stance-pupil ratio</h5>
                                 <div id="canvas-holder">
                                     <canvas id="nasted2" height="180%"></canvas>
@@ -190,7 +208,10 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card">
-                            <div class="card-body">
+                            <button class="btn btnSave" onClick="downloadChart(this)" >
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
+                            <div class="card-body" style="padding-top: 0%;" id="downloadCPRatio">
                                 <h5 class="card-title">Classroom-pupil ratio</h5>
                                 <div id="canvas-holder">
                                     <canvas id="nasted3"  height="180%"></canvas>
@@ -210,7 +231,10 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card">
-                            <div class="card-body">
+                            <button class="btn btnSave" onClick="downloadChart(this)" >
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
+                            <div class="card-body" style="padding-top: 0%;" id="downloadTeacherStatics">
                                 <h5 class="card-title">Teacher Statistics</h5>
                                 <div class="graph_container1" >
                                     <canvas id="TeacherChart" height="205%"></canvas>
@@ -220,7 +244,10 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card">
-                            <div class="card-body">
+                            <button class="btn btnSave" onClick="downloadChart(this)" >
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
+                            <div class="card-body" style="padding-top: 0%;" id="downloadTSTrends">
                                 <h5 class="card-title">Teacher Statictical Trend</h5>
                                 <div class="graph_container1" >
                                     <canvas id="school-line-chart" height="205%"></canvas>
@@ -230,7 +257,10 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card">
-                            <div class="card-body">
+                            <button class="btn btnSave" onClick="downloadChart(this)" >
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
+                            <div class="card-body" style="padding-top: 0%;" id="downloadCTA">
                                 <h5 class="card-title">Classes Taught According to timetable</h5>
                                 <div id="linegraph">
                                     <canvas id="line-chart_timetable"  height="180%"></canvas>
@@ -279,10 +309,13 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
+    <script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
 
     <!-- Page level plugin JavaScript-->
     <script src="/vendor/chart.js/Chart.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/js/utilities/download_chart.js"></script>
     <script src="/js/dash.js"></script>
 
 
