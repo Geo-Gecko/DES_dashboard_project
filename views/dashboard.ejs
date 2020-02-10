@@ -82,9 +82,12 @@
         <div class="container-fluid">
 
             <div class="grid-container">
-                <div class="row">
+                <div class="row" style="padding-top: 1% !important">
                     <div class="col-md-5">
                         <div class="card">
+                            <button class="btn btnSave" onClick="downloadChart(this)" >
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
                             <div class="card-body">
                                 <h5 class="card-title">school details</h5>
                                 <div id="schooldetails">
@@ -94,6 +97,10 @@
                     </div>
                     <div class="col-md-7">
                         <div class="card">
+                            <!-- onClick="downloadChart(this)" -->
+                            <button class="btn btnSave" onClick="downloadChart(this)">
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
                             <div class="card-body">
                                 <h5 class="card-title">map showing schools in uganda</h5>
                                 <div id="mapid"></div>
@@ -117,7 +124,7 @@
                                     <option value="3">Pillar3:Effectiveness of Teaching and Learning</option>
                                     <option value="4">Pillar4:Involvement of Parents and Community</option>
                                 </select>
-                                <div class="graph_container1" id="graph_container1">
+                                <div class="graph_container1">
                                     <canvas id="mypillars"></canvas>
                                 </div>
                             </div>
