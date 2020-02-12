@@ -1,7 +1,8 @@
 //leaflet js
 var mymap = L.map('mapid', {
     zoomDelta: 0.25,
-    zoomSnap: 0.25
+    zoomSnap: 0.25,
+    renderer: L.canvas()
 }).setView([1.44, 32.49], 6.5);
 
 var southWest = new L.LatLng(-1.9126224937624325, 28.364710751121848),

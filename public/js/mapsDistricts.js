@@ -1,5 +1,7 @@
 //leaflet js
-var mymap = L.map('mapid').setView([1.44, 32.49], 7);
+var mymap = L.map('mapid', {
+    renderer: L.canvas()
+}).setView([1.44, 32.49], 7);
 
 
 var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

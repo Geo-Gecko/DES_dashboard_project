@@ -86,9 +86,12 @@
 
         <div class="container-fluid">
             <div class="grid-container">
-                <div class="row">
+                <div class="row" style="padding-top: 1% !important">
                     <div class="col-md-5">
                         <div class="card">
+                            <button class="btn btnSave" onClick="downloadChart(this)">
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
                             <div class="card-body">
                                 <h5 class="card-title">region details</h5>
                                 <div id="regiondetails">
@@ -100,6 +103,9 @@
                     </div>
                     <div class="col-md-7">
                         <div class="card">
+                            <button class="btn btnSave" onClick="downloadChart(this)">
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
                             <div class="card-body">
                                 <h5 class="card-title">map showing regions in uganda</h5>
                                 <div id="mapid"></div>
@@ -113,6 +119,9 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card">
+                            <button class="btn btnSave" onClick="downloadChart(this)">
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
                             <div class="card-body">
                                 <h5 class="card-title">average region Pillars</h5>
                                     <select id="region" name="cars">
@@ -131,6 +140,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card">
+                            <button class="btn btnSave" onClick="downloadChart(this)">
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
                             <div class="card-body">
                                 <h5 class="card-title">Trend for a region</h5>
                                 <div id="linegraph">
@@ -144,6 +156,9 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card">
+                            <button class="btn btnSave" onClick="downloadChart(this)">
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
                             <div class="card-body">
                                 <h5 class="card-title">total enrolment & attendence</h5>
                                 <div class="maps">
@@ -154,6 +169,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card">
+                            <button class="btn btnSave" onClick="downloadChart(this)">
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
                             <div class="card-body">
                                 <h5 class="card-title">trend</h5>
                                 <div class="maps">
@@ -167,6 +185,9 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card">
+                            <button class="btn btnSave" onClick="downloadChart(this)">
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
                             <div class="card-body">
                                 <h5 class="card-title">Total Teacher-pupil ratio</h5>
                                 <div id="canvas-holder" >
@@ -177,6 +198,9 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card">
+                            <button class="btn btnSave" onClick="downloadChart(this)">
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
                             <div class="card-body">
                                 <h5 class="card-title">Total Stance-pupil ratio</h5>
                                 <div id="canvas-holder">
@@ -187,6 +211,9 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card">
+                            <button class="btn btnSave" onClick="downloadChart(this)">
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
                             <div class="card-body">
                                 <h5 class="card-title">Total Classroom-pupil ratio</h5>
                                 <div id="canvas-holder" >
@@ -199,6 +226,9 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card">
+                            <button class="btn btnSave" onClick="downloadChart(this)">
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
                             <div class="card-body">
                                 <h5 class="card-title">Teacher statistics</h5>
                                 <div class="maps">
@@ -209,6 +239,9 @@
                     </div>
                     <div class="col-md-4">
                             <div class="card">
+                                <button class="btn btnSave" onClick="downloadChart(this)">
+                                    <i class="fas fa-download" style="color: #7C849C;"></i>
+                                </button>
                                 <div class="card-body">
                                     <h5 class="card-title">Teacher Statictical Trend</h5>
                                     <div class="maps">
@@ -219,6 +252,9 @@
                         </div>
                     <div class="col-md-4">
                         <div class="card">
+                            <button class="btn btnSave" onClick="downloadChart(this)">
+                                <i class="fas fa-download" style="color: #7C849C;"></i>
+                            </button>
                             <div class="card-body">
                                 <h5 class="card-title">Classes Taught According to timetable</h5>
                                 <div class="maps">
@@ -305,7 +341,13 @@
 
     <script src="/vendor/chart.js/Chart.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- <script src="utilities\downloadChart.js"></script> -->
     <script src="/js/dash3.js"></script>
+
+    <!-- download divs -->
+    <script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
+    <script src="/js/utilities/download_chart.js"></script>
 
 
 
