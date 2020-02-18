@@ -3,6 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+
+
+//Login
+var loginRouter = require('./routes/login');
+
 
 // Schools
 var dashboardRouter = require('./routes/dashboard');
@@ -62,6 +70,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/', express.static(path.join(__dirname, 'public')));
+//Express Passport JS
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+//login
+app.use('/login', loginRouter);
 
 //Schools
 app.use('/', dashboardRouter);
