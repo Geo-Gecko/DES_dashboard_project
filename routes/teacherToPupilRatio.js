@@ -3,10 +3,11 @@ var router = express.Router();
 var connection = require('../config/database');
 
 
-router.get('/stats/:name_of_school', function(req, res, next) {
+router.get('/stats/:name_of_school/:year', function(req, res, next) {
 
     // Get school id
     let nameOfSchool = req.params.name_of_school;
+    let year = req.params.year;
 
 
     // run query where school id
@@ -15,7 +16,8 @@ router.get('/stats/:name_of_school', function(req, res, next) {
     round(inspection.teacher_to_pupil_ratio_in_lower_primaryp1p3) as tprp1p3,
     round(inspection.teacher_to_pupil_ratio_in_upper_primaryp4p7) as tprp4p7 
      FROM  ft_form_12  as inspection,  ft_form_11  as details
-      WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}'`;
+      WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}'
+      AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}'`;
 
 
     let schoolsArray = [];
@@ -55,8 +57,8 @@ router.get('/stats/:name_of_school', function(req, res, next) {
         // console.log("P4P7",p4top7Array);
 
         let school = schoolsArray[0];
-        let p1top3Plot = JSON.stringify(p1top3Array[0]);
-        let p4top7Plot = JSON.stringify(p4top7Array[0]);
+        let p1top3Plot = p1top3Array[0];
+        let p4top7Plot = p4top7Array[0];
 
         res.send({ school: school, p1top3: p1top3Plot, p4top7: p4top7Plot })
 

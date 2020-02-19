@@ -3,12 +3,13 @@ var router = express.Router();
 var connection = require('../config/database');
 
 /* GET home page. */
-router.get('/:name_of_school', function(req, res, next) {
+router.get('/:name_of_school/:year', function(req, res, next) {
 
     
     const limit = 10;
 
     let nameOfSchool = req.params.name_of_school;
+    let year = req.params.year;
 
     const aQuery =`select distinct(name_of_school) as schools, p1__attendance_on_visit_day__boys as p1_boys, 
     p1__attendance_on_visit_day__girls as p1_girls, p2__attendance_on_visit_day__boys as p2_boys, 
@@ -17,7 +18,8 @@ router.get('/:name_of_school', function(req, res, next) {
     p4__attendance_on_visit_day__girls as p4_girls, p5__attendance_on_visit_day__boys as p5_boys, 
     p5__attendance_on_visit_day__girls as p5_girls, p6__attendance_on_visit_day__boys as p6_boys, 
     p6__attendance_on_visit_day__girls as p6_girls, p7__attendance_on_visit_day__boys as p7_boys, 
-    p7__attendance_on_visit_day__girls as p7_girls from tbl_random where name_of_school = '${nameOfSchool}' limit ${limit}`;
+    p7__attendance_on_visit_day__girls as p7_girls from tbl_random where name_of_school = '${nameOfSchool}'
+    AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}' limit ${limit}`;
 
 
     connection.query(aQuery, function fill(err, result,){
@@ -54,8 +56,8 @@ router.get('/:name_of_school', function(req, res, next) {
             
         
             let school = schoolsArray[0];
-            let boysPlot = JSON.stringify(attendenceBoysArray[0]);
-            let girlsPlot = JSON.stringify(attendenceGirlsArray[0]);
+            let boysPlot = attendenceBoysArray[0];
+            let girlsPlot = attendenceGirlsArray[0];
 
             res.send({school:school, boys: boysPlot, girls: girlsPlot});
       

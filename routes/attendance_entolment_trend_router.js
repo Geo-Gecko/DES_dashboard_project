@@ -3,12 +3,13 @@ var router = express.Router();
 var connection = require('../config/database');
 
 /* GET home page. */
-router.get('/:name_of_school', function(req, res, next) {
+router.get('/:name_of_school/:year', function(req, res, next) {
 
 
     //const limit = 10;
 
     let nameOfSchool = req.params.name_of_school;
+    let year = req.params.year;
 
     const aQuery = `SELECT inspection.school_name, details.name_of_school as name_of_school, 
     inspection.term as date_of_inspection,  
@@ -69,7 +70,7 @@ router.get('/:name_of_school', function(req, res, next) {
         sum(inspection.number_of_girls_enrolled_in_p6)  +
         sum(inspection.number_of_girls_enrolled_in_p7)),2)*100  as girls_enrol
          FROM ft_form_12 as inspection, ft_form_11 as details 
-         WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}' and inspection.term != 'NULL' group by inspection.term order by inspection.term`;
+         WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}' AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}' and inspection.term != 'NULL' group by inspection.term order by inspection.term`;
 
 
     connection.query(aQuery, function fill(err, result, ) {
