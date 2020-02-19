@@ -7,12 +7,13 @@ var connection = require('../config/database');
 
 
 
-router.get('/:district', function(req, res, next) {
+router.get('/:district/:year', function(req, res, next) {
 
 
     const limit = 10;
 
     let nameOfDistrict = req.params.district;
+    let year = req.params.year;
 
     const aQuery = `select distinct(details.district) as district,
     inspection.term as inspection_date,
@@ -73,7 +74,7 @@ router.get('/:district', function(req, res, next) {
     sum(inspection.number_of_boys_enrolled_in_p7) +
     sum(inspection.number_of_girls_enrolled_in_p7)),2)*100 as enrollment
 FROM  ft_form_12  as inspection,  ft_form_11  as details 
-WHERE details.submission_id=inspection.school_name and details.district='${nameOfDistrict}' and
+WHERE details.submission_id=inspection.school_name and details.district='${nameOfDistrict}' AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}' and
 inspection.term != 'NULL' group by details.district, inspection.term`;
 
     

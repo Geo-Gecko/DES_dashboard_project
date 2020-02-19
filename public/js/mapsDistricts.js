@@ -1,3 +1,5 @@
+let districtString
+
 //leaflet js
 var mymap = L.map('mapid', {
     renderer: L.canvas()
@@ -163,7 +165,7 @@ function zoomToFeature(e, check) {
 
 
 
-    ake(districtStringD)
+    ake(districtStringD, "2019")
 
 }
 
@@ -220,11 +222,10 @@ $('#options').change(function () {
     let letter = $(this).val().charAt(0);
     let remaining = $(this).val().substr(1);
 
-    let districtString = letter + remaining;
+    districtString = letter + remaining;
 
-    console.log(districtString)
 
-    ake(districtString)
+    ake(districtString, "2019")
 })
 
 
@@ -239,22 +240,49 @@ info1.onAdd = function (mymap) {
 
 // method that we will use to update the control based on feature properties passed
 info1.update = function (props) {
-    this._div.innerHTML = 
-    "<div id='legend' style='display: none'>" +
-    "<svg class='head' width='150' height='100'>" +
-            "<circle cy='30' cx='10' r='0.4em' style='fill: #008000;'></circle>" +
-            "<circle cy='50' cx='10' r='0.4em' style='fill: #FFFF00;'></circle>" +
-            "<circle cy='70' cx='10' r='0.4em' style='fill: #FFA500;'></circle>" +
-            "<circle cy='90' cx='10' r='0.4em' style='fill: #FF0000;'></circle>" +
-            "<text class='legend-text' x='25' y='25' dy='0.8em' style='color: white;'>A - (81% - 100%)</text>" +
-            "<text class='legend-text' x='25' y='45' dy='0.8em' style='color: white;'>B - (61% - 80%)</text>" +
-            "<text class='legend-text' x='25' y='65' dy='0.8em' style='color: white;'>C - (41% - 60%)</text>" +
-            "<text class='legend-text' x='25' y='85' dy='0.8em' style='color: white;'>D - (25% - 40%)</text>" +
-            "<text class='legend-title' x='0' y='0' font-weight='bold' dy='0.8em'>Legend</text>" +
+    this._div.innerHTML =
+        "<div id='legend' style='display: none'>" +
+        "<svg class='head' width='150' height='100'>" +
+        "<circle cy='30' cx='10' r='0.4em' style='fill: #008000;'></circle>" +
+        "<circle cy='50' cx='10' r='0.4em' style='fill: #FFFF00;'></circle>" +
+        "<circle cy='70' cx='10' r='0.4em' style='fill: #FFA500;'></circle>" +
+        "<circle cy='90' cx='10' r='0.4em' style='fill: #FF0000;'></circle>" +
+        "<text class='legend-text' x='25' y='25' dy='0.8em' style='color: white;'>A - (81% - 100%)</text>" +
+        "<text class='legend-text' x='25' y='45' dy='0.8em' style='color: white;'>B - (61% - 80%)</text>" +
+        "<text class='legend-text' x='25' y='65' dy='0.8em' style='color: white;'>C - (41% - 60%)</text>" +
+        "<text class='legend-text' x='25' y='85' dy='0.8em' style='color: white;'>D - (25% - 40%)</text>" +
+        "<text class='legend-title' x='0' y='0' font-weight='bold' dy='0.8em'>Legend</text>" +
         "</svg>" +
-    "</div>";
+        "</div>";
 };
 
 info1.addTo(mymap);
 
 
+
+
+axios.get("/years").then(response => {
+
+    var year_select = document.getElementById("select-year");
+    let years_ = response.data["years"]
+    years_ = years_.filter(year_ => {
+        if (year_ >= "2019"){
+            return true
+        }
+        return false
+    })
+
+    years_.forEach(year_ => {
+        let option_ = document.createElement("option")
+        option_.textContent = year_
+        year_select.append(option_)
+    })
+
+    let updateYear = () => {
+        console.log(year_select.value)
+        ake(districtString, year_select.value)
+    }
+    
+    year_select.addEventListener('change', updateYear, false);
+
+})
