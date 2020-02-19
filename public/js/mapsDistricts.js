@@ -279,7 +279,6 @@ axios.get("/years").then(response => {
     })
 
     let updateYear = () => {
-        console.log(year_select.value)
         ake(districtString, year_select.value)
     }
     

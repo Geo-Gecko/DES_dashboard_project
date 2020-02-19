@@ -6,7 +6,7 @@ var connection = require('../config/database');
 router.get('/', function(req, res, next) {
 
     const schoolsQuery = "select distinct(details.name_of_school) as school  FROM  ft_form_12  as inspection, ft_form_11 as details  WHERE details.submission_id = inspection.school_name ";
-  
+
     connection.query(schoolsQuery, function(err, result) {
 
         let allSchools = [];
@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
 router.get('/years', function(req, res, next) {
 
     const yearQuery = "select distinct(DATE_FORMAT(inspection.date_of_inspection,'%Y')) as year  FROM  ft_form_12  as inspection, ft_form_11 as details  WHERE details.submission_id = inspection.school_name ";
-    console.log(yearQuery)
+
   
     connection.query(yearQuery, function(err, result) {
 

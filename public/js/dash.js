@@ -165,7 +165,6 @@ function ake(nameOfSchool, year) {
         var avg = sum / array.length;
         return avg;
       }
-      console.log(pillarOne, pillarTwo, pillarThree, pillarFour)
       let pillarSummary = [
         generateAverage(pillarOne),
         generateAverage(pillarTwo),

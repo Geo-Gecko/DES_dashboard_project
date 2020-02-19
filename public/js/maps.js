@@ -154,7 +154,6 @@ axios.get("/years").then(response => {
     })
 
     let updateYear = () => {
-        console.log(year_select.value)
         ake(name_of_school_, year_select.value)
     }
     

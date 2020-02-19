@@ -128,11 +128,6 @@ router.get('/:region/:year', function(req, res, next) {
         WHERE details.submission_id=inspection.school_name and details.region = '${nameOfRegion}' AND DATE_FORMAT(
             inspection.date_of_inspection,'%Y') = '${year}' group by details.region`;
 
-    // console.log("")
-    // console.log("")
-    // console.log("aQuery", aQuery)
-    // console.log("")
-    // console.log("")
 
     connection.query(aQuery, function fill(err, result, ) {
         if (err) throw err;
@@ -164,10 +159,7 @@ router.get('/:region/:year', function(req, res, next) {
         let pillar4D2Array = [];
         let pillar4D3Array = [];
         let pillar4D4Array = [];
-        // let attendenceGirlsArray = [];
-        //let flag = 0; 
         for (let i = 0; i < result.length; i++) {
-            // School
             let region = result[i].region;
 
             regionArray.push(region)
@@ -425,8 +417,6 @@ router.get('/:region/:year', function(req, res, next) {
             pillar4D3Array:pillar4D3Array,
             pillar4D4Array:pillar4D4Array
         };
-        // let girlsPlot = JSON.stringify(attendenceGirlsArray[0]);
-        console.log('regionConditionalPlot', regionConditionalPlot)
         res.send(regionConditionalPlot);
 
     })

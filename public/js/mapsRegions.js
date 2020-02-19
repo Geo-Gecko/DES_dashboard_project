@@ -168,8 +168,6 @@ function zoomToFeature(e, check) {
 let allRegions = ["West-Nile", "Elgon"];
 
 function onEachFeature(feature, layer) {
-    // console.log(layer)
-    // allRegions.push(layer.feature.properties.REGION);
     layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
@@ -265,7 +263,6 @@ axios.get("/years").then(response => {
     })
 
     let updateYear = () => {
-        console.log(year_select.value)
         ake(RegionString, year_select.value)
     }
     
