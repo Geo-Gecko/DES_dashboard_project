@@ -3,10 +3,11 @@ var router = express.Router();
 var connection = require('../config/database');
 
 
-router.get('/:region', function(req, res, next) {
+router.get('/:region/:year', function(req, res, next) {
 
     // Get school id
     let nameOfRegion = req.params.region;
+    let year = req.params.year;
 
 
     // run query where school id
@@ -37,7 +38,7 @@ router.get('/:region', function(req, res, next) {
     cast(avg(inspection.school_communication_with_parents_community) as unsigned) +
     cast(avg(inspection.teacher_communication_with_parents) as unsigned) + 
     cast(avg(inspection.involvement_of_parents) as unsigned) as pilar4 FROM  ft_form_12  as inspection,  ft_form_11  as details 
-    WHERE details.submission_id=inspection.school_name and details.region = '${nameOfRegion}' 
+    WHERE details.submission_id=inspection.school_name and details.region = '${nameOfRegion}' AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}'
     and inspection.term != 'null' group by inspection.term order by inspection.term asc`;
 
 

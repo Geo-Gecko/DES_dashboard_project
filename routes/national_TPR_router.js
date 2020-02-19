@@ -3,12 +3,13 @@ var router = express.Router();
 var connection = require('../config/database');
 
 
-router.get('/:region', function(req, res, next) {
+router.get('/:region/:year', function(req, res, next) {
 
     // Get school id
     const limit = 1;
 
     let nameOfRegion = req.params.region;
+    let year = req.params.year;
 
 
     // run query where school id
@@ -17,7 +18,7 @@ router.get('/:region', function(req, res, next) {
     round(avg(inspection.teacher_to_pupil_ratio_in_lower_primaryp1p3)) as tprp1p3,
     round(avg(inspection.teacher_to_pupil_ratio_in_upper_primaryp4p7)) as tprp4p7 
      FROM  ft_form_12  as inspection,  ft_form_11  as details
-      WHERE details.submission_id=inspection.school_name and details.region='${nameOfRegion}' group by details.region`;
+      WHERE details.submission_id=inspection.school_name and details.region='${nameOfRegion}' AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}' group by details.region`;
 
 
     let regionArray = [];
