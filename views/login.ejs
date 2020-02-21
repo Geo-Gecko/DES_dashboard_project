@@ -4,12 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <title>Login</title>
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <!---Custom CSS-->
     <link href="/css/login.css" rel="stylesheet">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+  </head>
+  <body>
 
     <div class="parentDiv">
         <div class="mainDiv">
@@ -18,14 +22,14 @@
           <form action="/login" method="post">
               <div class="form-group-ab7">
                 <div class="inputBackground">
-                    <img class="loginIconUsername"  src="/icons/icons8-username-64.png" alt="userLogin">
-                    <input type="text" class="inputBoxUsername" name="" placeholder="username" onChange={this.updateInputUser}> 
+                    <img class="loginIconUsername"  src="/images/icons8-username-64.png" alt="userLogin">
+                    <input type="text" class="inputBoxUsername" name="username" placeholder="username" onChange={this.updateInputUser}> 
                 </div>
               </div> 
               <div class="form-group-ab7"> 
                 <div class="inputBackground">
-                  <img class="loginIconPassword" src="/icons/icons8-password-100.png" alt="userPassword">
-                  <input type="password" class="inputBoxPassword" name="" placeholder="password" onChange={this.updateInputPass}> 
+                  <img class="loginIconPassword" src="/images/icons8-password-100.png" alt="userPassword">
+                  <input type="password" class="inputBoxPassword" name="password" placeholder="password" onChange={this.updateInputPass}> 
                 </div>
               </div> 
             <div class="form-group-ab7"> 
