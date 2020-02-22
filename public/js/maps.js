@@ -136,7 +136,7 @@ info1.addTo(mymap);
 
 
 
-axios.get("/years").then(response => {
+axios.get("/dashboard/years").then(response => {
 
     var year_select = document.getElementById("select-year");
     let years_ = response.data["years"]

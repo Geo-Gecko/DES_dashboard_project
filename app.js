@@ -74,7 +74,7 @@ app.use(cookieParser());
 app.use('/', express.static(path.join(__dirname, 'public')));
 //Express session
 app.use(session({ cookie: { maxAge: 60000 }, 
-    secret: 'woot',
+    secret: process.env.SECRET_KEY,
     resave: false, 
     saveUninitialized: false}));
 //Express Passport JS

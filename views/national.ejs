@@ -39,16 +39,24 @@
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-        <a class="navbar-brand mr-1" href="/">Dashboard</a>
+        <a class="navbar-brand mr-1" href="/dashboard">Dashboard</a>
 
-        <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+        <button
+         class="btn btn-link btn-sm text-white order-1 order-sm-0"
+         style="margin-bottom: 0px; padding-bottom: 0px;"
+         id="sidebarToggle" href="#">
             <i class="fas fa-bars"></i>
         </button>
-        <li>
-            <div style="padding-left: 100px;margin-top: 20px;">
-                <select id="select-year"></select>
-            </div>
-        </li>
+        <div style="padding-left: 100px; margin-top: 2%;">
+            <select
+             class="custom-select custom-select-sm"
+             style="width: 110%;"
+             id="select-year"></select>
+        </div>
+        <a
+         class="btn btn-link btn-sm btn-light text-dark" href="/logout"
+         style="margin-left: 71.5%;">Logout
+        </a>
 
 
         <!-- Navbar -->
@@ -65,12 +73,6 @@
                     <span>Schools</span>
                 </a>
             </li>
-            <!-- <li class="nav-item active">
-        <a class="nav-link" href="/subCounty/">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Sub County</span>
-        </a>
-      </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="/districts/">
                     <i class="fas fa-fw fa-chart-area"></i>
