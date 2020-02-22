@@ -1,3 +1,5 @@
+let name_of_school_;
+
 //leaflet js
 var mymap = L.map('mapid', {
     zoomDelta: 0.25,
@@ -90,8 +92,8 @@ var searchControl = new L.Control.Search({
     moveToLocation: null
 });
 searchControl.on('search:locationfound', function (e) {
-    console.log(e)
-    ake(e.layer.feature.properties["EMIS NO"]);
+    name_of_school_ = e.layer.feature.properties["EMIS NO"];
+    ake(name_of_school_, "2019");
     mymap.setView(e.latlng, 15.5)
     e.layer.setStyle({ fillColor: '#3f0', color: '#0f0' });
     if (e.layer._popup)
@@ -133,3 +135,28 @@ info1.addTo(mymap);
 
 
 
+
+axios.get("/years").then(response => {
+
+    var year_select = document.getElementById("select-year");
+    let years_ = response.data["years"]
+    years_ = years_.filter(year_ => {
+        if (year_ >= "2019"){
+            return true
+        }
+        return false
+    })
+
+    years_.forEach(year_ => {
+        let option_ = document.createElement("option")
+        option_.textContent = year_
+        year_select.append(option_)
+    })
+
+    let updateYear = () => {
+        ake(name_of_school_, year_select.value)
+    }
+    
+    year_select.addEventListener('change', updateYear, false);
+
+})

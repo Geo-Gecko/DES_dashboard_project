@@ -1,3 +1,4 @@
+let RegionString
 //leaflet js
 var mymap = L.map('mapid', {
     renderer: L.canvas()
@@ -167,8 +168,6 @@ function zoomToFeature(e, check) {
 let allRegions = ["West-Nile", "Elgon"];
 
 function onEachFeature(feature, layer) {
-    // console.log(layer)
-    // allRegions.push(layer.feature.properties.REGION);
     layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
@@ -212,7 +211,7 @@ $('#options').change(function () {
     let letter = $(this).val().charAt(0);
     let remaining = $(this).val().substr(1);
 
-    let RegionString = letter + remaining
+    RegionString = letter + remaining
 
     ake(RegionString)
 })
@@ -244,3 +243,29 @@ info1.update = function (props) {
 
 info1.addTo(mymap);
 
+
+
+axios.get("/years").then(response => {
+
+    var year_select = document.getElementById("select-year");
+    let years_ = response.data["years"]
+    years_ = years_.filter(year_ => {
+        if (year_ >= "2019"){
+            return true
+        }
+        return false
+    })
+
+    years_.forEach(year_ => {
+        let option_ = document.createElement("option")
+        option_.textContent = year_
+        year_select.append(option_)
+    })
+
+    let updateYear = () => {
+        ake(RegionString, year_select.value)
+    }
+    
+    year_select.addEventListener('change', updateYear, false);
+
+})

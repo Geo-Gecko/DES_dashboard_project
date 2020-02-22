@@ -5,11 +5,12 @@ var connection = require('../config/database');
 
 
 /* GET home page. */
-router.get('/:name_of_school', function(req, res, next) {
+router.get('/:name_of_school/:year', function(req, res, next) {
 
 
     // Get school id
     let nameOfSchool = req.params.name_of_school;
+    let year = req.params.year;
 
 
     // run query where school id
@@ -18,7 +19,8 @@ router.get('/:name_of_school', function(req, res, next) {
     inspection.classroom_to_pupil_ratio_in_lower_primaryp1p3 as cprp1p3,
      inspection.classroom_to_pupil_ratio_in_upper_primaryp4p7 as cprp4p7  
      FROM  ft_form_12  as inspection,  ft_form_11  as details 
-     WHERE details.submission_id=inspection.school_name and name_of_school = '${nameOfSchool}' `;
+     WHERE details.submission_id=inspection.school_name and name_of_school = '${nameOfSchool}' 
+     AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}'`;
 
 
     let schoolArray = [];
@@ -58,8 +60,8 @@ router.get('/:name_of_school', function(req, res, next) {
         // console.log("CP4TOP7",cpP4top7Array);
 
         let school = schoolArray[0];
-        let cp1top3Plot = JSON.stringify(cpP1top3Array[0]);
-        let cp4top7Plot = JSON.stringify(cpP4top7Array[0]);
+        let cp1top3Plot = cpP1top3Array[0];
+        let cp4top7Plot = cpP4top7Array[0];
 
         res.send({ school: school, cp1top3: cp1top3Plot, cp4top7: cp4top7Plot })
 

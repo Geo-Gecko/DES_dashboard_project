@@ -3,12 +3,13 @@ var router = express.Router();
 var connection = require('../config/database');
 
 /* GET home page. */
-router.get('/:district', function(req, res, next) {
+router.get('/:district/:year', function(req, res, next) {
 
 
     const limit = 10;
 
     let nameOfDistrict = req.params.district;
+    let year = req.params.year;
 
     const dQuery = `select distinct(details.district) as district,
     sum(inspection.number_of_boys_enrolled_in_p1) as p1_boys,
@@ -26,7 +27,7 @@ router.get('/:district', function(req, res, next) {
     sum(inspection.number_of_boys_enrolled_in_p7) as p7_boys, 
     sum(inspection.number_of_girls_enrolled_in_p7) as p7_girls 
      FROM  ft_form_12  as inspection,  ft_form_11  as details 
-     WHERE details.submission_id=inspection.school_name group by details.district`;
+     WHERE details.submission_id=inspection.school_name AND details.district = '${nameOfDistrict}' AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}' group by details.district`;
 
 
     connection.query(dQuery, function fill(err, result, ) {
@@ -59,14 +60,10 @@ router.get('/:district', function(req, res, next) {
             totalEnrolmentGirlssArray.push(girlsArray);
 
         }
-        // console.log("DISTRICT",districtArray);
-        // console.log("TOTAL ENROLMENT BOYS",  totalEnrolmentBoysArray );
-        // console.log("TOTAL ENROLMENT GILRS",  totalEnrolmentGirlssArray);
-
-
+  
         let district = districtArray[0];
-        let boysPlot = JSON.stringify(totalEnrolmentBoysArray[0]);
-        let girlsPlot = JSON.stringify(totalEnrolmentGirlssArray[0]);
+        let boysPlot = totalEnrolmentBoysArray[0];
+        let girlsPlot = totalEnrolmentGirlssArray[0];
 
         res.send({ district: district, boys: boysPlot, girls: girlsPlot });
 

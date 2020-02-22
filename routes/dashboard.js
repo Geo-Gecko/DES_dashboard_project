@@ -6,7 +6,7 @@ var connection = require('../config/database');
 router.get('/', function(req, res, next) {
 
     const schoolsQuery = "select distinct(details.name_of_school) as school  FROM  ft_form_12  as inspection, ft_form_11 as details  WHERE details.submission_id = inspection.school_name ";
-  
+
     connection.query(schoolsQuery, function(err, result) {
 
         let allSchools = [];
@@ -15,13 +15,34 @@ router.get('/', function(req, res, next) {
             let school = result[i].school;
             allSchools.push(school)
         }
-//console.log(allSchools)
         res.render('dashboard', { schools: allSchools });
 
 
     });
 
 });
+
+/* Get Year */
+router.get('/years', function(req, res, next) {
+
+    const yearQuery = "select distinct(DATE_FORMAT(inspection.date_of_inspection,'%Y')) as year  FROM  ft_form_12  as inspection, ft_form_11 as details  WHERE details.submission_id = inspection.school_name ";
+
+  
+    connection.query(yearQuery, function(err, result) {
+
+        let allYears = [];
+
+        for (let i = 0; i < result.length; i++) {
+            let year = result[i].year;
+            allYears.push(year)
+        }
+        res.send( { "years": allYears });
+
+
+    });
+
+});
+
 
 
 router.get('/enrollment-stats/:name_of_school', function(req, res, next) {
@@ -83,8 +104,8 @@ router.get('/enrollment-stats/:name_of_school', function(req, res, next) {
         }
 
         let school = schoolsArray[0];
-        let boysPlot = JSON.stringify(schoolBoysArray[0]);
-        let girlsPlot = JSON.stringify(schoolGirlsArray[0]);
+        let boysPlot = schoolBoysArray[0];
+        let girlsPlot = schoolGirlsArray[0];
 
         res.send({ school: school, boys: boysPlot, girls: girlsPlot })
 

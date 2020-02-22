@@ -3,10 +3,11 @@ var router = express.Router();
 var connection = require('../config/database');
 
 
-router.get('/:district', function(req, res, next) {
+router.get('/:district/:year', function(req, res, next) {
 
 
     let nameOfDistrict = req.params.district;
+    let year = req.params.year;
 
 
     // run query where school id
@@ -57,7 +58,7 @@ FROM
     ft_form_12 AS inspection,
     ft_form_11 AS details
 WHERE
-    details.submission_id = inspection.school_name AND details.district ='${nameOfDistrict}' group by details.district`;
+    details.submission_id = inspection.school_name AND details.district ='${nameOfDistrict}' AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}' group by details.district`;
 
 
     let enrolArray = [];
@@ -110,10 +111,6 @@ WHERE
              timetableArray.push(teacherstaff);
 
         }
-
-        // console.log("staffArray",staffArray);
-        // console.log("enrolArray",enrolArray);
-        // console.log(" attendArray", attendArray);
 
         let district = districtsArray[0];
         let enrol = enrolArray[0];

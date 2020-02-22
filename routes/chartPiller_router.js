@@ -3,9 +3,10 @@ var router = express.Router();
 var connection = require('../config/database');
 
 
-router.get('/:name_of_school', function(req, res, next) {
+router.get('/:name_of_school/:year', function(req, res, next) {
 
     let nameOfSchool = req.params.name_of_school;
+    let year = req.params.year;
 
     const limit = 5;
 
@@ -37,7 +38,8 @@ router.get('/:name_of_school', function(req, res, next) {
           inspection. school_communication_with_parents_community  as pillar4_domain2, 
           inspection. teacher_communication_with_parents  as pillar4_domain3, 
           inspection. involvement_of_parents  as pillar4_domain4 
-          FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}'`;
+          FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}' 
+          AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}'`;
 
 
 

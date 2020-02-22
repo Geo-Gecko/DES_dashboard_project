@@ -3,14 +3,15 @@ function loadStats() {
   ake();
 }
 
-function ake(nameOfSchool) {
+function ake(nameOfSchool, year) {
   //let e = document.getElementById("sel");
 
   let value = nameOfSchool ? nameOfSchool : "Aanga P.S";
+  let year_ = year ? year : "2019";
 
   // Called to get enrollment for each school
   axios
-    .get(`/attend-enrol-trend/${value}`)
+    .get(`/attend-enrol-trend/${value}/${year_}`)
     .then(function(response) {
       // handle success
       // console.log(response);
@@ -41,7 +42,7 @@ function ake(nameOfSchool) {
 
   // Called for chart_attendance for each school
   axios
-    .get(`/chart_attendance/${value}`)
+    .get(`/chart_attendance/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -74,14 +75,14 @@ function ake(nameOfSchool) {
 
   // Called for teacher pupil ratio
   axios
-    .get(`/teacher-to-pupil-ratio/stats/${value}`)
+    .get(`/teacher-to-pupil-ratio/stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
       let data = response.data;
       let school = data.school;
-      let p1top3Plot = JSON.parse(data.p1top3).map(myFunction);
-      let p4top7Plot = JSON.parse(data.p4top7).map(myFunction);
+      let p1top3Plot = data.p1top3;
+      let p4top7Plot = data.p4top7;
 
       // call the chart function
       ratio_teach(school, p1top3Plot, p4top7Plot);
@@ -96,15 +97,15 @@ function ake(nameOfSchool) {
 
   //called for classroom pupil ratio
   axios
-    .get(`/classroomPupil-stats/${value}`)
+    .get(`/classroomPupil-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
       //console.log(response.data);
 
       let data = response.data;
       let school = data.school;
-      let cp1top3Plot = JSON.parse(data.cp1top3).map(myFunction);
-      let cp4top7Plot = JSON.parse(data.cp4top7).map(myFunction);
+      let cp1top3Plot = data.cp1top3;
+      let cp4top7Plot = data.cp4top7;
 
       // call the chart function
       class_ratio(school, cp1top3Plot, cp4top7Plot);
@@ -119,15 +120,15 @@ function ake(nameOfSchool) {
 
   //called for stance pupil ratio
   axios
-    .get(`/stancePupil-stats/${value}`)
+    .get(`/stancePupil-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
       let data = response.data;
       let school = data.school;
-      let sprboysPlot = JSON.parse(data.sprboys).map(myFunction);
-      let sprgirlsPlot = JSON.parse(data.sprgirls).map(myFunction);
-      let sprovrallPlot = JSON.parse(data.sproverall).map(myFunction);
+      let sprboysPlot =data.sprboys;
+      let sprgirlsPlot = data.sprgirls;
+      let sprovrallPlot = data.sproverall;
 
       // call the chart function
       stance_ratio(school, sprboysPlot, sprgirlsPlot, sprovrallPlot);
@@ -142,7 +143,7 @@ function ake(nameOfSchool) {
 
   //chartpillars Paul
   axios
-    .get(`/chartPiller-stats/${value}`)
+    .get(`/chartPiller-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -190,7 +191,7 @@ function ake(nameOfSchool) {
 
   //called for school details
   axios
-    .get(`/schooldetails-stats/${value}`)
+    .get(`/schooldetails-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
       //console.log(response.data);
@@ -256,7 +257,7 @@ function ake(nameOfSchool) {
 
   // Called to get teacher stats for each school
   axios
-    .get(`/teacher-stats/${value}`)
+    .get(`/teacher-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -281,7 +282,7 @@ function ake(nameOfSchool) {
 
   // Called to get teacher stats for each school
   axios
-    .get(`/teacher-trend-stats/${value}`)
+    .get(`/teacher-trend-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -310,7 +311,7 @@ function ake(nameOfSchool) {
 
   // Called for teaching according to timetable for each school
   axios
-    .get(`/teach-Accord-TT-stats/${value}`)
+    .get(`/teach-Accord-TT-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -332,7 +333,7 @@ function ake(nameOfSchool) {
 
   // Called to get pillar trends for each school
   axios
-    .get(`/chartPiller-Trend-stats/${value}`)
+    .get(`/chartPiller-Trend-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
       let data = response.data;

@@ -3,10 +3,11 @@ var router = express.Router();
 var connection = require('../config/database');
 
 
-router.get('/:region', function(req, res, next) {
+router.get('/:region/:year', function(req, res, next) {
 
 
     let nameOfRegion = req.params.region;
+    let year = req.params.year;
 
 
     // run query where school id
@@ -58,7 +59,7 @@ FROM
     ft_form_12 AS inspection,
     ft_form_11 AS details
 WHERE
-    details.submission_id = inspection.school_name AND details.region = '${nameOfRegion}' AND inspection.term != 'NULL'
+    details.submission_id = inspection.school_name AND details.region = '${nameOfRegion}' AND DATE_FORMAT(inspection.date_of_inspection,'%Y') =  '${year}' AND inspection.term != 'NULL'
 GROUP BY
     inspection.term
 ORDER BY

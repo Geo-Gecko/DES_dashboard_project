@@ -7,12 +7,13 @@ var connection = require('../config/database');
 
 
 
-router.get('/:region', function(req, res, next) {
+router.get('/:region/:year', function(req, res, next) {
 
 
     const limit = 10;
 
     let nameOfRegion = req.params.region;
+    let year = req.params.year;
 
     const aQuery = `select details.region as region,
     count(CASE WHEN inspection.condition_of_school_building_and_compound=1 THEN 1 END ) as pillar1D1S1,
@@ -124,13 +125,9 @@ router.get('/:region', function(req, res, next) {
     count(CASE WHEN inspection.involvement_of_parents=3 THEN 1 END) as pillar4D4S3,
     count(CASE WHEN inspection.involvement_of_parents=4 THEN 1 END) as pillar4D4S4
         FROM  ft_form_12  as inspection,  ft_form_11  as details 
-        WHERE details.submission_id=inspection.school_name and details.region = '${nameOfRegion}' group by details.region`;
+        WHERE details.submission_id=inspection.school_name and details.region = '${nameOfRegion}' AND DATE_FORMAT(
+            inspection.date_of_inspection,'%Y') = '${year}' group by details.region`;
 
-    // console.log("")
-    // console.log("")
-    // console.log("aQuery", aQuery)
-    // console.log("")
-    // console.log("")
 
     connection.query(aQuery, function fill(err, result, ) {
         if (err) throw err;
@@ -162,10 +159,7 @@ router.get('/:region', function(req, res, next) {
         let pillar4D2Array = [];
         let pillar4D3Array = [];
         let pillar4D4Array = [];
-        // let attendenceGirlsArray = [];
-        //let flag = 0; 
         for (let i = 0; i < result.length; i++) {
-            // School
             let region = result[i].region;
 
             regionArray.push(region)
@@ -423,8 +417,6 @@ router.get('/:region', function(req, res, next) {
             pillar4D3Array:pillar4D3Array,
             pillar4D4Array:pillar4D4Array
         };
-        // let girlsPlot = JSON.stringify(attendenceGirlsArray[0]);
-        console.log('regionConditionalPlot', regionConditionalPlot)
         res.send(regionConditionalPlot);
 
     })

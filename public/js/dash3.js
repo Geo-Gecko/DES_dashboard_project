@@ -3,17 +3,18 @@ function loadStats() {
 }
 
 $(document).ready(function() {
-  ake("West Nile");
+  ake("Elgon");
 });
 
-function ake(regionName) {
+function ake(regionName, year) {
   //let e = document.getElementById("sel");
 
   let value = regionName ? regionName : "Elgon";
+  let year_ = year ? year : "2019";
 
   //called for district details
   axios
-    .get(`/nationalDetails-stats/${value}`)
+    .get(`/nationalDetails-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -63,7 +64,7 @@ function ake(regionName) {
 
   // Called for chart_enrolment for each region
   axios
-    .get(`/nationalEnrolAttend-Trend-stats/${value}`)
+    .get(`/nationalEnrolAttend-Trend-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -92,7 +93,7 @@ function ake(regionName) {
 
   // Called for chart_attendance for each region
   axios
-    .get(`/nationalAttendance-stats/${value}`)
+    .get(`/nationalAttendance-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -124,7 +125,7 @@ function ake(regionName) {
 
   // Called for chart_enrolment for each region
   axios
-    .get(`/nationalEnrolAttend-Trend-stats/${value}`)
+    .get(`/nationalEnrolAttend-Trend-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -153,7 +154,7 @@ function ake(regionName) {
 
   // Called for chart_attendance for each region
   axios
-    .get(`/nationalAttendance-stats/${value}`)
+    .get(`/nationalAttendance-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -183,7 +184,7 @@ function ake(regionName) {
 
   // Called for teacher pupil ratio for each region
   axios
-    .get(`/nationalTPR-stats/${value}`)
+    .get(`/nationalTPR-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -205,7 +206,7 @@ function ake(regionName) {
 
   //called for stance pupil ratio for region
   axios
-    .get(`/nationalSPR-stats/${value}`)
+    .get(`/nationalSPR-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -228,7 +229,7 @@ function ake(regionName) {
 
   //called for classroom pupil ratio for region
   axios
-    .get(`/nationalCPR-stats/${value}`)
+    .get(`/nationalCPR-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -249,10 +250,9 @@ function ake(regionName) {
 
   //called for teacher stats for region
   axios
-    .get(`/nationalTeacher-stats/${value}`)
+    .get(`/nationalTeacher-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
-      console.log(response.data);
 
       let data = response.data;
       let region = data.region;
@@ -274,7 +274,7 @@ function ake(regionName) {
 
   // Called for teaching according to timetable for each district
   axios
-    .get(`/nationalteachAccordTT/${value}`)
+    .get(`/nationalteachAccordTT/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -296,7 +296,7 @@ function ake(regionName) {
 
   //called for teacher stats Trends for national level
   axios
-    .get(`/nationalTeacher-Trend-stats/${value}`)
+    .get(`/nationalTeacher-Trend-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -321,7 +321,7 @@ function ake(regionName) {
 
   //chartpillars for district
   axios
-    .get(`/nationalPillars-stats/${value}`)
+    .get(`/nationalPillars-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -376,7 +376,7 @@ function ake(regionName) {
 
   // Called for Pillar trends for each region
   axios
-    .get(`/nationalPillars-Trends-stats/${value}`)
+    .get(`/nationalPillars-Trends-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 

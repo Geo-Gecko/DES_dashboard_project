@@ -3,19 +3,20 @@ function loadStats() {
 }
 
 $(document).ready(function() {
-  ake("Adjumani");
+  ake("Adjumani", "2019");
 });
 
-function ake(districtName) {
+function ake(districtName, year) {
   //let e = document.getElementById("sel");
 
-  console.log(districtName);
 
   let value = districtName ? districtName : "Adjumani";
 
+  let year_ = year ? year : "2019";
+
   //called for district details
   axios
-    .get(`/districtdetails-stats/${value}`)
+    .get(`/districtdetails-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
       // console.log(response.data);
@@ -70,7 +71,7 @@ function ake(districtName) {
 
   // Called for chart_attendance for each district
   axios
-    .get(`/districtattendance-stats/${value}`)
+    .get(`/districtattendance-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -103,7 +104,7 @@ function ake(districtName) {
 
   // Called for teaching according to timetable for each district
   axios
-    .get(`/districtteachAccordTT/${value}`)
+    .get(`/districtteachAccordTT/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -125,7 +126,7 @@ function ake(districtName) {
 
   // Called for district attendance and enrolment stats for each district
   axios
-    .get(`/districttrend-stats/${value}`)
+    .get(`/districttrend-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
       let data = response.data;
@@ -154,7 +155,7 @@ function ake(districtName) {
 
   // Called for teacher pupil ratio for each district
   axios
-    .get(`/districtTPR-stats/${value}`)
+    .get(`/districtTPR-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
       // console.log(response.data);
@@ -177,7 +178,7 @@ function ake(districtName) {
 
   //called for stance pupil ratio for district
   axios
-    .get(`/districtSPR-stats/${value}`)
+    .get(`/districtSPR-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
       // console.log(response.data);
@@ -201,7 +202,7 @@ function ake(districtName) {
 
   //called for classroom pupil ratio for district
   axios
-    .get(`/districtCPR-stats/${value}`)
+    .get(`/districtCPR-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
       //console.log(response.data);
@@ -224,7 +225,7 @@ function ake(districtName) {
 
   //called for teacher stats for district
   axios
-    .get(`/districtteacher-stats/${value}`)
+    .get(`/districtteacher-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -248,7 +249,7 @@ function ake(districtName) {
 
   //called for teacher stats Trends for district
   axios
-    .get(`/districtrteacher_stats-Trend/${value}`)
+    .get(`/districtrteacher_stats-Trend/${value}/${year_}`)
     .then(function(response) {
       // handle success
       //  console.log(response.data);
@@ -281,7 +282,7 @@ function ake(districtName) {
 
   //chartpillars for district
   axios
-    .get(`/districtpillars-stats/${value}`)
+    .get(`/districtpillars-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
 
@@ -335,7 +336,7 @@ function ake(districtName) {
 
   //called for teacher stats Trends for district
   axios
-    .get(`/districtpillar-trend-stats/${value}`)
+    .get(`/districtpillar-trend-stats/${value}/${year_}`)
     .then(function(response) {
       // handle success
       //    console.log(response.data);

@@ -3,10 +3,11 @@ var router = express.Router();
 var connection = require('../config/database');
 
 
-router.get('/:name_of_school', function(req, res, next) {
+router.get('/:name_of_school/:year', function(req, res, next) {
 
     // Get school id
     let nameOfSchool = req.params.name_of_school;
+    let year = req.params.year;
 
 
     // run query where school id
@@ -22,7 +23,8 @@ router.get('/:name_of_school', function(req, res, next) {
         ),
         2
     ) * 100 AS timetable,
-     details.name_of_school as school FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}' and inspection.term != 'NULL' group by inspection.term order by inspection.term asc`;
+     details.name_of_school as school FROM  ft_form_12  as inspection,  ft_form_11  as details WHERE details.submission_id=inspection.school_name and details.name_of_school ='${nameOfSchool}'
+     AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}' and inspection.term != 'NULL' group by inspection.term order by inspection.term asc`;
 
 
     let schoolsArray = [];

@@ -3,12 +3,13 @@ var router = express.Router();
 var connection = require('../config/database');
 
 /* GET home page. */
-router.get('/:district', function(req, res, next) {
+router.get('/:district/:year', function(req, res, next) {
 
 
     const limit = 10;
 
     let nameOfDistrict = req.params.district;
+    let year = req.params.year;
 
     const dQuery = `SELECT details.region as region, 
     round((sum(inspection.attendance_of_p1_boys_on_visitation_day) +
@@ -68,7 +69,7 @@ router.get('/:district', function(req, res, next) {
            sum(inspection.number_of_girls_enrolled_in_p6)  +
            sum(inspection.number_of_girls_enrolled_in_p7)),2)*100  as girls_enrol
             FROM ft_form_12 as inspection, ft_form_11 as details 
-            WHERE details.submission_id=inspection.school_name and details.district = '${nameOfDistrict}' 
+            WHERE details.submission_id=inspection.school_name and details.district = '${nameOfDistrict}' AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}'
             group by details.district`;
 
             connection.query(dQuery, function fill(err, result, ) {

@@ -3,12 +3,13 @@ var router = express.Router();
 var connection = require('../config/database');
 
 /* GET home page. */
-router.get('/:name_of_school', function(req, res, next) {
+router.get('/:name_of_school/:year', function(req, res, next) {
 
 
     const limit = 1;
 
     let nameOfSchool = req.params.name_of_school;
+    let year = req.params.year;
 
     const scQuery = `SELECT DISTINCT
     (details.name_of_school) AS schools,
@@ -59,7 +60,7 @@ FROM
     ft_form_12 AS inspection,
     ft_form_11 AS details
 WHERE
-    details.submission_id = inspection.school_name AND details.name_of_school = '${nameOfSchool}'
+    details.submission_id = inspection.school_name AND details.name_of_school = '${nameOfSchool}' AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}'
 GROUP BY
     details.name_of_school`;
 

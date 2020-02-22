@@ -5,11 +5,12 @@ var connection = require('../config/database');
 
 
 /* GET home page. */
-router.get('/:name_of_school', function(req, res, next) {
+router.get('/:name_of_school/:year', function(req, res, next) {
 
 
     // Get school id
     let nameOfSchool = req.params.name_of_school;
+    let year = req.params.year;
 
 
     // run query where school id
@@ -19,7 +20,8 @@ router.get('/:name_of_school', function(req, res, next) {
     round(inspection.stance_to_pupilgirls_ratio) as sprgirls,
     round(inspection.stance_to_pupiloverall_ratio) as spr_overall 
      FROM  ft_form_12  as inspection,  ft_form_11  as details 
-     WHERE details.submission_id=inspection.school_name and name_of_school = '${nameOfSchool}' `;
+     WHERE details.submission_id=inspection.school_name and name_of_school = '${nameOfSchool}'
+     AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}' `;
        
 
     let schoolArray = [];
@@ -63,9 +65,9 @@ router.get('/:name_of_school', function(req, res, next) {
         }
 
         let school = schoolArray[0];
-        let sprboysPlot = JSON.stringify(sprboysArray[0]);
-        let sprgirlsPlot = JSON.stringify(sprgirlsArray[0]);
-        let sproverallPlot = JSON.stringify(sproverallArray[0]);
+        let sprboysPlot = sprboysArray[0];
+        let sprgirlsPlot = sprgirlsArray[0];
+        let sproverallPlot = sproverallArray[0];
 
         res.send({ school: school, sprboys: sprboysPlot, sprgirls: sprgirlsPlot, sproverall: sproverallPlot })
 

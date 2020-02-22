@@ -24,12 +24,13 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET home page. */
-router.get('/:region', function(req, res, next) {
+router.get('/:region/:year', function(req, res, next) {
 
 
     const limit = 10;
 
     let nameOfRegion = req.params.region;
+    let year = req.params.year;
 
     const dQuery = `SELECT DISTINCT
     (details.region) AS region,
@@ -100,7 +101,8 @@ FROM
     ft_form_12 AS inspection,
     ft_form_11 AS details
 WHERE
-    details.submission_id = inspection.school_name AND details.region = '${nameOfRegion}'
+    details.submission_id = inspection.school_name AND details.region = '${nameOfRegion}' AND DATE_FORMAT(
+        inspection.date_of_inspection,'%Y') = '${year}'
 GROUP BY
     details.region`;
 

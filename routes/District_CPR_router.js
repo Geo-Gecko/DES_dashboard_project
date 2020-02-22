@@ -3,12 +3,13 @@ var router = express.Router();
 var connection = require('../config/database');
 
 
-router.get('/:district', function(req, res, next) {
+router.get('/:district/:year', function(req, res, next) {
 
     // Get school id
     const limit = 1;
 
     let nameOfDistrict = req.params.district;
+    let year = req.params.year;
 
 
     // run query where school id
@@ -17,7 +18,7 @@ router.get('/:district', function(req, res, next) {
     round(avg(inspection.classroom_to_pupil_ratio_in_lower_primaryp1p3)) as cprp1p3,
      round(avg(inspection.classroom_to_pupil_ratio_in_upper_primaryp4p7)) as cprp4p7  
      FROM  ft_form_12  as inspection,  ft_form_11  as details 
-     WHERE details.submission_id=inspection.school_name  and details.district ='${nameOfDistrict}' group by details.district`;
+     WHERE details.submission_id=inspection.school_name  and details.district ='${nameOfDistrict}' AND DATE_FORMAT(inspection.date_of_inspection,'%Y') = '${year}' group by details.district`;
 
 
 
@@ -54,15 +55,11 @@ router.get('/:district', function(req, res, next) {
 
         }
 
-        // console.log("DISTRICT",districtArray);
-        // console.log("CP1TOP3", cpP1top3Array );
-        // console.log("CP4TOP7",cpP4top7Array);
-
         let district = districtArray[0];
         let cp1top3Plot = cpP1top3Array[0];
         let cp4top7Plot = cpP4top7Array[0];
 
-        res.send({ district: district, cp1top3: cp1top3Plot, cp4top7: cp4top7Plot })
+        res.send({ district: district, cp1top3: cp1top3Plot, cp4top7: cp4top7Plot})
 
     })
 
