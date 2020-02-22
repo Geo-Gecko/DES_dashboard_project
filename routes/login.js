@@ -38,29 +38,21 @@ passport.use(
     function( username, password, done) {
 
       connection.query(`SELECT * FROM ft_accounts WHERE email = '${username}';`, function(err, user) {
-        // console.log(user[0].password);
+
         if (err) {
           console.log(err);
+          return done(err);
         }
-        // console.log(hashedPassword, md5(md5(password)))
-
         if (!user) {
           return done(null, false, { message: 'Incorrect username.' });
         }
         hashedPassword = user[0].password
         if (hashedPassword != md5(md5(password))) {
-
           return done(null, false);
-
-
         }
-
         return done(null, user[0]);
       });
-  
     }
-    
-
     )
   
 );
@@ -73,8 +65,7 @@ router.post(
       {
         successRedirect: "/dashboard",
         failureRedirect: "/",
-        failureFlash: true,
-        session: false
+        failureFlash: true
       }
     )
   );

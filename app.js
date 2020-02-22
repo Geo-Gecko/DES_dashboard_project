@@ -81,10 +81,13 @@ app.use(session({ cookie: { maxAge: 60000 },
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-
 //login
 app.use('/', loginRouter);
+
+app.all('*', function(req,res,next){
+    if (req.isAuthenticated()) { return next(); }
+    res.redirect('/')  
+  });
 
 //Schools
 app.use('/dashboard', dashboardRouter);
