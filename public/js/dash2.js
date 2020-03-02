@@ -918,8 +918,16 @@ function chartPillarDistrict(district, pillar1, pillar2, pillar3, pillar4) {
     let pillar2Transpose = transpose(pillar2);
     let pillar3Transpose = transpose(pillar3);
     let pillar4Transpose = transpose(pillar4);
+    var count = 0;
+    pillar1Transpose.forEach(element => {
+      count = count + element[0];
+    });
 
-    console.log(pillarTranspose);
+    pillarTranspose.forEach(element => {
+      for (let index = 0; index < element.length; index++) {
+        element[index] = (element[index] / count) * 10;
+      }      
+    });
   
     var barOptions_stacked = {
       tooltips: {
@@ -938,15 +946,15 @@ function chartPillarDistrict(district, pillar1, pillar2, pillar3, pillar4) {
             label += Math.round(tooltipItem.yLabel * 100) / 100;
             return label;
           },
-          footer: function(tooltipItems, data) {
-            var sum = 0;
+          // footer: function(tooltipItems, data) {
+          //   var sum = 0;
   
-            tooltipItems.forEach(function(tooltipItem) {
-              sum +=
-                data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-            });
-            return "Number of Schools: " + sum;
-          }
+          //   tooltipItems.forEach(function(tooltipItem) {
+          //     sum +=
+          //       data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          //   });
+          //   return "Number of Schools: " + sum;
+          // }
         },
         footerFontStyle: "normal"
       },
@@ -1039,8 +1047,6 @@ function chartPillarDistrict(district, pillar1, pillar2, pillar3, pillar4) {
       },
       options: barOptions_stacked
     });
-  
-    // console.log($('#pillars'));
   
     $(document).on("change", "#district", function() {
       if ($(this).val() === "0") {

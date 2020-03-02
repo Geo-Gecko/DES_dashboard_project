@@ -162,7 +162,7 @@ function zoomToFeature(e, check) {
         }
     }
 
-    ake(RegionStringD)
+    ake(RegionStringD, "2019")
 }
 
 let allRegions = ["West-Nile", "Elgon"];
@@ -213,7 +213,7 @@ $('#options').change(function () {
 
     RegionString = letter + remaining
 
-    ake(RegionString)
+    ake(RegionString, "2019")
 })
 
 var info1 = L.control({ position: 'bottomright' });

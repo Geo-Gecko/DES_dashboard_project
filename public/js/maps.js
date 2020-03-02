@@ -12,7 +12,7 @@ var southWest = new L.LatLng(-1.9126224937624325, 28.364710751121848),
     bounds = new L.LatLngBounds(southWest, northEast);
 
 mymap.fitBounds(bounds);
-
+ 
 
 var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -76,7 +76,7 @@ geojson = L.geoJson(schools, {
         featureLayer.bindPopup(popup_html);
         featureLayer.on('click', function (e) {
             mymap.setView(e.latlng, 15.5)
-            // ake(features.properties['EMIS NO']);
+            ake(features.properties['School Name'], "2019");
         });
 
     }
@@ -92,7 +92,7 @@ var searchControl = new L.Control.Search({
     moveToLocation: null
 });
 searchControl.on('search:locationfound', function (e) {
-    name_of_school_ = e.layer.feature.properties["EMIS NO"];
+    name_of_school_ = e.layer.feature.properties['School Name'];
     ake(name_of_school_, "2019");
     mymap.setView(e.latlng, 15.5)
     e.layer.setStyle({ fillColor: '#3f0', color: '#0f0' });
