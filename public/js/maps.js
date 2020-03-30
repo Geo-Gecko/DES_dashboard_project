@@ -1,15 +1,38 @@
+
 let name_of_school_;
-let schools, geojson;
+let geojson;
+let schools = [];
+let groupBy = function(data, key) {
+        return data.reduce(function(storage, item) {
+            var group = item[key];
+            storage[group] = storage[group] || [];
+            storage[group].push(item);
+            return storage; 
+        }, {});
+    };
+
+
 axios.get('/dashboard/allCoordinates/2019')
     .then(function (response) {
         // handle success
-        console.log(response)
-        schools = response.data.school;
+        let sorted_schools = groupBy(response.data.school, 'district')
+        for (let [key, school_collection] of Object.entries(sorted_schools)) {
+            school_collection.sort((a, b) => {
+                if (a.Total < b.Total) { return -1 }
+                if (a.Total > b.Total) { return 1 }
+                return 0
+            })
+            school_collection = school_collection.reverse()
+            school_collection.forEach((collection_, i) => {
+                collection_.Total = i + 1
+                schools.push(collection_)
+            })
+
+        };
 
         var jsonFeatures = [];
 
         schools.forEach(function (point) {
-            // console.log(point)
             var lat = point.latitude;
             var lon = point.longitude;
 
@@ -31,7 +54,7 @@ axios.get('/dashboard/allCoordinates/2019')
             pointToLayer: function (feature, latlng) {
                 var geojsonMarkerOptions = {
                     radius: 6,
-                    fillColor: getColour(feature.properties.Grade),
+                    fillColor: getColour(feature.properties.Total),
                     color: "#000",
                     weight: 0.6,
                     opacity: 1,
@@ -39,43 +62,39 @@ axios.get('/dashboard/allCoordinates/2019')
                 };
                 return L.circleMarker(latlng, geojsonMarkerOptions);
             },
-            onEachFeature: function (features, featureLayer) {
-
-                var randomScalingFactor = function() {
-                    return Math.ceil(Math.random() * 1.0) * Math.pow(10, Math.ceil(Math.random() * 4));
-                };
+            onEachFeature: function (feature, featureLayer) {
 
                 var popup_html = "<h4>School Information</h4>" +
                     "<table class='popup-table'>" +
                     "<tr>" +
                     "<td class='attrib-name'>School Name:</td>" +
-                    "<td class='attrib-value'>" + features.properties['name'] + "</td>" +
+                    "<td class='attrib-value'>" + feature.properties['name'] + "</td>" +
                     "</tr>" +
                     "<tr>" +
                     "<td class='attrib-name'>EMIS Code:</td>" +
-                    "<td class='attrib-value'>" + features.properties['emis_number'] + "</td>" +
+                    "<td class='attrib-value'>" + feature.properties['emis_number'] + "</td>" +
                     " </tr>" +
                     "<tr>" +
                     "<td class='attrib-name'>Ranking:</td>" +
-                    " <td class='attrib-value'>Rank: <b>" + randomScalingFactor() + "</b> in " + features.properties.district + "</td>" +
+                    " <td class='attrib-value'>Rank: <b>" + feature.properties.Total + "</b> in " + feature.properties.district + "</td>" +
                     "</tr>" +
                     "<tr>" +
                     "<td class='attrib-name'>District:</td>" +
-                    " <td class='attrib-value'>" + features.properties.district + "</td>" +
+                    " <td class='attrib-value'>" + feature.properties.district + "</td>" +
                     "</tr>" +
                     "<tr>" +
                     "<td class='attrib-name'>Subcounty:</td>" +
-                    " <td class='attrib-value'>" + features.properties.sub_county + "</td>" +
+                    " <td class='attrib-value'>" + feature.properties.sub_county + "</td>" +
                     "</tr>" +
                     "<tr>" +
                     "<td class='attrib-name'>Parish/Ward:</td>" +
-                    " <td class='attrib-value'>" + features.properties.parish_ward + "</td>" +
+                    " <td class='attrib-value'>" + feature.properties.parish_ward + "</td>" +
                     "</tr>" +
                     " </table>";
                 featureLayer.bindPopup(popup_html);
                 featureLayer.on('click', function (e) {
                     mymap.setView(e.latlng, 15.5)
-                    name_of_school_ = features.properties['name']
+                    name_of_school_ = feature.properties['name']
                     ake(name_of_school_, "2019");
                 });
 
@@ -112,13 +131,13 @@ var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{
 }).addTo(mymap);
 
 function getColour(d) {
-    if (d === "A") {
+    if (d <= 25) {
         return "#008000"
-    } else if (d === "B") {
+    } else if (d <= 50 || d > 25) {
         return "#FFFF00"
-    } else if (d === "C") {
+    } else if (d <= 100 || d > 50) {
         return "#FFA500"
-    } else if (d === "D") {
+    } else if (d > 100) {
         return "#FF0000"
     }
 }
@@ -162,10 +181,10 @@ info1.update = function (props) {
         "<circle cy='50' cx='10' r='0.4em' style='fill: #FFFF00;'></circle>" +
         "<circle cy='70' cx='10' r='0.4em' style='fill: #FFA500;'></circle>" +
         "<circle cy='90' cx='10' r='0.4em' style='fill: #FF0000;'></circle>" +
-        "<text class='legend-text' x='25' y='25' dy='0.8em' style='color: white;'>A - (81% - 100%)</text>" +
-        "<text class='legend-text' x='25' y='45' dy='0.8em' style='color: white;'>B - (61% - 80%)</text>" +
-        "<text class='legend-text' x='25' y='65' dy='0.8em' style='color: white;'>C - (41% - 60%)</text>" +
-        "<text class='legend-text' x='25' y='85' dy='0.8em' style='color: white;'>D - (25% - 40%)</text>" +
+        "<text class='legend-text' x='25' y='25' dy='0.8em' style='color: white;'>A - (1 - 25)</text>" +
+        "<text class='legend-text' x='25' y='45' dy='0.8em' style='color: white;'>B - (25 - 50)</text>" +
+        "<text class='legend-text' x='25' y='65' dy='0.8em' style='color: white;'>C - (50 - 100)</text>" +
+        "<text class='legend-text' x='25' y='85' dy='0.8em' style='color: white;'>D - (100 - )</text>" +
         "<text class='legend-title' x='0' y='0' font-weight='bold' dy='0.8em'>Legend</text>" +
         "</svg>" +
         "</div>";
