@@ -1,10 +1,102 @@
 let name_of_school_;
+let schools, geojson;
+axios.get('/dashboard/allCoordinates/2019')
+    .then(function (response) {
+        // handle success
+        console.log(response)
+        schools = response.data.school;
+
+        var jsonFeatures = [];
+
+        schools.forEach(function (point) {
+            // console.log(point)
+            var lat = point.latitude;
+            var lon = point.longitude;
+
+            var feature = {
+                type: 'Feature',
+                properties: point,
+                geometry: {
+                    type: 'Point',
+                    coordinates: [lon, lat]
+                }
+            };
+
+            jsonFeatures.push(feature);
+        });
+
+        var schoolsGeoJson = { type: 'FeatureCollection', features: jsonFeatures };
+
+        geojson = L.geoJson(schoolsGeoJson, {
+            pointToLayer: function (feature, latlng) {
+                var geojsonMarkerOptions = {
+                    radius: 6,
+                    fillColor: getColour(feature.properties.Grade),
+                    color: "#000",
+                    weight: 0.6,
+                    opacity: 1,
+                    fillOpacity: 1
+                };
+                return L.circleMarker(latlng, geojsonMarkerOptions);
+            },
+            onEachFeature: function (features, featureLayer) {
+
+                var randomScalingFactor = function() {
+                    return Math.ceil(Math.random() * 1.0) * Math.pow(10, Math.ceil(Math.random() * 4));
+                };
+
+                var popup_html = "<h4>School Information</h4>" +
+                    "<table class='popup-table'>" +
+                    "<tr>" +
+                    "<td class='attrib-name'>School Name:</td>" +
+                    "<td class='attrib-value'>" + features.properties['name'] + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td class='attrib-name'>EMIS Code:</td>" +
+                    "<td class='attrib-value'>" + features.properties['emis_number'] + "</td>" +
+                    " </tr>" +
+                    "<tr>" +
+                    "<td class='attrib-name'>Ranking:</td>" +
+                    " <td class='attrib-value'>Rank: <b>" + randomScalingFactor() + "</b> in " + features.properties.district + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td class='attrib-name'>District:</td>" +
+                    " <td class='attrib-value'>" + features.properties.district + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td class='attrib-name'>Subcounty:</td>" +
+                    " <td class='attrib-value'>" + features.properties.sub_county + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td class='attrib-name'>Parish/Ward:</td>" +
+                    " <td class='attrib-value'>" + features.properties.parish_ward + "</td>" +
+                    "</tr>" +
+                    " </table>";
+                featureLayer.bindPopup(popup_html);
+                featureLayer.on('click', function (e) {
+                    mymap.setView(e.latlng, 15.5)
+                    name_of_school_ = features.properties['name']
+                    ake(name_of_school_, "2019");
+                });
+
+            }
+        }).addTo(mymap);
+
+
+
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error);
+    })
+    .finally(function () {
+        // always executed
+    });
 
 //leaflet js
 var mymap = L.map('mapid', {
     zoomDelta: 0.25,
-    zoomSnap: 0.25,
-    renderer: L.canvas()
+    zoomSnap: 0.25
 }).setView([1.44, 32.49], 6.5);
 
 var southWest = new L.LatLng(-1.9126224937624325, 28.364710751121848),
@@ -12,7 +104,7 @@ var southWest = new L.LatLng(-1.9126224937624325, 28.364710751121848),
     bounds = new L.LatLngBounds(southWest, northEast);
 
 mymap.fitBounds(bounds);
- 
+
 
 var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -31,68 +123,16 @@ function getColour(d) {
     }
 }
 
-
-
-geojson = L.geoJson(schools, {
-    pointToLayer: function (feature, latlng) {
-        var geojsonMarkerOptions = {
-            radius: 6,
-            fillColor: getColour(feature.properties.Grade),
-            color: "#000",
-            weight: 0.6,
-            opacity: 1,
-            fillOpacity: 1
-        };
-        return L.circleMarker(latlng, geojsonMarkerOptions);
-    },
-    onEachFeature: function (features, featureLayer) {
-        var popup_html = "<h4>School Information</h4>" +
-                "<table class='popup-table'>" +
-                "<tr>" +
-                "<td class='attrib-name'>School Name:</td>" +
-                "<td class='attrib-value'>" + features.properties['School Name'] + "</td>" +
-                "</tr>" +
-                "<tr>" +
-                "<td class='attrib-name'>EMIS Code:</td>" +
-                "<td class='attrib-value'>" + features.properties['EMIS NO'] + "</td>" +
-                " </tr>" +
-                "<tr>" +
-                "<td class='attrib-name'>Ranking:</td>" +
-                " <td class='attrib-value'>Rank: <b>" + features.properties.Ranking + "</b> in " + features.properties.District + "</td>" +
-                "</tr>" +
-                "<tr>" +
-                "<td class='attrib-name'>District:</td>" +
-                " <td class='attrib-value'>" + features.properties.District + "</td>" +
-                "</tr>" +
-                "<tr>" +
-                "<td class='attrib-name'>Subcounty:</td>" +
-                " <td class='attrib-value'>" + features.properties.Subcounty + "</td>" +
-                "</tr>" +
-                "<tr>" +
-                "<td class='attrib-name'>Parish/Ward:</td>" +
-                " <td class='attrib-value'>" + features.properties['Parish\/Ward'] + "</td>" +
-                "</tr>" +
-                " </table>";
-        featureLayer.bindPopup(popup_html);
-        featureLayer.on('click', function (e) {
-            mymap.setView(e.latlng, 15.5)
-            ake(features.properties['School Name'], "2019");
-        });
-
-    }
-}).addTo(mymap);
-
-
-
 var searchControl = new L.Control.Search({
     layer: geojson,
     container: 'findBox',
-    propertyName: 'School Name',
+    propertyName: 'name',
     circleLocation: false,
     moveToLocation: null
 });
 searchControl.on('search:locationfound', function (e) {
-    name_of_school_ = e.layer.feature.properties['School Name'];
+    
+    name_of_school_ = e.layer.feature.properties["name"]
     ake(name_of_school_, "2019");
     mymap.setView(e.latlng, 15.5)
     e.layer.setStyle({ fillColor: '#3f0', color: '#0f0' });
@@ -115,20 +155,20 @@ info1.onAdd = function (mymap) {
 
 // method that we will use to update the control based on feature properties passed
 info1.update = function (props) {
-    this._div.innerHTML = 
-    "<div id='legend' style=''>" +
+    this._div.innerHTML =
+        "<div id='legend' style=''>" +
         "<svg class='head' width='150' height='100'>" +
-            "<circle cy='30' cx='10' r='0.4em' style='fill: #008000;'></circle>" +
-            "<circle cy='50' cx='10' r='0.4em' style='fill: #FFFF00;'></circle>" +
-            "<circle cy='70' cx='10' r='0.4em' style='fill: #FFA500;'></circle>" +
-            "<circle cy='90' cx='10' r='0.4em' style='fill: #FF0000;'></circle>" +
-            "<text class='legend-text' x='25' y='25' dy='0.8em' style='color: white;'>A - (81% - 100%)</text>" +
-            "<text class='legend-text' x='25' y='45' dy='0.8em' style='color: white;'>B - (61% - 80%)</text>" +
-            "<text class='legend-text' x='25' y='65' dy='0.8em' style='color: white;'>C - (41% - 60%)</text>" +
-            "<text class='legend-text' x='25' y='85' dy='0.8em' style='color: white;'>D - (25% - 40%)</text>" +
-            "<text class='legend-title' x='0' y='0' font-weight='bold' dy='0.8em'>Legend</text>" +
+        "<circle cy='30' cx='10' r='0.4em' style='fill: #008000;'></circle>" +
+        "<circle cy='50' cx='10' r='0.4em' style='fill: #FFFF00;'></circle>" +
+        "<circle cy='70' cx='10' r='0.4em' style='fill: #FFA500;'></circle>" +
+        "<circle cy='90' cx='10' r='0.4em' style='fill: #FF0000;'></circle>" +
+        "<text class='legend-text' x='25' y='25' dy='0.8em' style='color: white;'>A - (81% - 100%)</text>" +
+        "<text class='legend-text' x='25' y='45' dy='0.8em' style='color: white;'>B - (61% - 80%)</text>" +
+        "<text class='legend-text' x='25' y='65' dy='0.8em' style='color: white;'>C - (41% - 60%)</text>" +
+        "<text class='legend-text' x='25' y='85' dy='0.8em' style='color: white;'>D - (25% - 40%)</text>" +
+        "<text class='legend-title' x='0' y='0' font-weight='bold' dy='0.8em'>Legend</text>" +
         "</svg>" +
-    "</div>";
+        "</div>";
 };
 
 info1.addTo(mymap);

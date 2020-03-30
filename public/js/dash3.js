@@ -56,7 +56,7 @@ function ake(regionName, year) {
     })
     .catch(function(error) {
       // handle error
-      //console.log(error);
+      console.log(error);
     })
     .finally(function() {
       // always executed
@@ -85,7 +85,7 @@ function ake(regionName, year) {
     })
     .catch(function(error) {
       // handle error
-      //console.log(error);
+      console.log(error);
     })
     .finally(function() {
       // always executed
@@ -117,7 +117,7 @@ function ake(regionName, year) {
     })
     .catch(function(error) {
       // handle error
-      //console.log(error);
+      console.log(error);
     })
     .finally(function() {
       // always executed
@@ -146,7 +146,7 @@ function ake(regionName, year) {
     })
     .catch(function(error) {
       // handle error
-      //console.log(error);
+      console.log(error);
     })
     .finally(function() {
       // always executed
@@ -176,7 +176,7 @@ function ake(regionName, year) {
     })
     .catch(function(error) {
       // handle error
-      //console.log(error);
+      console.log(error);
     })
     .finally(function() {
       // always executed
@@ -1181,6 +1181,36 @@ function national_pillar_trends(
     trendChart.destroy();
   }
 
+  function normalizer(d) {
+    let value = d[0]
+    if ( value < 1) {
+      return "";
+    } else if (value <= 16) {
+      return 5;
+    } else if (value > 16 && value < 28) {
+      return 10;
+    } else if (value > 28 && value < 32) {
+      return 15;
+    } else if (value >= 32) {
+      return 20;
+    } else if (value < 1) {
+      return "";
+    }
+  }
+
+  pillar1Score.forEach(element => {
+    element[0] = normalizer(element)    
+  });
+  pillar2Score.forEach(element => {
+    element[0] = normalizer(element)    
+  });
+  pillar3Score.forEach(element => {
+    element[0] = normalizer(element)    
+  });
+  pillar4Score.forEach(element => {
+    element[0] = normalizer(element)    
+  });
+
   var trendChart = new Chart(document.getElementById("region_lineChart"), {
     type: "line",
     data: {
@@ -1251,23 +1281,21 @@ function national_pillar_trends(
               labelString: "Grade"
             },
             ticks: {
-              // min: 0,
-              // max: 5,
-              stepSize: 10,
-              // suggestedMin: 0,
-              // suggestedMax: 15,
+              min: 0,
+              max: 25,
+              stepSize: 5,
               callback: function(label, index, labels) {
-                if (label < 1) {
+                if (label < 5) {
                   return "";
-                } else if (label <= 16) {
+                } else if (label == 5) {
                   return "D";
-                } else if (label > 16 && label < 28) {
+                } else if (label == 10) {
                   return "C";
-                } else if (label > 28 && label < 32) {
+                } else if (label == 15) {
                   return "B";
-                } else if (label >= 32) {
+                } else if (label == 20) {
                   return "A";
-                } else if (label < 1) {
+                } else if (label > 20) {
                   return "";
                 }
               }
