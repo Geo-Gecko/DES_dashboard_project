@@ -16,6 +16,7 @@ axios.get('/dashboard/allCoordinates/2019')
     .then(function (response) {
         // handle success
         let sorted_schools = groupBy(response.data.school, 'district')
+        let total_schools_in_district = {};
         for (let [key, school_collection] of Object.entries(sorted_schools)) {
             school_collection.sort((a, b) => {
                 if (a.Total < b.Total) { return -1 }
@@ -27,6 +28,7 @@ axios.get('/dashboard/allCoordinates/2019')
                 collection_.Total = i + 1
                 schools.push(collection_)
             })
+            total_schools_in_district[key] = school_collection.length
 
         };
 
@@ -54,7 +56,9 @@ axios.get('/dashboard/allCoordinates/2019')
             pointToLayer: function (feature, latlng) {
                 var geojsonMarkerOptions = {
                     radius: 6,
-                    fillColor: getColour(feature.properties.Total),
+                    fillColor: getColour(
+                        feature.properties.Total, total_schools_in_district[feature.properties.district]
+                    ),
                     color: "#000",
                     weight: 0.6,
                     opacity: 1,
@@ -130,14 +134,15 @@ var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(mymap);
 
-function getColour(d) {
-    if (d <= 25) {
+function getColour(d, total_schools) {
+    let school_position = (d/total_schools) * 100;
+    if (school_position <= 25) {
         return "#008000"
-    } else if (d <= 50 || d > 25) {
+    } else if (school_position <= 50 && school_position > 25) {
         return "#FFFF00"
-    } else if (d <= 100 || d > 50) {
+    } else if (school_position <= 75 && school_position > 50) {
         return "#FFA500"
-    } else if (d > 100) {
+    } else if (school_position <= 100 && school_position > 75) {
         return "#FF0000"
     }
 }
@@ -181,10 +186,10 @@ info1.update = function (props) {
         "<circle cy='50' cx='10' r='0.4em' style='fill: #FFFF00;'></circle>" +
         "<circle cy='70' cx='10' r='0.4em' style='fill: #FFA500;'></circle>" +
         "<circle cy='90' cx='10' r='0.4em' style='fill: #FF0000;'></circle>" +
-        "<text class='legend-text' x='25' y='25' dy='0.8em' style='color: white;'>A - (1 - 25)</text>" +
-        "<text class='legend-text' x='25' y='45' dy='0.8em' style='color: white;'>B - (25 - 50)</text>" +
-        "<text class='legend-text' x='25' y='65' dy='0.8em' style='color: white;'>C - (50 - 100)</text>" +
-        "<text class='legend-text' x='25' y='85' dy='0.8em' style='color: white;'>D - (100 - )</text>" +
+        "<text class='legend-text' x='25' y='25' dy='0.8em' style='color: white;'>A - (1% - 25%)</text>" +
+        "<text class='legend-text' x='25' y='45' dy='0.8em' style='color: white;'>B - (25% - 50%)</text>" +
+        "<text class='legend-text' x='25' y='65' dy='0.8em' style='color: white;'>C - (50% - 75%)</text>" +
+        "<text class='legend-text' x='25' y='85' dy='0.8em' style='color: white;'>D - (75% - 100%)</text>" +
         "<text class='legend-title' x='0' y='0' font-weight='bold' dy='0.8em'>Legend</text>" +
         "</svg>" +
         "</div>";
