@@ -43,7 +43,28 @@ router.get('/years', function(req, res, next) {
 
 });
 
+/* GET lats-longs. */
+router.get('/allCoordinates/:year', function (req, res, next) {
 
+    let year = req.params.year;
+
+    const schoolsQuery = `select ft_form_12.date_of_inspection, ft_form_11.latitude as latitude, ft_form_11.longitude as longitude, ft_form_11.region as region, ft_form_11.district as district, ft_form_11.county as county, ft_form_11.sub_county as sub_county, ft_form_11.emis_number as emis_number, ft_form_11.parish_ward as parish_ward, ft_form_11.name_of_school as name, (ft_form_12.condition_of_school_building_and_compound + ft_form_12.classroom_infrastructure + ft_form_12.sanitary_facilities + ft_form_12.timetabling + ft_form_12.teacher_deployment + ft_form_12.disciplinary_policy + ft_form_12.inclusive_school_practice + ft_form_12.gender_sensitive_school + ft_form_12.teacher_and_pupil_attendance + ft_form_12.school_improvement_plan_sip + ft_form_12.sip_activities + ft_form_12.financial_management + ft_form_12.systematic_monitoring_and_evaluation_of_teacher_performance + ft_form_12.continuous_professional_development + ft_form_12.systematic_monitoring_of_student_performance + ft_form_12.lesson_planning + ft_form_12.lesson_delivery + ft_form_12.teaching_and_learning_materials + ft_form_12.learner_participation + ft_form_12.learning + ft_form_12.teachers_rapport_with_learners + ft_form_12.classroom_environment + ft_form_12.pupils_work + ft_form_12.school_management_committee + ft_form_12.school_communication_with_parents_community + ft_form_12.teacher_communication_with_parents + ft_form_12.involvement_of_parents) as Total from ft_form_11 inner join ft_form_12 on ft_form_11.emis_number=ft_form_12.school_name where DATE_FORMAT(ft_form_12.date_of_inspection,'%Y') = '${year}'`;
+
+
+    let allSchools = [];
+
+    connection.query(schoolsQuery, function (err, result) {
+
+        result.forEach(element => {
+            allSchools.push(element);
+        });
+   
+        res.send({ "school": allSchools })
+
+    });
+
+
+});
 
 router.get('/enrollment-stats/:name_of_school', function(req, res, next) {
 

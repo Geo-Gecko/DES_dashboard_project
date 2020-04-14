@@ -91,12 +91,14 @@ var schoolsJson;
 var schoolCount = 0;
 
 function zoomToFeature(e, check) {
+
+    let schools, geojson;
     if (check == undefined) {
         mymap.fitBounds(e.target.getBounds());
-        var selectedDistrict = e.target.feature.properties.DName2019;
+        var selectedDistrict = e.target.feature.properties.DNAME2014;
     } else {
         mymap.fitBounds(e.getBounds());
-        var selectedDistrict = e.feature.properties.DName2019;
+        var selectedDistrict = e.feature.properties.DNAME2014;
     }
 
     let letterD = selectedDistrict.charAt(0);
@@ -104,28 +106,106 @@ function zoomToFeature(e, check) {
 
     let districtStringD = letterD + remainingD
 
-    if (mymap.hasLayer(schoolsJson)) {
-        mymap.removeLayer(schoolsJson)
+    if (mymap.hasLayer(geojson)) {
+        mymap.removeLayer(geojson)
     }
 
-    schoolCount = 0;
+    axios.get(`/districts/allCoordinates/${selectedDistrict}`)
+        .then(function (response) {
+            // handle success
+            schools = response.data.school;
 
-    schoolsJson = L.geoJson(schools, {
-        pointToLayer: function (feature, latlng) {
-            var geojsonMarkerOptions = {
-                radius: 6,
-                fillColor: getColour(feature.properties.Grade),
-                color: "#000",
-                weight: 0.6,
-                opacity: 1,
-                fillOpacity: 1
-            };
-            if (districtStringD === feature.properties.District.toUpperCase()) {
-                schoolCount++;
-                return L.circleMarker(latlng, geojsonMarkerOptions);
+            var jsonFeatures = [];
+
+            schools.forEach(function (point) {
+                var lat = point.latitude;
+                var lon = point.longitude;
+
+                var feature = {
+                    type: 'Feature',
+                    properties: point,
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [lon, lat]
+                    }
+                };
+
+                jsonFeatures.push(feature);
+            });
+
+            var schoolsGeoJson = { type: 'FeatureCollection', features: jsonFeatures };
+
+            for (key in mymap['_layers']) {
+                let l = mymap['_layers'][key]
+                if (l.feature) {
+                    if (l.feature.geometry.type == "Point") {
+                        mymap.removeLayer(l);
+                    }
+                }
             }
-        }
-    }).addTo(mymap);
+
+            geojsonSchools = L.geoJson(schoolsGeoJson, {
+                pointToLayer: function (feature, latlng) {
+                    var geojsonMarkerOptions = {
+                        radius: 6,
+                        fillColor: getColour(feature.properties.Grade),
+                        color: "#000",
+                        weight: 0.6,
+                        opacity: 1,
+                        fillOpacity: 1
+                    };
+                    return L.circleMarker(latlng, geojsonMarkerOptions);
+                },
+                onEachFeature: function (features, featureLayer) {
+
+                    var randomScalingFactor = function () {
+                        return Math.ceil(Math.random() * 1.0) * Math.pow(10, Math.ceil(Math.random() * 4));
+                    };
+
+                    var popup_html = "<h4>School Information</h4>" +
+                        "<table class='popup-table'>" +
+                        "<tr>" +
+                        "<td class='attrib-name'>School Name:</td>" +
+                        "<td class='attrib-value'>" + features.properties['name'] + "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td class='attrib-name'>EMIS Code:</td>" +
+                        "<td class='attrib-value'>" + features.properties['emis_number'] + "</td>" +
+                        " </tr>" +
+                        "<tr>" +
+                        "<td class='attrib-name'>Ranking:</td>" +
+                        " <td class='attrib-value'>Rank: <b>" + randomScalingFactor() + "</b> in " + features.properties.District + "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td class='attrib-name'>District:</td>" +
+                        " <td class='attrib-value'>" + features.properties.district + "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td class='attrib-name'>Subcounty:</td>" +
+                        " <td class='attrib-value'>" + features.properties.sub_county + "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td class='attrib-name'>Parish/Ward:</td>" +
+                        " <td class='attrib-value'>" + features.properties.parish_ward + "</td>" +
+                        "</tr>" +
+                        " </table>";
+                    featureLayer.bindPopup(popup_html);
+                    featureLayer.on('click', function (e) {
+                        mymap.setView(e.latlng, 15.5)
+                        ake(features.properties['name'], "2019");
+                    });
+
+                }
+            }).addTo(mymap);
+
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .finally(function () {
+            // always executed
+        });
 
     $('#legend').show();
 
@@ -163,13 +243,58 @@ function zoomToFeature(e, check) {
         }
     }
 
-
-
     ake(districtStringD, "2019")
 
 }
 
-let allDistricts = ["KALIRO", "IBANDA", "GULU", "TORORO", "SOROTI", "MOYO", "KWEEN", "BUKWO", "SIRONKO", "OBONGI", "ARUA", "ARUA M.C", "KAPCHORWA M.C", "MARACHA", "MADI-OKOLLO", "JINJA", "KAMPALA", "RAKAI", "KAPCHORWA", "MOROTO", "MBARARA", "KAKUMIRO", "IGANGA", "LIRA", "KABALE", "HOIMA", "BUDUDA", "SHEEMA", "ADJUMANI", "MBALE", "NTOROKO", "LWENGO", "BUVUMA", "YUMBE", "MASINDI", "KIBAALE", "MANAFWA", "APAC", "AMURU", "DOKOLO", "BUTALEJA"]
+axios.get("/districts/alldistricts")
+    .then(function (response) {
+        // handle success
+        var allD = response.data.district;
+
+        var select = $('<select name="options" id="options" style="width: 100%;"><option value="Select District">Select District</option></select>');
+        $.each(allD, function (index, value) {
+
+            var option = $('<option></option>');
+            option.attr('value', value.district);
+            option.text(value.district);
+            select.append(option);
+
+        });
+        $('#districtDropdown').empty().append(select);
+
+        $('#options').change(function () {
+
+            for (key in geojson['_layers']) {
+                let l = geojson['_layers'][key]
+                l.setStyle({
+                    "fillColor": "#fff",
+                    "weight": 0.7,
+                    "opacity": 1,
+                    "color": '#000',
+                    "fillOpacity": 0.3
+                })
+                if (l.feature.properties.DNAME2014 == $(this).val().toUpperCase()) {
+                    zoomToFeature(l, false);
+                }
+            }
+
+            let letter = $(this).val().charAt(0);
+            let remaining = $(this).val().substr(1);
+
+            let districtString = letter + remaining;
+
+            ake(districtString, "2019")
+        })
+
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error);
+    })
+    .finally(function () {
+        // always executed
+    });
 
 function onEachFeature(feature, layer) {
     layer.on({
@@ -183,52 +308,6 @@ geojson = L.geoJson(districts, {
     style: geojsonpolygonOptions,
     onEachFeature: onEachFeature
 }).addTo(mymap);
-
-var select = $('<select name="options" id="options" style="width: 100%;"><option value="KAMPALA">KAMPALA</option></select>');
-$.each(allDistricts, function (index, value) {
-    if (value.key !== "KAMPALA") {
-        var option = $('<option></option>');
-        option.attr('value', value);
-        option.text(value);
-        select.append(option);
-    }
-
-});
-$('#districtDropdown').empty().append(select);
-
-$('#options').change(function () {
-
-    for (key in geojson['_layers']) {
-        let l = geojson['_layers'][key]
-        l.setStyle({
-            "fillColor": "#fff",
-            "weight": 0.7,
-            "opacity": 1,
-            "color": '#000',
-            "fillOpacity": 0.3
-        })
-        if (l.feature.properties.DName2019 === $(this).val()) {
-            zoomToFeature(l, false);
-            // l.setStyle({
-            //     "fillColor": "#0f0",
-            //     "weight": 0.7,
-            //     "opacity": 1,
-            //     "color": '#0f0',
-            //     "fillOpacity": 0.3
-            // })
-        }
-    }
-
-    let letter = $(this).val().charAt(0);
-    let remaining = $(this).val().substr(1);
-
-    districtString = letter + remaining;
-
-
-    ake(districtString, "2019")
-})
-
-
 
 var info1 = L.control({ position: 'bottomright' });
 
