@@ -81,6 +81,13 @@ app.use(session({ cookie: { maxAge: 900000 },
 app.use(passport.initialize());
 app.use(passport.session());
 
+var corsOptions = {
+    origin: 'https://asrt.geogecko.com',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors(corsOptions))
+
 //login
 app.use('/', loginRouter);
 
